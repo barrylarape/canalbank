@@ -1,4 +1,3 @@
-
 "use client";
 
 import { motion } from "framer-motion";
@@ -48,9 +47,7 @@ export default function LandingPage() {
       <Navigation />
       
       <main className="flex-1">
-        {/* Hero Section */}
         <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
-          {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
             <Image
               src={placeholders.hero.url}
@@ -72,7 +69,7 @@ export default function LandingPage() {
                 transition={{ duration: 0.8 }}
               >
                 <span className="inline-block py-1 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-semibold mb-6">
-                  Switzerland's Premier Digital Institution
+                  Switzerland&apos;s Premier Digital Institution
                 </span>
                 <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-8 leading-[1.1]">
                   Banking Built <br />
@@ -103,7 +100,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-6 md:px-12">
             <div className="text-center max-w-3xl mx-auto mb-20">
@@ -138,7 +134,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="py-24 bg-brand-900 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-1/3 h-full bg-accent-600/10 blur-3xl rounded-full translate-x-1/2" />
           <div className="container mx-auto px-6 md:px-12 relative z-10">

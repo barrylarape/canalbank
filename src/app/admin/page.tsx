@@ -5,12 +5,9 @@ import {
   TrendingUp,
   Clock,
   ArrowUpRight,
-  ArrowDownLeft,
   ShieldAlert,
   ChevronRight,
-  History,
   Check,
-  AlertTriangle,
   Terminal,
   Activity,
   ShoppingCart,
@@ -27,6 +24,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import type { Database } from "@/lib/supabase/types";
 
 function formatCurrency(amount: number, currency = "CHF") {
   return new Intl.NumberFormat("de-CH", { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
@@ -103,6 +101,10 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
+type TransactionWithProfile = Database["public"]["Tables"]["transactions"]["Row"] & {
+  profiles: { full_name: string | null; email: string | null } | null;
+};
+
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
   const today = new Date();
@@ -124,7 +126,7 @@ export default async function AdminDashboardPage() {
   const [
     { count: memberCount },
     { data: accounts },
-    { data: recentTx, error: txError, count: txCount },
+    { data: recentTx, count: txCount },
     { count: txTodayCount },
     { count: pendingAuthCount },
   ] = results;
@@ -137,6 +139,8 @@ export default async function AdminDashboardPage() {
     { label: "Daily Activity", value: (txTodayCount ?? 0).toString(), sub: "Total transactions today", icon: ArrowLeftRight, color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20", href: "/admin/transactions" },
     { label: "Authorizations", value: (pendingAuthCount ?? 0).toString(), sub: "Pending Maker-Checker review", icon: ShieldAlert, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20", href: "/admin/approvals" },
   ];
+
+  const typedRecentTx = (recentTx as unknown as TransactionWithProfile[]) || [];
 
   return (
     <div className="space-y-12 max-w-7xl mx-auto pb-20">
@@ -181,7 +185,7 @@ export default async function AdminDashboardPage() {
             </Link>
           </div>
           <div className="divide-y divide-slate-800/50 px-6">
-            {!recentTx || recentTx.length === 0 ? (
+            {typedRecentTx.length === 0 ? (
               <div className="py-32 text-center group">
                 <div className="w-20 h-20 bg-slate-950 border border-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-8 transition-transform group-hover:scale-110 duration-500">
                   <Terminal className="w-10 h-10 text-slate-800" />
@@ -202,7 +206,7 @@ export default async function AdminDashboardPage() {
                 </div>
               </div>
             ) : (
-              recentTx.map((tx: any) => (
+              typedRecentTx.map((tx) => (
                 <div key={tx.id} className="flex items-center gap-6 px-6 py-8 hover:bg-white/5 transition-all duration-300 group rounded-[2.5rem]">
                   <div className={cn(
                     "w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:scale-110 border",
@@ -235,7 +239,6 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Global Ledger Debug Panel */}
         <div className="bg-slate-900 border border-slate-800 rounded-[3rem] overflow-hidden shadow-2xl">
           <div className="p-10 border-b border-slate-800 flex items-center gap-3 bg-slate-950/50">
             <ShieldAlert className="w-5 h-5 text-amber-500" />

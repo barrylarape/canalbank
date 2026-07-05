@@ -3,8 +3,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { 
-  ArrowUpRight, 
-  ArrowDownLeft, 
   Loader2, 
   Check, 
   AlertCircle,
@@ -71,7 +69,6 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize with today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split('T')[0];
 
   const [form, setForm] = useState({
@@ -81,7 +78,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
     reason: (typeParam === "debit" ? DEBIT_REASONS[0] : CREDIT_REASONS[0]),
     description: "",
     valueDate: today,
-    initiator: "", // New field for preferred name
+    initiator: "",
     notifyEmail: true,
     notifyPush: true,
   });
@@ -90,7 +87,6 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
     setIsMounted(true);
   }, []);
 
-  // Update form if URL type changes
   useEffect(() => {
     if (typeParam && typeParam !== form.type) {
       setForm(f => ({ 
@@ -99,7 +95,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
         reason: typeParam === "debit" ? DEBIT_REASONS[0] : CREDIT_REASONS[0]
       }));
     }
-  }, [typeParam]);
+  }, [typeParam, form.type]);
 
   const selectedAccount = useMemo(() => 
     accounts.find(a => a.id === form.accountId), 
@@ -168,8 +164,8 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
         router.push(`?tab=operations`);
         router.refresh();
       }, 3000);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Adjustment failed");
       setConfirming(false);
     } finally {
       setLoading(false);
@@ -234,7 +230,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
 
           <div className="bg-slate-950 border border-slate-800 rounded-xl p-4">
             <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Narration</p>
-            <p className="text-xs text-slate-400 leading-relaxed italic">"{form.description}"</p>
+            <p className="text-xs text-slate-400 leading-relaxed italic">&quot;{form.description}&quot;</p>
           </div>
 
           <div className="bg-slate-800/20 border border-slate-700/50 rounded-xl overflow-hidden">
@@ -308,7 +304,6 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
 
       <form onSubmit={handleStartConfirmation} className="p-6 space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column: Core Data */}
           <div className="space-y-5">
             <div>
               <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">
@@ -394,7 +389,6 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
             </div>
           </div>
 
-          {/* Right Column: Reasoning & Attachments */}
           <div className="space-y-5">
             <div>
               <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">
@@ -437,7 +431,6 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
           </div>
         </div>
 
-        {/* Supporting Docs & Notifications */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
           <div className="space-y-2">
             <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">
@@ -481,7 +474,6 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
           </div>
         </div>
 
-        {/* Projected Impact */}
         {preview && (
           <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-inner">
             <div className="grid grid-cols-2 divide-x divide-slate-800">

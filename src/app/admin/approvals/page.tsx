@@ -4,19 +4,12 @@ import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { 
   ShieldCheck, 
-  CheckCircle2, 
-  XCircle, 
-  Clock, 
-  AlertTriangle, 
   Loader2,
   ArrowUpRight,
   ArrowDownLeft,
   User,
   ShieldAlert,
-  Users,
-  FileText,
-  BadgeCheck,
-  Check
+  BadgeCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -37,11 +30,11 @@ type PendingTx = {
   maker: { full_name: string; email: string };
 };
 
-function PipelineInspector({ tx }: { tx: PendingTx }) {
+function PipelineInspector({ txStatus }: { txStatus: string }) {
   const stages = [
     { label: "Initiated", status: "completed" },
     { label: "Maker Verified", status: "completed" },
-    { label: "Checker Pending", status: "current" },
+    { label: "Checker Pending", status: txStatus === "pending" ? "current" : "waiting" },
     { label: "Ledger Posting", status: "waiting" },
     { label: "Account Sync", status: "waiting" },
   ];
@@ -81,34 +74,22 @@ export default function ApprovalQueuePage() {
     setLoading(true);
     const supabase = createClient();
     
-    // DIAGNOSTIC BYPASS: Raw select to verify data existence
-    const { data: bypassData, error: bypassError } = await supabase
-      .from("transactions")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    console.log("DIAGNOSTIC: Approval Queue Bypass Log");
-    console.log({ bypassData, bypassError });
-
-    const { data, error, count } = await supabase
+    const { data, error } = await supabase
       .from("transactions")
       .select(`
         *,
         profiles:profiles!transactions_user_id_fkey(full_name, email),
         maker:profiles!transactions_created_by_id_fkey(full_name, email)
-      `, { count: "exact" })
+      `)
       .eq("status", "pending")
       .eq("category", "adjustment_request")
       .order("created_at", { ascending: true });
 
-    console.log("DIAGNOSTIC: Approval Queue Processed Query");
-    console.log({
-      data,
-      error,
-      count
-    });
+    if (error) {
+      console.error("Fetch error:", error);
+    }
 
-    setRequests((data as any[]) || []);
+    setRequests((data as unknown as PendingTx[]) || []);
     setLoading(false);
   }, []);
 
@@ -128,7 +109,7 @@ export default function ApprovalQueuePage() {
       const data = await res.json();
       if (!res.ok) alert(data.error || "Action failed");
       fetchRequests();
-    } catch (e) {
+    } catch {
       alert("Network error");
     } finally {
       setProcessing(null);
@@ -154,7 +135,7 @@ export default function ApprovalQueuePage() {
 
       <div className="bg-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl">
         <div className="px-6 py-4 border-b border-slate-700/50 bg-slate-950/50 flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white uppercase tracking-tight">Phase 8: Execution Pipeline</h2>
+          <h2 className="text-sm font-bold text-white uppercase tracking-tight">Execution Pipeline</h2>
           <span className="text-[10px] font-bold text-slate-500 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
             {requests.length} Awaiting Authorization
           </span>
@@ -196,7 +177,7 @@ export default function ApprovalQueuePage() {
                         )}>
                           {req.approval_tier} Review
                         </span>
-                        <PipelineInspector tx={req} />
+                        <PipelineInspector txStatus="pending" />
                       </div>
                     </td>
                     <td className="px-6 py-5">
