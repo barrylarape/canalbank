@@ -62,7 +62,7 @@ const navGroups = [
 ];
 
 interface AdminSidebarProps {
-  adminName?: string;
+  adminName: string | null;
 }
 
 export function AdminSidebar({ adminName }: AdminSidebarProps) {

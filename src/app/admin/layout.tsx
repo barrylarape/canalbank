@@ -33,11 +33,13 @@ export default async function AdminLayout({
     redirect("/dashboard");
   }
 
+  const adminName = profile?.full_name ?? user.email ?? null;
+
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      <AdminSidebar adminName={profile?.full_name ?? user.email ?? undefined} />
+      <AdminSidebar adminName={adminName} />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader adminName={profile?.full_name ?? user.email ?? undefined} />
+        <AdminHeader adminName={adminName} />
         <RealtimeProvider>
           <main className="flex-1 p-6 lg:p-8 overflow-auto">
             <PageTransition>
