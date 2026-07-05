@@ -5,6 +5,7 @@ import { AdminHeader } from "@/components/admin/header";
 import { RealtimeProvider } from "@/components/realtime-provider";
 import { RealtimeInspector } from "@/components/admin/realtime-inspector";
 import { PageTransition } from "@/components/ui/page-transition";
+import type { Database } from "@/lib/supabase/types";
 
 export default async function AdminLayout({
   children,
@@ -26,15 +27,15 @@ export default async function AdminLayout({
     .eq("id", user.id)
     .single();
 
-  const profile = data as { role: string; full_name: string | null } | null;
+  const profile = data as Database["public"]["Tables"]["profiles"]["Row"] | null;
 
   // Double-check role server-side
-  if (profile?.role !== "admin" && profile?.role !== "supervisor" && profile?.role !== "executive") {
+  if (!profile || (profile.role !== "admin" && profile.role !== "supervisor" && profile.role !== "executive")) {
     redirect("/dashboard");
   }
 
   // Ensure we pass string | null, never undefined, to satisfy prop types
-  const adminName = profile?.full_name ?? user.email ?? null;
+  const adminName = profile.full_name ?? user.email ?? null;
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
