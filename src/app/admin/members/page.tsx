@@ -8,12 +8,10 @@ import {
   UserPlus,
   ChevronRight,
   Filter,
-  CheckCircle2,
-  XCircle,
-  Clock,
   Users,
   Check,
-  X
+  X,
+  Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +20,7 @@ type Profile = {
   full_name: string | null;
   email: string | null;
   phone: string | null;
-  role: "customer" | "admin";
+  role: "customer" | "admin" | "supervisor" | "executive";
   kyc_status: "pending" | "approved" | "rejected";
   created_at: string;
   account_count?: number;
@@ -86,12 +84,13 @@ export default function AdminMembersPage() {
         .select("user_id");
 
       const countMap: Record<string, number> = {};
-      accounts?.forEach((a) => {
+      // Casting to any[] to avoid 'never' inference error during build
+      (accounts as any[] | null)?.forEach((a) => {
         countMap[a.user_id] = (countMap[a.user_id] ?? 0) + 1;
       });
 
       setProfiles(
-        data.map((p) => ({ ...p, account_count: countMap[p.id] ?? 0 }))
+        (data as Profile[]).map((p) => ({ ...p, account_count: countMap[p.id] ?? 0 }))
       );
     } else {
       setProfiles([]);
