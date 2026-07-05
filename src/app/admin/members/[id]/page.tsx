@@ -108,7 +108,9 @@ export default async function MemberDetailPage({
 
   if (!profile) notFound();
 
-  const totalBalance = accounts?.reduce((s, a) => a.account_type !== "credit" ? s + a.balance : s, 0) ?? 0;
+  // Type assertion for accounts to resolve 'never' property access error
+  const typedAccounts = (accounts || []) as any[];
+  const totalBalance = typedAccounts.reduce((s, a) => a.account_type !== "credit" ? s + a.balance : s, 0) ?? 0;
 
   const tabs = [
     { id: "overview", label: "Overview", icon: User },
@@ -129,17 +131,17 @@ export default async function MemberDetailPage({
       {/* Hero Header */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
         <div className="w-16 h-16 rounded-2xl bg-accent-600/10 border border-accent-600/20 flex items-center justify-center text-2xl font-bold text-accent-500 flex-shrink-0">
-          {profile.full_name?.[0] || profile.email?.[0]}
+          {(profile as any).full_name?.[0] || (profile as any).email?.[0]}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-3 mb-1">
-            <h1 className="text-2xl font-bold text-white tracking-tight">{profile.full_name ?? "—"}</h1>
-            <KycBadge status={profile.kyc_status} />
+            <h1 className="text-2xl font-bold text-white tracking-tight">{(profile as any).full_name ?? "—"}</h1>
+            <KycBadge status={(profile as any).kyc_status} />
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border border-slate-700 text-slate-400 bg-slate-800">
-              {profile.role}
+              {(profile as any).role}
             </span>
           </div>
-          <p className="text-sm text-slate-500 font-medium">{profile.email}</p>
+          <p className="text-sm text-slate-500 font-medium">{(profile as any).email}</p>
         </div>
         <div className="text-right">
           <div className="text-3xl font-bold text-white font-mono">{formatCurrency(totalBalance)}</div>
@@ -170,20 +172,20 @@ export default async function MemberDetailPage({
             <div className="space-y-6">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
                 <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Institutional Profile</h2>
-                <InfoRow icon={User} label="Full Name" value={profile.full_name} />
-                <InfoRow icon={Mail} label="Email Address" value={profile.email} />
-                <InfoRow icon={Phone} label="Verified Phone" value={profile.phone} />
-                <InfoRow icon={Calendar} label="Onboarding Date" value={new Date(profile.created_at).toLocaleDateString()} />
+                <InfoRow icon={User} label="Full Name" value={(profile as any).full_name} />
+                <InfoRow icon={Mail} label="Email Address" value={(profile as any).email} />
+                <InfoRow icon={Phone} label="Verified Phone" value={(profile as any).phone} />
+                <InfoRow icon={Calendar} label="Onboarding Date" value={new Date((profile as any).created_at).toLocaleDateString()} />
               </div>
             </div>
             <div className="lg:col-span-2 space-y-6">
               <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
                   <h2 className="text-sm font-bold text-white">Consolidated Accounts</h2>
-                  <span className="text-[10px] font-bold text-slate-500 uppercase">{accounts?.length || 0} Entities</span>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase">{typedAccounts.length || 0} Entities</span>
                 </div>
                 <div className="divide-y divide-slate-800/50">
-                  {accounts?.map(a => (
+                  {typedAccounts.map(a => (
                     <div key={a.id} className="px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors">
                       <div>
                         <p className="text-sm font-bold text-slate-200">{a.account_name}</p>
@@ -208,9 +210,9 @@ export default async function MemberDetailPage({
               <div className="lg:col-span-2 space-y-8">
                 {mode === "adjust" ? (
                   <AdjustBalance 
-                    memberId={profile.id} 
-                    memberName={profile.full_name || profile.email || 'Member'}
-                    accounts={accounts ?? []} 
+                    memberId={(profile as any).id} 
+                    memberName={(profile as any).full_name || (profile as any).email || 'Member'}
+                    accounts={typedAccounts} 
                   />
                 ) : (
                   <div className="space-y-8">
@@ -333,7 +335,7 @@ export default async function MemberDetailPage({
                 <h2 className="text-sm font-bold text-white">System Ledger</h2>
               </div>
               <div className="divide-y divide-slate-800/50">
-                {transactions?.map(tx => (
+                {(transactions as any[])?.map(tx => (
                   <div key={tx.id} className="px-6 py-4 flex items-center gap-4 hover:bg-white/5 transition-colors">
                     <div className={cn(
                       "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0",
@@ -361,9 +363,9 @@ export default async function MemberDetailPage({
         {tab === "compliance" && (
           <div className="lg:col-span-3">
             <MemberActions
-              memberId={profile.id}
-              currentKyc={profile.kyc_status as "pending" | "approved" | "rejected"}
-              currentRole={profile.role as "customer" | "admin" | "supervisor" | "executive"}
+              memberId={(profile as any).id}
+              currentKyc={(profile as any).kyc_status as "pending" | "approved" | "rejected"}
+              currentRole={(profile as any).role as "customer" | "admin" | "supervisor" | "executive"}
             />
           </div>
         )}
