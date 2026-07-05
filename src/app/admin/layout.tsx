@@ -33,6 +33,7 @@ export default async function AdminLayout({
     redirect("/dashboard");
   }
 
+  // Ensure we pass string | null, never undefined, to satisfy prop types
   const adminName = profile?.full_name ?? user.email ?? null;
 
   return (
