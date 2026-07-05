@@ -69,15 +69,13 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const today = new Date().toISOString().split('T')[0];
-
   const [form, setForm] = useState({
     accountId: accounts[0]?.id || "",
     amount: "",
     type: typeParam || "credit",
     reason: (typeParam === "debit" ? DEBIT_REASONS[0] : CREDIT_REASONS[0]),
     description: "",
-    valueDate: today,
+    valueDate: "", // Initialized empty for hydration safety
     initiator: "",
     notifyEmail: true,
     notifyPush: true,
@@ -85,6 +83,9 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
 
   useEffect(() => {
     setIsMounted(true);
+    // Set current date on client only to avoid hydration mismatch
+    const today = new Date().toISOString().split('T')[0];
+    setForm(f => ({ ...f, valueDate: today }));
   }, []);
 
   useEffect(() => {
@@ -477,18 +478,18 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
         {preview && (
           <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-inner">
             <div className="grid grid-cols-2 divide-x divide-slate-800">
-              <div className="p-4 flex flex-col items-center">
+              <div className="p-4 text-center">
                 <span className="text-[9px] font-bold text-slate-600 uppercase mb-1">Balance Before</span>
                 <p className="text-sm font-mono text-slate-400">
                   {formatValue(preview.before, preview.currency)}
                 </p>
               </div>
               <div className={cn(
-                "p-4 flex flex-col items-center transition-colors",
+                "p-4 text-center transition-colors",
                 isCredit ? "bg-emerald-500/5" : "bg-red-500/5"
               )}>
                 <span className="text-[9px] font-bold text-slate-600 uppercase mb-1">Balance After</span>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center justify-center gap-1.5">
                   <p className={cn(
                     "text-sm font-bold font-mono",
                     isCredit ? "text-emerald-400" : "text-red-400"
