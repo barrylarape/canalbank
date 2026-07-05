@@ -74,11 +74,11 @@ function PipelineStatus({ status, category }: { status: string, category: string
 function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { style: string; icon: any }> = {
     completed: { 
-      style: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_2px_10px_rgba(16,185,129,0.1)]", 
+      style: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_2px_10px_rgba(16,185,129,0.1)]", 
       icon: Check 
     },
     pending: { 
-      style: "bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-[0_2px_10px_rgba(245,158,11,0.1)]", 
+      style: "bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_2px_10px_rgba(245,158,11,0.1)]", 
       icon: Clock 
     },
     failed: { 
@@ -101,8 +101,11 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-type TransactionWithProfile = Database["public"]["Tables"]["transactions"]["Row"] & {
-  profiles: { full_name: string | null; email: string | null } | null;
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
+type Profile = Pick<Database["public"]["Tables"]["profiles"]["Row"], "full_name" | "email">;
+
+type TransactionWithProfile = Transaction & {
+  profiles: Profile | null;
 };
 
 export default async function AdminDashboardPage() {
@@ -166,7 +169,7 @@ export default async function AdminDashboardPage() {
                 </div>
                 <ArrowUpRight className="w-5 h-5 text-slate-700 group-hover:text-slate-400 transition-colors" />
               </div>
-              <p className="text-[32px] font-bold text-white mb-2 relative z-10 font-mono tracking-tighter">{kpi.value}</p>
+              <div className="text-[32px] font-bold text-white mb-2 relative z-10 font-mono tracking-tighter">{kpi.value}</div>
               <p className="text-[12px] font-medium text-slate-500 uppercase tracking-[0.25em] relative z-10">{kpi.label}</p>
             </Link>
           );
@@ -219,18 +222,18 @@ export default async function AdminDashboardPage() {
                   <div className="flex-1 min-w-0">
                     <p className="text-[18px] font-semibold text-slate-200 truncate group-hover:text-white transition-colors tracking-tight mb-1">{tx.description}</p>
                     <div className="flex flex-col">
-                      <p className="text-[12px] text-slate-500 font-medium uppercase tracking-widest flex items-center gap-3">
+                      <div className="text-[12px] text-slate-500 font-medium uppercase tracking-widest flex items-center gap-3">
                         <span className="text-accent-500">{tx.profiles?.full_name || tx.profiles?.email || "System Agent"}</span>
                         <span className="opacity-20">|</span>
                         <span>{new Date(tx.created_at).toLocaleTimeString("en-CH", { hour: '2-digit', minute: '2-digit' })}</span>
-                      </p>
+                      </div>
                       <PipelineStatus status={tx.status} category={tx.category} />
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0 space-y-3">
-                    <p className={cn("text-[20px] font-bold font-mono tracking-tighter", tx.transaction_type === "credit" ? "text-emerald-400" : "text-slate-300")}>
+                    <div className={cn("text-[20px] font-bold font-mono tracking-tighter", tx.transaction_type === "credit" ? "text-emerald-400" : "text-slate-300")}>
                       {tx.transaction_type === "credit" ? "+" : "-"}{formatCurrency(tx.amount)}
-                    </p>
+                    </div>
                     <StatusBadge status={tx.status} />
                   </div>
                 </div>

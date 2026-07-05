@@ -12,22 +12,14 @@ import {
   BadgeCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Database } from "@/lib/supabase/types";
 
-type PendingTx = {
-  id: string;
-  amount: number;
-  transaction_type: "credit" | "debit";
-  description: string;
-  created_at: string;
-  created_by_id: string;
-  approved_by_id: string | null;
-  approval_tier: "standard" | "supervisor" | "dual" | "executive";
-  account_id: string;
-  user_id: string;
-  reference: string;
-  category: string;
-  profiles: { full_name: string; email: string };
-  maker: { full_name: string; email: string };
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
+type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+
+type PendingTx = Transaction & {
+  profiles: Pick<Profile, "full_name" | "email"> | null;
+  maker: Pick<Profile, "full_name" | "email"> | null;
 };
 
 function PipelineInspector({ txStatus }: { txStatus: string }) {

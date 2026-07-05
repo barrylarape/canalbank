@@ -9,7 +9,6 @@ import {
   Calendar,
   Building2,
   CreditCard,
-  TrendingUp,
   Landmark,
   ArrowUpRight,
   ArrowDownLeft,
@@ -88,8 +87,14 @@ export default async function MemberDetailPage({
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  const { data: adminProfile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
-  if (!adminProfile || adminProfile.role === "customer") redirect("/dashboard");
+
+  // Type-safe retrieval to resolve build-time 'never' inference
+  const { data: adminProfileRaw } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const adminProfile = adminProfileRaw as { role: string } | null;
+
+  if (!adminProfile || adminProfile.role === "customer") {
+    redirect("/dashboard");
+  }
 
   const [
     { data: profile },
@@ -137,7 +142,7 @@ export default async function MemberDetailPage({
           <p className="text-sm text-slate-500 font-medium">{profile.email}</p>
         </div>
         <div className="text-right">
-          <p className="text-3xl font-bold text-white font-mono">{formatCurrency(totalBalance)}</p>
+          <div className="text-3xl font-bold text-white font-mono">{formatCurrency(totalBalance)}</div>
           <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Aggregate Net Worth</p>
         </div>
       </div>
@@ -357,8 +362,8 @@ export default async function MemberDetailPage({
           <div className="lg:col-span-3">
             <MemberActions
               memberId={profile.id}
-              currentKyc={profile.kyc_status as any}
-              currentRole={profile.role as any}
+              currentKyc={profile.kyc_status as "pending" | "approved" | "rejected"}
+              currentRole={profile.role as "customer" | "admin" | "supervisor" | "executive"}
             />
           </div>
         )}

@@ -15,27 +15,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ACCOUNT_OPTIONS = [
-  {
-    value: "checking",
-    label: "Everyday Checking",
-    desc: "Daily transactions & debit card",
-    icon: "💳",
-  },
-  {
-    value: "savings",
-    label: "High Yield Savings",
-    desc: "3.25% APY interest rate",
-    icon: "🏦",
-  },
-  {
-    value: "investment",
-    label: "Investment Portfolio",
-    desc: "Stocks, ETFs, and funds",
-    icon: "📈",
-  },
-];
-
 export default function RegisterMemberPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -43,10 +22,6 @@ export default function RegisterMemberPage() {
   const [success, setSuccess] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [seedDemo, setSeedDemo] = useState(true);
-  const [selectedAccounts, setSelectedAccounts] = useState<string[]>([
-    "checking",
-    "savings",
-  ]);
 
   const [form, setForm] = useState({
     fullName: "",
@@ -59,11 +34,6 @@ export default function RegisterMemberPage() {
 
   const update = (field: string, value: string) =>
     setForm((prev) => ({ ...prev, [field]: value }));
-
-  const toggleAccount = (val: string) =>
-    setSelectedAccounts((prev) =>
-      prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]
-    );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

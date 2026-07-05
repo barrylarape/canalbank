@@ -19,7 +19,6 @@ import {
   Lock,
   Zap,
   TrendingUp,
-  CreditCard,
   History,
   RotateCcw,
   Landmark,
@@ -92,10 +91,10 @@ export function AdminSidebar({ adminName }: AdminSidebarProps) {
         {!collapsed && (
           <div>
             <p className="text-white font-bold text-sm leading-none tracking-tight">Canal Bank</p>
-            <p className="text-accent-500 text-[9px] mt-1 font-bold uppercase tracking-[0.2em] flex items-center gap-1">
+            <div className="text-accent-500 text-[9px] mt-1 font-bold uppercase tracking-[0.2em] flex items-center gap-1">
               <Lock className="w-2.5 h-2.5" />
               Institutional
-            </p>
+            </div>
           </div>
         )}
       </div>

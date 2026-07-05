@@ -551,7 +551,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
       <div className="px-6 py-4 bg-slate-800/20 border-t border-slate-700/50 flex items-center gap-3">
         <Clock className="w-4 h-4 text-slate-500 flex-shrink-0" />
         <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
-          Note: This operation initiates a pending ledger entry. Once submitted, the event must be authorized by a different officer (Checker) before funds are posted.
+          Note: This operation initiates a pending ledger entry. Once submitted, the event must be authorized by a different officer (Checker) before funds are posted to the core ledger.
         </p>
       </div>
     </div>

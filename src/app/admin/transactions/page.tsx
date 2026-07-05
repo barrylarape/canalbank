@@ -3,17 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
-  Search,
-  Filter,
-  ArrowUpRight,
-  ArrowDownLeft,
-  CheckCircle2,
-  XCircle,
   Loader2,
-  AlertCircle,
   RotateCcw,
-  History,
-  AlertTriangle,
   Edit3,
   Check,
   X,
@@ -23,16 +14,9 @@ import {
   Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Database } from "@/lib/supabase/types";
 
-type Transaction = {
-  id: string;
-  description: string;
-  amount: number;
-  transaction_type: "debit" | "credit";
-  category: string;
-  status: "pending" | "completed" | "failed" | "reversed";
-  reference: string;
-  created_at: string;
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"] & {
   profiles?: { full_name?: string | null; email?: string | null } | null;
 };
 
@@ -41,11 +25,11 @@ const PAGE_SIZE = 25;
 function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { style: string; icon: any }> = {
     completed: { 
-      style: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_2px_8px_rgba(16,185,129,0.08)]", 
+      style: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_2px_8px_rgba(16,185,129,0.08)]", 
       icon: Check 
     },
     pending: { 
-      style: "bg-amber-500/10 text-amber-400 border-amber-500/20 shadow-[0_2px_8px_rgba(245,158,11,0.08)]", 
+      style: "bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_2px_8px_rgba(245,158,11,0.08)]", 
       icon: Clock 
     },
     failed: { 
@@ -136,7 +120,7 @@ export default function AdminTransactionsPage() {
         const data = await res.json();
         alert(data.error || "Update failed");
       }
-    } catch (e) {
+    } catch {
       alert("Network error");
     } finally {
       setSaving(false);
