@@ -1,0 +1,38 @@
+
+{
+  "hero": {
+    "url": "https://picsum.photos/seed/canal1/1920/1080",
+    "width": 1920,
+    "height": 1080,
+    "alt": "Zurich financial district at dusk",
+    "hint": "zurich banking"
+  },
+  "mobileApp": {
+    "url": "https://picsum.photos/seed/canal2/600/1200",
+    "width": 600,
+    "height": 1200,
+    "alt": "Canal Bank mobile app interface",
+    "hint": "mobile banking"
+  },
+  "vault": {
+    "url": "https://picsum.photos/seed/canal3/800/600",
+    "width": 800,
+    "height": 600,
+    "alt": "Secure Swiss vault door",
+    "hint": "secure vault"
+  },
+  "zurichCanal": {
+    "url": "https://picsum.photos/seed/canal4/1200/800",
+    "width": 1200,
+    "height": 800,
+    "alt": "Scenic view of Zurich canal",
+    "hint": "zurich landscape"
+  },
+  "businessBanking": {
+    "url": "https://picsum.photos/seed/canal5/800/600",
+    "width": 800,
+    "height": 600,
+    "alt": "Modern business boardroom",
+    "hint": "business meeting"
+  }
+}
