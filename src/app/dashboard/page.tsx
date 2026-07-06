@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import {
   ArrowLeftRight, CreditCard, Landmark, 
-  Wallet, RefreshCw, ArrowUpRight, ArrowRight, DollarSign,
+  Wallet, ArrowUpRight, ArrowRight, DollarSign,
   ShoppingCart, Coffee, Briefcase, Zap, Car, Heart, Play, Activity, ChevronRight,
-  Check, Clock, X, RotateCcw, BarChart3, ShieldCheck, TrendingUp
+  Check, Clock, X, RotateCcw, ShieldCheck, TrendingUp, Copy
 } from "lucide-react";
 import Link from "next/link";
 import { SpendingChart } from "@/components/dashboard/spending-chart";
@@ -97,6 +97,7 @@ export default function DashboardPage() {
     user: any | null;
   }>({ accounts: null, transactions: null, investments: null, user: null });
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -130,7 +131,11 @@ export default function DashboardPage() {
   const availableBalance = data.accounts?.reduce((sum, acc) => sum + (acc.account_type !== "credit" ? acc.available_balance : 0), 0) ?? 0;
   const reserved = totalBalance - availableBalance;
 
-  // 2. Monthly Stats & Cashflow Calculation
+  // 2. Primary Account Number (Boldly displayed)
+  const primaryAccount = data.accounts?.[0];
+  const primaryIban = primaryAccount?.account_number || "NO ACCOUNT DETECTED";
+
+  // 3. Monthly Stats & Cashflow Calculation
   const now = new Date();
   const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   
@@ -142,7 +147,7 @@ export default function DashboardPage() {
     ?.filter(tx => new Date(tx.created_at) >= currentMonthStart && tx.transaction_type === "debit" && tx.status === "completed")
     .reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
 
-  // 3. Cashflow Chart Data (Last 6 Months)
+  // 4. Cashflow Chart Data (Last 6 Months)
   const last6Months = Array.from({ length: 6 }, (_, i) => {
     const d = new Date();
     d.setMonth(d.getMonth() - (5 - i));
@@ -168,7 +173,7 @@ export default function DashboardPage() {
     }
   });
 
-  // 4. Portfolio Trend (Based on real transaction snapshots)
+  // 5. Portfolio Trend (Based on real transaction snapshots)
   const trendData = data.transactions
     ?.slice(0, 10)
     .reverse()
@@ -176,6 +181,12 @@ export default function DashboardPage() {
 
   const totalInvestments = data.investments?.reduce((sum, inv) => sum + inv.current_value, 0) ?? 0;
   const rewards = Math.floor(monthlySpending * 0.1);
+
+  const copyIban = () => {
+    navigator.clipboard.writeText(primaryIban);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <motion.div 
@@ -190,9 +201,25 @@ export default function DashboardPage() {
           <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-12">
             <div className="flex-1">
               <p className="text-[12px] font-medium text-white/40 uppercase tracking-[0.3em] mb-4">Institutional Portfolio</p>
-              <h2 className="text-[56px] font-bold text-white tracking-tighter mb-8 font-mono">
-                <AnimatedNumber value={totalBalance} />
-              </h2>
+              
+              <div className="mb-10">
+                <div className="text-[56px] font-bold text-white tracking-tighter mb-2 font-mono leading-none">
+                  <AnimatedNumber value={totalBalance} />
+                </div>
+                {/* Bold Account Number Section */}
+                <div className="flex items-center gap-3 group/iban cursor-pointer mt-4" onClick={copyIban}>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-1">Institutional ID / IBAN</span>
+                    <span className="text-[18px] font-bold text-white font-mono tracking-widest uppercase transition-colors group-hover/iban:text-accent-400">
+                      {primaryIban}
+                    </span>
+                  </div>
+                  <button className="mt-4 p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/40 group-hover/iban:text-white group-hover/iban:bg-white/10 transition-all active:scale-90">
+                    {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md text-emerald-400 rounded-full text-[12px] font-medium border border-white/5">
                   <ArrowUpRight className="w-4 h-4" />
@@ -334,7 +361,7 @@ export default function DashboardPage() {
                     <Activity className="w-8 h-8 text-slate-200" />
                   </div>
                   <p className="text-[11px] font-black text-brand-950 uppercase tracking-[0.3em] mb-3">No Ledger Activity</p>
-                  <p className="text-[13px] text-slate-500 max-w-[240px] mx-auto leading-relaxed">
+                  <p className="text-[13px] text-slate-500 max-w-[280px] mx-auto leading-relaxed">
                     Your institutional transaction history will populate here once activity is detected.
                   </p>
                 </div>
