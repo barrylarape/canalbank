@@ -18,7 +18,7 @@ import { QuickActionTile } from "@/components/dashboard/quick-action-tile";
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { PortfolioSnapshot } from "@/components/dashboard/portfolio-snapshot";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 function getAccountIcon(type: string) {
   switch (type) {
@@ -74,7 +74,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -84,7 +84,7 @@ const container = {
   }
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };

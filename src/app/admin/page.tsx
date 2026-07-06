@@ -103,6 +103,7 @@ function StatusBadge({ status }: { status: string }) {
 
 type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
 type Profile = Pick<Database["public"]["Tables"]["profiles"]["Row"], "full_name" | "email">;
+type AccountSummary = Pick<Database["public"]["Tables"]["accounts"]["Row"], "balance" | "account_type">;
 
 type TransactionWithProfile = Transaction & {
   profiles: Profile | null;
@@ -113,7 +114,7 @@ export default async function AdminDashboardPage() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const results = await Promise.all([
+  const [membersResult, accountsResult, recentTxResult, txTodayResult, pendingAuthResult] = await Promise.all([
     supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "customer"),
     supabase.from("accounts").select("balance, account_type"),
     supabase
@@ -126,13 +127,12 @@ export default async function AdminDashboardPage() {
     supabase.from("transactions").select("id", { count: "exact", head: true }).eq("status", "pending").eq("category", "adjustment_request"),
   ]);
 
-  const [
-    { count: memberCount },
-    { data: accounts },
-    { data: recentTx, count: txCount },
-    { count: txTodayCount },
-    { count: pendingAuthCount },
-  ] = results;
+  const memberCount = membersResult.count;
+  const accounts = accountsResult.data as AccountSummary[] | null;
+  const recentTx = recentTxResult.data;
+  const txCount = recentTxResult.count;
+  const txTodayCount = txTodayResult.count;
+  const pendingAuthCount = pendingAuthResult.count;
 
   const totalAUM = accounts?.reduce((sum, acc) => acc.account_type !== "credit" ? sum + acc.balance : sum, 0) ?? 0;
 

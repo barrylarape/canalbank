@@ -100,11 +100,11 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
 
             <div className="my-6">
               <p className="text-white/30 text-[9px] font-black uppercase tracking-[0.3em] mb-2">Book Balance</p>
-              <p className="text-3xl font-bold text-white font-mono tracking-tighter">CHF {card.daily_limit.toLocaleString()}.00</p>
+              <p className="text-3xl font-bold text-white font-mono tracking-tighter">CHF {(card.daily_limit ?? 0).toLocaleString()}.00</p>
               <div className="flex items-center gap-4 mt-2">
                 <div>
                   <p className="text-white/20 text-[8px] font-bold uppercase tracking-widest">Available</p>
-                  <p className="text-white/70 text-xs font-mono font-bold">CHF {card.daily_limit.toLocaleString()}</p>
+                  <p className="text-white/70 text-xs font-mono font-bold">CHF {(card.daily_limit ?? 0).toLocaleString()}</p>
                 </div>
                 <div className="w-[1px] h-4 bg-white/10" />
                 <div>
@@ -189,7 +189,7 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
               </div>
               <div>
                 <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Daily Disbursement Limit</span>
-                <p className="text-sm font-mono font-black text-brand-950 tracking-tighter">CHF {card.daily_limit.toLocaleString()}.00</p>
+                <p className="text-sm font-mono font-black text-brand-950 tracking-tighter">CHF {(card.daily_limit ?? 0).toLocaleString()}.00</p>
               </div>
             </div>
             <button className="text-[9px] font-black text-brand-600 hover:text-brand-950 uppercase tracking-[0.2em] transition-colors bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">Increase</button>

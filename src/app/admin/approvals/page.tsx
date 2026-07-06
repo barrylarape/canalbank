@@ -186,7 +186,9 @@ export default function ApprovalQueuePage() {
                     <td className="px-6 py-5">
                       <div>
                         <p className="text-xs font-bold text-accent-500">{req.profiles?.full_name}</p>
-                        <p className="text-[9px] text-slate-500 truncate max-w-[150px]">{req.description.split('] ')[1]}</p>
+                        <p className="text-[9px] text-slate-500 truncate max-w-[150px]">
+                          {req.description ? req.description.split('] ')[1] ?? req.description : ""}
+                        </p>
                       </div>
                     </td>
                     <td className="px-6 py-5">

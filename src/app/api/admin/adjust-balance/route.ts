@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const adminClient = createAdminClient();
-  const { data: adminProfile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+  const { data: adminProfile } = await supabase.from("profiles").select("role").eq("id", user.id).single().returns<{ role: "admin" | "supervisor" | "executive" | "customer" }>();
 
   if (!adminProfile || (adminProfile.role !== "admin" && adminProfile.role !== "supervisor" && adminProfile.role !== "executive")) {
     await traceAudit(adminClient, traceId, "AUTH_FAILED", { user: user.email, reason: "Insufficient Permissions" }, user.id);

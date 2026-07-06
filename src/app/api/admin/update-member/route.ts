@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { Database } from "@/lib/supabase/types";
 
 export async function PATCH(req: NextRequest) {
   // Verify the caller is an authenticated admin
@@ -44,9 +45,9 @@ export async function PATCH(req: NextRequest) {
 
   const adminClient = createAdminClient();
 
-  const updates: Record<string, string | undefined> = {};
-  if (kycStatus) updates.kyc_status = kycStatus;
-  if (role) updates.role = role;
+  const updates: Database["public"]["Tables"]["profiles"]["Update"] = {};
+  if (kycStatus) updates.kyc_status = kycStatus as "pending" | "approved" | "rejected";
+  if (role) updates.role = role as "customer" | "admin" | "supervisor" | "executive";
   if (fullName) updates.full_name = fullName;
   if (phone) updates.phone = phone;
 

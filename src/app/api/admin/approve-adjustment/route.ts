@@ -149,7 +149,7 @@ export async function POST(req: NextRequest) {
         status: "completed",
         balance_after: newBalance,
         approved_by_id: user.id,
-        description: tx.description.replace("[TIER:", "[EXECUTED:")
+        description: (tx.description ?? "").replace("[TIER:", "[EXECUTED:")
       })
       .eq("id", transactionId)
       .select();

@@ -93,7 +93,7 @@ export default function AdminTransactionsPage() {
   const handleEdit = (tx: Transaction) => {
     setEditingTx(tx);
     setEditForm({
-      description: tx.description,
+      description: tx.description ?? "",
       status: tx.status,
       amount: tx.amount.toString()
     });
