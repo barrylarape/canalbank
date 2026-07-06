@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import {
   ArrowLeftRight, CreditCard, Landmark, 
-  Wallet, ArrowUpRight, ArrowRight, DollarSign,
+  Wallet, RefreshCw, ArrowUpRight, ArrowRight, DollarSign,
   ShoppingCart, Coffee, Briefcase, Zap, Car, Heart, Play, Activity, ChevronRight,
-  Check, Clock, X, RotateCcw, ShieldCheck, TrendingUp
+  Check, Clock, X, RotateCcw, BarChart3, ShieldCheck, TrendingUp
 } from "lucide-react";
 import Link from "next/link";
 import { SpendingChart } from "@/components/dashboard/spending-chart";
@@ -97,7 +97,6 @@ export default function DashboardPage() {
     user: any | null;
   }>({ accounts: null, transactions: null, investments: null, user: null });
   const [loading, setLoading] = useState(true);
-  const [cashflowData, setCashflowData] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -119,34 +118,6 @@ export default function DashboardPage() {
       ]);
 
       setData({ accounts, transactions, investments, user });
-
-      // Calculate Cashflow Chart Data (Last 6 Months) on client
-      const last6 = Array.from({ length: 6 }, (_, i) => {
-        const d = new Date();
-        d.setMonth(d.getMonth() - (5 - i));
-        return {
-          month: d.toLocaleDateString("en-CH", { month: "short" }),
-          monthIndex: d.getMonth(),
-          year: d.getFullYear(),
-          income: 0,
-          expense: 0,
-        };
-      });
-
-      transactions?.forEach(tx => {
-        const txDate = new Date(tx.created_at);
-        const m = txDate.getMonth();
-        const y = txDate.getFullYear();
-        if (tx.status !== 'completed') return;
-
-        const monthData = last6.find(d => d.monthIndex === m && d.year === y);
-        if (monthData) {
-          if (tx.transaction_type === 'credit') monthData.income += tx.amount;
-          else monthData.expense += tx.amount;
-        }
-      });
-
-      setCashflowData(last6);
       setLoading(false);
     }
     fetchData();
@@ -154,12 +125,12 @@ export default function DashboardPage() {
 
   if (loading) return null;
 
-  // Core Balance Metrics
+  // 1. Core Balance Metrics
   const totalBalance = data.accounts?.reduce((sum, acc) => sum + (acc.account_type !== "credit" ? acc.balance : 0), 0) ?? 0;
   const availableBalance = data.accounts?.reduce((sum, acc) => sum + (acc.account_type !== "credit" ? acc.available_balance : 0), 0) ?? 0;
   const reserved = totalBalance - availableBalance;
 
-  // Monthly Stats
+  // 2. Monthly Stats & Cashflow Calculation
   const now = new Date();
   const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   
@@ -171,7 +142,33 @@ export default function DashboardPage() {
     ?.filter(tx => new Date(tx.created_at) >= currentMonthStart && tx.transaction_type === "debit" && tx.status === "completed")
     .reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
 
-  // Portfolio Trend (Based on real transaction snapshots)
+  // 3. Cashflow Chart Data (Last 6 Months)
+  const last6Months = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - (5 - i));
+    return {
+      month: d.toLocaleDateString("en-CH", { month: "short" }),
+      monthIndex: d.getMonth(),
+      year: d.getFullYear(),
+      income: 0,
+      expense: 0,
+    };
+  });
+
+  data.transactions?.forEach(tx => {
+    const txDate = new Date(tx.created_at);
+    const m = txDate.getMonth();
+    const y = txDate.getFullYear();
+    if (tx.status !== 'completed') return;
+
+    const monthData = last6Months.find(d => d.monthIndex === m && d.year === y);
+    if (monthData) {
+      if (tx.transaction_type === 'credit') monthData.income += tx.amount;
+      else monthData.expense += tx.amount;
+    }
+  });
+
+  // 4. Portfolio Trend (Based on real transaction snapshots)
   const trendData = data.transactions
     ?.slice(0, 10)
     .reverse()
@@ -312,7 +309,7 @@ export default function DashboardPage() {
           </motion.section>
 
           <motion.div variants={item}>
-            <CashflowChart data={cashflowData} />
+            <CashflowChart data={last6Months} />
           </motion.div>
 
           <motion.div variants={item}>

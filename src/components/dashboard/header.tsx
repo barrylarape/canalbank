@@ -1,10 +1,11 @@
 "use client";
 
-import { Bell, Search, ChevronDown, User, Settings, LogOut, HelpCircle } from "lucide-react";
+import { Bell, Search, ChevronDown, User, Settings, LogOut, HelpCircle, Activity } from "lucide-react";
 import type { Database } from "@/lib/supabase/types";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { CommandPalette } from "@/components/ui/command-palette";
 
@@ -18,8 +19,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
-  const [greeting, setGreeting] = useState("Welcome");
-  const [dateString, setDateString] = useState("");
+  const [greeting, setGreeting] = useState("Good Morning");
   
   const firstName = profile?.full_name?.split(" ")[0] ?? "Member";
   const initials = profile?.full_name
@@ -27,15 +27,10 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
     : profile?.email?.[0].toUpperCase() ?? "?";
 
   useEffect(() => {
-    const now = new Date();
-    const hour = now.getHours();
+    const hour = new Date().getHours();
     if (hour < 12) setGreeting("Good Morning");
     else if (hour < 18) setGreeting("Good Afternoon");
     else setGreeting("Good Evening");
-
-    const dayName = now.toLocaleDateString("en-CH", { weekday: "long" });
-    const fullDate = now.toLocaleDateString("en-CH", { day: "numeric", month: "long" });
-    setDateString(`${dayName} · ${fullDate}`);
   }, []);
 
   const handleLogout = async () => {
@@ -44,6 +39,10 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
     router.push("/login");
     router.refresh();
   };
+
+  const today = new Date();
+  const dayName = today.toLocaleDateString("en-CH", { weekday: "long" });
+  const fullDate = today.toLocaleDateString("en-CH", { day: "numeric", month: "long" });
 
   return (
     <header className="bg-white/70 backdrop-blur-md px-8 lg:px-12 py-8 flex items-center justify-between gap-6 sticky top-0 z-30 border-b border-slate-200/50">
@@ -54,7 +53,7 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
             {greeting}, {firstName}
           </h1>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em] mt-1">
-            {dateString || "Institutional Ledger Syncing..."}
+            {dayName} · {fullDate}
           </p>
         </div>
 
