@@ -33,11 +33,11 @@ function StatusBadge({ status }: { status: string }) {
       icon: Clock 
     },
     failed: { 
-      style: "bg-red-500/10 text-red-400 border-red-500/20 shadow-[0_2px_8px_rgba(239,68,68,0.08)]", 
+      style: "bg-red-500/10 text-red-400 border border-red-500/20 shadow-[0_2px_8px_rgba(239,68,68,0.08)]", 
       icon: X 
     },
     reversed: { 
-      style: "bg-slate-500/10 text-slate-400 border-slate-500/20 shadow-[0_2px_8px_rgba(100,116,139,0.08)]", 
+      style: "bg-slate-500/10 text-slate-400 border border-slate-500/20 shadow-[0_2px_8px_rgba(100,116,139,0.08)]", 
       icon: RotateCcw 
     },
   };
@@ -127,6 +127,9 @@ export default function AdminTransactionsPage() {
     }
   };
 
+  const formatCurrency = (val: number) => 
+    new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(val);
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex items-center justify-between">
@@ -212,7 +215,7 @@ export default function AdminTransactionsPage() {
                     </td>
                     <td className="px-5 py-4 text-xs text-slate-300 truncate max-w-[200px]">{tx.description}</td>
                     <td className="px-5 py-4 text-xs font-bold font-mono text-slate-200">
-                      {tx.transaction_type === "credit" ? "+" : "-"}{tx.amount.toLocaleString()}
+                      {tx.transaction_type === "credit" ? "+" : "-"}{formatCurrency(tx.amount)}
                     </td>
                     <td className="px-5 py-4">
                       <StatusBadge status={tx.status} />
@@ -233,7 +236,6 @@ export default function AdminTransactionsPage() {
         )}
       </div>
 
-      {/* Edit Modal Overlay */}
       {editingTx && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
@@ -270,7 +272,7 @@ export default function AdminTransactionsPage() {
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Amount (CHF)</label>
+                  <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Amount (EUR)</label>
                   <input 
                     type="number"
                     value={editForm.amount}

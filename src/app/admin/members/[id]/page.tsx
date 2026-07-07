@@ -9,13 +9,11 @@ import {
   Calendar,
   Building2,
   CreditCard,
-  Landmark,
   ArrowUpRight,
   ArrowDownLeft,
   ShieldCheck,
   History,
   FileText,
-  Activity,
   Zap,
   ArrowLeftRight,
   ShieldAlert,
@@ -30,8 +28,8 @@ import { MemberActions } from "./member-actions";
 import { AdjustBalance } from "./adjust-balance";
 import { cn } from "@/lib/utils";
 
-function formatCurrency(amount: number, currency = "CHF") {
-  return new Intl.NumberFormat("de-CH", { style: "currency", currency }).format(amount);
+function formatCurrency(amount: number, currency = "EUR") {
+  return new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(amount);
 }
 
 function KycBadge({ status }: { status: string }) {
@@ -88,7 +86,6 @@ export default async function MemberDetailPage({
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // Type-safe retrieval to resolve build-time 'never' inference
   const { data: adminProfileRaw } = await supabase.from("profiles").select("role").eq("id", user.id).single();
   const adminProfile = adminProfileRaw as { role: string } | null;
 
@@ -108,7 +105,6 @@ export default async function MemberDetailPage({
 
   if (!profile) notFound();
 
-  // Type assertion for accounts to resolve 'never' property access error
   const typedAccounts = (accounts || []) as any[];
   const totalBalance = typedAccounts.reduce((s, a) => a.account_type !== "credit" ? s + a.balance : s, 0) ?? 0;
 
@@ -128,7 +124,6 @@ export default async function MemberDetailPage({
         <ArrowLeft className="w-4 h-4" /> Member Registry
       </Link>
 
-      {/* Hero Header */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
         <div className="w-16 h-16 rounded-2xl bg-accent-600/10 border border-accent-600/20 flex items-center justify-center text-2xl font-bold text-accent-500 flex-shrink-0">
           {(profile as any).full_name?.[0] || (profile as any).email?.[0]}
@@ -149,7 +144,6 @@ export default async function MemberDetailPage({
         </div>
       </div>
 
-      {/* Tabs */}
       <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-xl overflow-x-auto no-scrollbar">
         {tabs.map((t) => (
           <Link
@@ -206,7 +200,6 @@ export default async function MemberDetailPage({
         {tab === "operations" && (
           <div className="lg:col-span-3">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Central Operations Panel */}
               <div className="lg:col-span-2 space-y-8">
                 {mode === "adjust" ? (
                   <AdjustBalance 
@@ -216,7 +209,6 @@ export default async function MemberDetailPage({
                   />
                 ) : (
                   <div className="space-y-8">
-                    {/* Money Movement */}
                     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
                       <div className="px-6 py-5 border-b border-slate-800 bg-slate-950/50">
                         <h2 className="text-sm font-bold text-white flex items-center gap-2">
@@ -253,7 +245,7 @@ export default async function MemberDetailPage({
                         </button>
                         <button className="group p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-amber-500/50 transition-all flex items-center gap-4">
                           <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
-                            <Activity className="w-5 h-5" />
+                            <History className="w-5 h-5" />
                           </div>
                           <div className="text-left">
                             <p className="text-xs font-bold text-white uppercase tracking-tight">Reverse Transaction</p>
@@ -263,7 +255,6 @@ export default async function MemberDetailPage({
                       </div>
                     </div>
 
-                    {/* Account Controls */}
                     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
                       <div className="px-6 py-5 border-b border-slate-800 bg-slate-950/50">
                         <h2 className="text-sm font-bold text-white flex items-center gap-2">
@@ -289,7 +280,6 @@ export default async function MemberDetailPage({
                 )}
               </div>
 
-              {/* Sidebar: Compliance & Institutional Status */}
               <div className="space-y-6">
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
                   <div className="px-6 py-4 border-b border-slate-800 bg-slate-950/50">

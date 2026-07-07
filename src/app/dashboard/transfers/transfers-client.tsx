@@ -26,8 +26,8 @@ interface TransfersClientProps {
   userId: string;
 }
 
-function formatCurrency(amount: number, currency = "CHF") {
-  return new Intl.NumberFormat("de-CH", { style: "currency", currency }).format(amount);
+function formatCurrency(amount: number, currency = "EUR") {
+  return new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(amount);
 }
 
 export function TransfersClient({ accounts, userId }: TransfersClientProps) {
@@ -44,7 +44,7 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
     recipientName: "",
     iban: "",
     swift: "",
-    currency: "CHF",
+    currency: "EUR",
   });
 
   useEffect(() => {
@@ -91,7 +91,6 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
         }
 
         const supabase = createClient();
-        // Use UUID for institutional uniqueness
         const ref = crypto.randomUUID();
         const newFromBalance = fromAccount.balance - amount;
         const newToBalance = toAccount.balance + amount;
@@ -175,7 +174,6 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
           description,
           amount,
           balance_after: newBalance,
-          // Use IBAN as reference but fallback to UUID if needed for uniqueness
           reference: form.iban.replace(/\s/g, "").toUpperCase(),
           status: "pending",
           counterparty_name: form.recipientName,
@@ -199,7 +197,7 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
   const resetForm = () => {
     setSuccess(false);
     setError(null);
-    setForm({ from: "", to: "", amount: "", note: "", recipientName: "", iban: "", swift: "", currency: "CHF" });
+    setForm({ from: "", to: "", amount: "", note: "", recipientName: "", iban: "", swift: "", currency: "EUR" });
   };
 
   if (success) {
@@ -211,7 +209,7 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
         <h2 className="text-2xl font-bold text-brand-950 mb-2">Transfer Submitted!</h2>
         <p className="text-slate-500 mb-8">
           Your transfer of <strong>
-            {form.currency} {isMounted ? parseFloat(form.amount).toLocaleString("de-CH", { minimumFractionDigits: 2 }) : form.amount}
+            {form.currency} {isMounted ? parseFloat(form.amount).toLocaleString("en-IE", { minimumFractionDigits: 2 }) : form.amount}
           </strong>{" "}
           has been submitted and is being processed.
         </p>
@@ -330,9 +328,8 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
                 onChange={(e) => update("currency", e.target.value)}
                 className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 bg-white"
               >
-                <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
-                <option value="USD">🇺🇸 USD — US Dollar</option>
                 <option value="EUR">🇪🇺 EUR — Euro</option>
+                <option value="USD">🇺🇸 USD — US Dollar</option>
                 <option value="GBP">🇬🇧 GBP — British Pound</option>
               </select>
             )}
@@ -387,11 +384,11 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
 
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1.5">
-            Amount ({transferType === "internal" ? (fromAccount?.currency ?? "CHF") : form.currency})
+            Amount ({transferType === "internal" ? (fromAccount?.currency ?? "EUR") : form.currency})
           </label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">
-              {transferType === "internal" ? (fromAccount?.currency ?? "CHF") : form.currency}
+              {transferType === "internal" ? (fromAccount?.currency ?? "EUR") : form.currency}
             </span>
             <input
               type="number"

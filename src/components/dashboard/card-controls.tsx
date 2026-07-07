@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Snowflake, Globe, ShoppingCart, Shield, DollarSign, RefreshCw, CreditCard } from "lucide-react";
+import { Snowflake, Globe, ShoppingCart, DollarSign, RefreshCw } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -17,7 +17,6 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
   const [card, setCard] = useState(initialCard);
   const [loading, setLoading] = useState(false);
   
-  // Hover Tilt Effect
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x);
@@ -62,7 +61,6 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
 
   return (
     <div className="bg-white rounded-[3rem] border border-slate-200/50 shadow-[0_20px_60px_rgba(0,0,0,0.03)] overflow-hidden flex flex-col">
-      {/* Premium Metallic Card Visual */}
       <div className="p-6">
         <motion.div 
           onMouseMove={handleMouseMove}
@@ -70,7 +68,6 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
           className="premium-glass rounded-[2rem] p-8 relative min-h-[260px] flex flex-col justify-between group cursor-pointer"
         >
-          {/* Layered Lighting Effects */}
           <div className="absolute inset-0 opacity-30 pointer-events-none" style={{ transform: "translateZ(50px)" }}>
             <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-white blur-[110px] -mr-36 -mt-36" />
             <div className="absolute bottom-0 left-0 w-56 h-56 rounded-full bg-emerald-400 blur-[90px] -ml-28 -mb-28" />
@@ -100,11 +97,11 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
 
             <div className="my-6">
               <p className="text-white/30 text-[9px] font-black uppercase tracking-[0.3em] mb-2">Book Balance</p>
-              <p className="text-3xl font-bold text-white font-mono tracking-tighter">CHF {(card.daily_limit ?? 0).toLocaleString()}.00</p>
+              <p className="text-3xl font-bold text-white font-mono tracking-tighter">€{(card.daily_limit ?? 0).toLocaleString()}.00</p>
               <div className="flex items-center gap-4 mt-2">
                 <div>
                   <p className="text-white/20 text-[8px] font-bold uppercase tracking-widest">Available</p>
-                  <p className="text-white/70 text-xs font-mono font-bold">CHF {(card.daily_limit ?? 0).toLocaleString()}</p>
+                  <p className="text-white/70 text-xs font-mono font-bold">€{(card.daily_limit ?? 0).toLocaleString()}</p>
                 </div>
                 <div className="w-[1px] h-4 bg-white/10" />
                 <div>
@@ -128,7 +125,6 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
         </motion.div>
       </div>
 
-      {/* Control Surface */}
       <div className="px-8 pb-8 space-y-6">
         <button 
           onClick={toggleFreeze} 
@@ -189,7 +185,7 @@ export function CardControls({ card: initialCard }: CardControlsProps) {
               </div>
               <div>
                 <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest">Daily Disbursement Limit</span>
-                <p className="text-sm font-mono font-black text-brand-950 tracking-tighter">CHF {(card.daily_limit ?? 0).toLocaleString()}.00</p>
+                <p className="text-sm font-mono font-black text-brand-950 tracking-tighter">€{(card.daily_limit ?? 0).toLocaleString()}.00</p>
               </div>
             </div>
             <button className="text-[9px] font-black text-brand-600 hover:text-brand-950 uppercase tracking-[0.2em] transition-colors bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">Increase</button>

@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { motion } from "framer-motion";
 
 interface CashflowData {
@@ -24,7 +24,7 @@ export function CashflowChart({ data }: CashflowChartProps) {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-[11px] font-black text-brand-900 uppercase tracking-[0.25em]">Cashflow Analysis</h2>
-          <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Institutional Inflow vs Outflow</p>
+          <p className="text-[10px] text-slate-400 font-bold uppercase mt-1">Institutional Inflow vs Outflow (€)</p>
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
@@ -53,7 +53,7 @@ export function CashflowChart({ data }: CashflowChartProps) {
               contentStyle={{ background: "#0f172a", border: "none", borderRadius: "16px", padding: "12px" }}
               itemStyle={{ fontSize: "11px", fontWeight: 800, textTransform: "uppercase" }}
               labelStyle={{ color: "#64748b", fontSize: "9px", marginBottom: "4px", fontWeight: 900 }}
-              formatter={(value: number) => [new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF", maximumFractionDigits: 0 }).format(value), ""]}
+              formatter={(value: number) => [new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value), ""]}
             />
             <Bar 
               dataKey="income" 

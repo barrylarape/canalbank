@@ -3,13 +3,13 @@ import { createClient } from "@/lib/supabase/server";
 import { 
   Download, ArrowRightLeft, CreditCard, Building, 
   ShoppingCart, Coffee, Briefcase, Zap, Car, Heart, Play,
-  Check, Clock, X, RotateCcw, Plus, Landmark, ShieldCheck
+  Check, Clock, X, RotateCcw, Plus, Landmark
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-function formatCurrency(amount: number, currency = "CHF") {
-  return new Intl.NumberFormat("de-CH", { style: "currency", currency }).format(amount);
+function formatCurrency(amount: number, currency = "EUR") {
+  return new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(amount);
 }
 
 function getCategoryIcon(category: string) {
@@ -61,11 +61,12 @@ export default async function AccountsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const [{ data: accounts }, { data: transactions }] = await Promise.all([
+  const [{ data: accountsRaw }, { data: transactions }] = await Promise.all([
     supabase.from("accounts").select("*").eq("user_id", user.id).order("created_at"),
     supabase.from("transactions").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
   ]);
 
+  const accounts = (accountsRaw || []) as any[];
   const totalBalance = accounts?.reduce((s, a) => a.account_type !== 'credit' ? s + a.balance : s, 0) ?? 0;
 
   return (
@@ -112,7 +113,7 @@ export default async function AccountsPage() {
             
             <h3 className="text-[11px] font-black text-brand-950 tracking-[0.3em] mb-4 uppercase">Portfolio Empty</h3>
             <p className="text-[15px] text-slate-500 mb-10 max-w-sm mx-auto leading-relaxed font-medium">
-              You haven't established any vault accounts yet. Initialize your first digital institution to start managing your capital.
+              You haven&apos;t established any vault accounts yet. Initialize your first digital institution to start managing your capital.
             </p>
             
             <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 px-10 py-4 bg-brand-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-brand-800 transition-all shadow-xl shadow-brand-950/20 active:scale-95">

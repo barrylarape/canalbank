@@ -29,24 +29,21 @@ export function PortfolioSnapshot({ totalBalance, income, spending, investments,
             key={m.label} 
             className={cn(
               "p-6 lg:p-7 hover:bg-slate-50/50 transition-colors group flex flex-col justify-center min-w-0 border-slate-100",
-              // Precise border management for adaptive grid
               idx % 2 !== 0 ? "border-l" : "",
               idx >= 2 ? "md:border-t" : "",
               idx % 3 !== 0 ? "md:border-l" : "md:border-l-0",
               "2xl:border-t-0 2xl:border-l"
             )}
           >
-            {/* Metadata Label & Icon */}
             <div className="flex items-center gap-2 mb-3">
               <m.icon className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-400 transition-colors flex-shrink-0" />
               <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] whitespace-nowrap">{m.label}</p>
             </div>
 
-            {/* Institutional Information Hierarchy */}
             <div className="flex flex-col">
               {!m.isPoints && (
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1 opacity-60">
-                  CHF
+                  EUR
                 </span>
               )}
               <div className={cn("leading-tight", m.color)}>

@@ -109,7 +109,7 @@ export default function ApprovalQueuePage() {
   };
 
   const formatCurrency = (val: number) => 
-    new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF" }).format(val);
+    new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(val);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

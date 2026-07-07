@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, PieChart } from "lucide-react";
 import { PortfolioChart } from "@/components/dashboard/portfolio-chart";
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF" }).format(amount);
+  return new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(amount);
 }
 
 const ASSET_TYPE_LABELS: Record<string, string> = {
@@ -64,7 +64,7 @@ export default async function InvestmentsPage() {
             </thead>
             <tbody className="divide-y divide-slate-50">
               {(investments ?? []).map((inv) => {
-                const isGain = inv.gain_loss >= 0;
+                const isGain = (inv.gain_loss ?? 0) >= 0;
                 return (
                   <tr key={inv.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
@@ -84,7 +84,7 @@ export default async function InvestmentsPage() {
                     <td className="px-6 py-4 text-right">
                       <span className={`font-semibold flex items-center gap-1 justify-end ${isGain ? "text-emerald-600" : "text-red-600"}`}>
                         {isGain ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
-                        {isGain ? "+" : ""}{formatCurrency(inv.gain_loss)}
+                        {isGain ? "+" : ""}{formatCurrency(inv.gain_loss ?? 0)}
                       </span>
                     </td>
                   </tr>

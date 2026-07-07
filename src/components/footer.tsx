@@ -17,7 +17,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-sm">
-              The future of banking in Switzerland. Personal Banking, Business Banking, International Transfers, Investments, and Digital Banking—all in one secure platform.
+              The future of banking. Personal Banking, Business Banking, International Transfers, Investments, and Digital Banking—all in one secure platform.
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="w-10 h-10 rounded-full bg-brand-900 flex items-center justify-center hover:bg-accent-600 hover:text-white transition-colors">
@@ -70,7 +70,7 @@ export function Footer() {
         <div className="pt-8 border-t border-brand-900 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-sm text-slate-400">
             <ShieldCheck className="w-5 h-5 text-accent-500" />
-            <span>Bank deposits are insured by the Swiss Deposit Insurance up to CHF 100,000.</span>
+            <span>Bank deposits are insured by European Deposit Insurance up to €100,000.</span>
           </div>
           <div className="flex gap-6 text-sm">
             <Link href="/legal/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>

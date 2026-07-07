@@ -7,7 +7,7 @@ import {
   ArrowLeftRight, CreditCard, Landmark, 
   Wallet, ArrowUpRight, ArrowRight, DollarSign,
   ShoppingCart, Coffee, Briefcase, Zap, Car, Heart, Play, Activity, ChevronRight,
-  Check, Clock, X, RotateCcw, ShieldCheck, TrendingUp, Copy
+  Check, Clock, X, RotateCcw, TrendingUp, Copy
 } from "lucide-react";
 import Link from "next/link";
 import { SpendingChart } from "@/components/dashboard/spending-chart";
@@ -126,16 +126,13 @@ export default function DashboardPage() {
 
   if (loading) return null;
 
-  // 1. Core Balance Metrics
   const totalBalance = data.accounts?.reduce((sum, acc) => sum + (acc.account_type !== "credit" ? acc.balance : 0), 0) ?? 0;
   const availableBalance = data.accounts?.reduce((sum, acc) => sum + (acc.account_type !== "credit" ? acc.available_balance : 0), 0) ?? 0;
   const reserved = totalBalance - availableBalance;
 
-  // 2. Primary Account Number (Boldly displayed)
   const primaryAccount = data.accounts?.[0];
   const primaryIban = primaryAccount?.account_number || "NO ACCOUNT DETECTED";
 
-  // 3. Monthly Stats & Cashflow Calculation
   const now = new Date();
   const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   
@@ -147,12 +144,11 @@ export default function DashboardPage() {
     ?.filter(tx => new Date(tx.created_at) >= currentMonthStart && tx.transaction_type === "debit" && tx.status === "completed")
     .reduce((sum, tx) => sum + tx.amount, 0) ?? 0;
 
-  // 4. Cashflow Chart Data (Last 6 Months)
   const last6Months = Array.from({ length: 6 }, (_, i) => {
     const d = new Date();
     d.setMonth(d.getMonth() - (5 - i));
     return {
-      month: d.toLocaleDateString("en-CH", { month: "short" }),
+      month: d.toLocaleDateString("en-IE", { month: "short" }),
       monthIndex: d.getMonth(),
       year: d.getFullYear(),
       income: 0,
@@ -173,7 +169,6 @@ export default function DashboardPage() {
     }
   });
 
-  // 5. Portfolio Trend (Based on real transaction snapshots)
   const trendData = data.transactions
     ?.slice(0, 10)
     .reverse()
@@ -195,7 +190,6 @@ export default function DashboardPage() {
       animate="show"
       className="space-y-12 max-w-7xl mx-auto pb-20"
     >
-      {/* Premium Glass Portfolio Hero */}
       <motion.section variants={item} className="premium-glass rounded-[3rem] p-10 lg:p-14 relative group">
         <div className="relative z-10">
           <header className="flex flex-col lg:flex-row lg:items-start justify-between gap-12">
@@ -203,10 +197,10 @@ export default function DashboardPage() {
               <p className="text-[12px] font-medium text-white/40 uppercase tracking-[0.3em] mb-4">Institutional Portfolio</p>
               
               <div className="mb-10">
-                <div className="text-[56px] font-bold text-white tracking-tighter mb-2 font-mono leading-none">
+                <div className="text-[56px] font-bold text-white tracking-tighter mb-2 font-mono leading-none flex items-baseline gap-1">
+                  <span className="text-[24px] opacity-40">€</span>
                   <AnimatedNumber value={totalBalance} />
                 </div>
-                {/* Bold Account Number Section */}
                 <div className="flex items-center gap-3 group/iban cursor-pointer mt-4" onClick={copyIban}>
                   <div className="flex flex-col">
                     <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-1">Institutional ID / IBAN</span>
@@ -273,12 +267,8 @@ export default function DashboardPage() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-500/10 blur-[100px] rounded-full -ml-40 -mb-40 pointer-events-none" />
       </motion.section>
 
-      {/* Main Intelligence Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        
-        {/* Left Column: Accounts & Cashflow */}
         <div className="lg:col-span-2 space-y-12">
-          
           <motion.section variants={item} className="space-y-8">
             <div className="flex items-center justify-between px-4">
               <h2 className="text-[18px] font-semibold text-brand-900 tracking-tight">Vault Entities</h2>
@@ -297,7 +287,7 @@ export default function DashboardPage() {
                 
                 <div className="relative z-10">
                   <p className="text-[11px] font-black text-brand-950 tracking-[0.3em] mb-4 uppercase">Initialize Portfolio</p>
-                  <h3 className="text-2xl font-bold text-brand-900 mb-4 tracking-tight">Access Swiss Digital Capital</h3>
+                  <h3 className="text-2xl font-bold text-brand-900 mb-4 tracking-tight">Access Institutional Capital</h3>
                   <p className="text-[15px] text-slate-500 mb-10 max-w-sm mx-auto leading-relaxed font-medium">
                     Establish your institutional footprint by opening your first private vault account. 
                     Manage liquidity, track assets, and deploy capital instantly.
@@ -306,7 +296,7 @@ export default function DashboardPage() {
                   <div className="flex items-center justify-center gap-6">
                     <QuickOpenAccount />
                     <button className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-brand-950 transition-colors flex items-center gap-2">
-                      <ShieldCheck className="w-3 h-3" /> System Security Verified
+                      <Check className="w-3 h-3" /> System Security Verified
                     </button>
                   </div>
                 </div>
@@ -379,7 +369,7 @@ export default function DashboardPage() {
                     <div className="flex-1 min-w-0">
                       <p className="text-[15px] font-semibold text-brand-950 truncate mb-1 tracking-tight">{tx.description}</p>
                       <p className="text-[12px] font-medium text-slate-400 uppercase tracking-[0.2em]">
-                        {new Date(tx.created_at).toLocaleDateString("en-CH", { 
+                        {new Date(tx.created_at).toLocaleDateString("en-IE", { 
                           day: "numeric", 
                           month: "short", 
                           hour: "2-digit", 

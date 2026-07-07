@@ -12,20 +12,18 @@ interface AnimatedNumberProps {
 
 /**
  * Institutional Animated Number
- * Splits the value into integer and decimal parts for hierarchical typography.
+ * Uses en-IE locale for Euro (€) formatting to preserve dot-separated decimals.
  */
 export function AnimatedNumber({ value, className, size = "md" }: AnimatedNumberProps) {
   const count = useMotionValue(0);
   
-  // Integer part transform (Swiss format with ' separator)
   const integerPart = useTransform(count, (latest) => 
-    new Intl.NumberFormat("de-CH", { 
+    new Intl.NumberFormat("en-IE", { 
       minimumFractionDigits: 0,
       maximumFractionDigits: 0 
     }).format(Math.floor(latest))
   );
 
-  // Decimal part transform
   const decimalPart = useTransform(count, (latest) => {
     const val = latest.toFixed(2);
     const parts = val.split(".");

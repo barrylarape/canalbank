@@ -1,6 +1,6 @@
 "use client";
 
-import { Area, AreaChart, ResponsiveContainer, YAxis, Tooltip } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip } from "recharts";
 
 interface TrendData {
   value: number;
@@ -11,7 +11,6 @@ interface PortfolioTrendProps {
 }
 
 export function PortfolioTrend({ data }: PortfolioTrendProps) {
-  // If no data, provide a flat line at zero or a minimal sensible base
   const chartData = data.length > 0 ? data : [{ value: 0 }, { value: 0 }];
 
   return (
@@ -30,7 +29,7 @@ export function PortfolioTrend({ data }: PortfolioTrendProps) {
                 return (
                   <div className="bg-slate-900 border border-white/10 px-3 py-1.5 rounded-lg shadow-2xl">
                     <p className="text-[10px] font-mono font-bold text-white">
-                      CHF {payload[0].value?.toLocaleString()}
+                      €{payload[0].value?.toLocaleString()}
                     </p>
                   </div>
                 );

@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Calendar, DollarSign, TrendingDown, CreditCard, ChevronRight, Landmark, ShieldCheck } from "lucide-react";
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF" }).format(amount);
+  return new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(amount);
 }
 
 const LOAN_ICONS: Record<string, string> = {
@@ -43,7 +43,6 @@ export default async function LoansPage() {
           </div>
         </div>
         
-        {/* Visual Background Decoration */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl rounded-full -mr-32 -mt-32" />
       </div>
 
@@ -112,7 +111,6 @@ export default async function LoansPage() {
                     ))}
                   </div>
 
-                  {/* Progress Bar */}
                   <div className="mb-10 p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100">
                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest mb-3">
                       <span className="text-emerald-600">{paidPct.toFixed(1)}% Amortized</span>

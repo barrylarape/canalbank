@@ -26,8 +26,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/lib/supabase/types";
 
-function formatCurrency(amount: number, currency = "CHF") {
-  return new Intl.NumberFormat("de-CH", { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
+function formatCurrency(amount: number, currency = "EUR") {
+  return new Intl.NumberFormat("en-IE", { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
 }
 
 function getCategoryIcon(category: string) {

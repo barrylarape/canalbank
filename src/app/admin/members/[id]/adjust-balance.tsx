@@ -69,15 +69,13 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const today = new Date().toISOString().split('T')[0];
-
   const [form, setForm] = useState({
     accountId: accounts[0]?.id || "",
     amount: "",
     type: typeParam || "credit",
     reason: (typeParam === "debit" ? DEBIT_REASONS[0] : CREDIT_REASONS[0]),
     description: "",
-    valueDate: today,
+    valueDate: "",
     initiator: "",
     notifyEmail: true,
     notifyPush: true,
@@ -85,6 +83,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
 
   useEffect(() => {
     setIsMounted(true);
+    setForm(f => ({ ...f, valueDate: new Date().toISOString().split('T')[0] }));
   }, []);
 
   useEffect(() => {
@@ -116,9 +115,9 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
     };
   }, [selectedAccount, form.amount, form.type]);
 
-  const formatValue = (val: number, currency = "CHF") => {
+  const formatValue = (val: number, currency = "EUR") => {
     if (!isMounted) return `${currency} ${val}`;
-    return new Intl.NumberFormat("de-CH", { style: "currency", currency }).format(val);
+    return new Intl.NumberFormat("en-IE", { style: "currency", currency }).format(val);
   };
 
   const handleStartConfirmation = (e: React.FormEvent) => {
@@ -214,7 +213,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
                   "text-xl font-mono font-bold",
                   isCredit ? "text-emerald-400" : "text-red-400"
                 )}>
-                  {selectedAccount?.currency} {isMounted ? parseFloat(form.amount).toLocaleString() : form.amount}
+                  €{isMounted ? parseFloat(form.amount).toLocaleString() : form.amount}
                 </p>
               </div>
               <div>
@@ -344,7 +343,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
               >
                 {accounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
-                    {acc.account_name} ({acc.currency})
+                    {acc.account_name} (€)
                   </option>
                 ))}
               </select>
@@ -357,7 +356,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
                 </label>
                 <div className="relative">
                   <div className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-500 text-sm">
-                    {selectedAccount?.currency}
+                    €
                   </div>
                   <input
                     type="number"
@@ -367,7 +366,7 @@ export function AdjustBalance({ memberId, memberName, accounts }: AdjustBalanceP
                     value={form.amount}
                     onChange={(e) => setForm({ ...form, amount: e.target.value })}
                     placeholder="0.00"
-                    className="w-full bg-slate-950 border border-slate-700/50 rounded-xl pl-16 pr-4 py-3 text-sm text-slate-200 focus:ring-2 focus:ring-accent-600/20 placeholder:text-slate-800 font-mono"
+                    className="w-full bg-slate-950 border border-slate-700/50 rounded-xl pl-12 pr-4 py-3 text-sm text-slate-200 focus:ring-2 focus:ring-accent-600/20 placeholder:text-slate-800 font-mono"
                   />
                 </div>
               </div>
