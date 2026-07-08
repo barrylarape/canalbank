@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import { 
   ArrowRight, 
@@ -19,7 +20,8 @@ import {
   RefreshCw,
   Watch,
   BarChart3,
-  ArrowLeftRight
+  ArrowLeftRight,
+  ShieldAlert
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
@@ -33,31 +35,43 @@ const features = [
     icon: <Globe className="w-8 h-8 text-accent-500" />,
     title: "International Banking",
     description: "Multi-currency accounts, instant FX conversion, and zero-fee international transfers across 50+ countries.",
+    cta: "Explore FX Engine",
+    href: "/personal/international"
   },
   {
     icon: <ShieldCheck className="w-8 h-8 text-accent-500" />,
     title: "Swiss Security",
     description: "Military-grade encryption and strict Swiss privacy laws protecting your assets for generations.",
+    cta: "Security Protocol",
+    href: "/support/security"
   },
   {
     icon: <Smartphone className="w-8 h-8 text-accent-500" />,
     title: "Digital First",
     description: "Manage your complete financial life from anywhere with our award-winning mobile platform.",
+    cta: "Download App",
+    href: "/support/mobile"
   },
   {
     icon: <TrendingUp className="w-8 h-8 text-accent-500" />,
     title: "Wealth Management",
     description: "Access global markets, ETFs, and automated portfolio management tailored to your goals.",
+    cta: "Establish Yield",
+    href: "/investments"
   },
   {
     icon: <CreditCard className="w-8 h-8 text-accent-500" />,
     title: "Premium Cards",
     description: "Exclusive metal cards with luxury travel benefits, concierge service, and high limits.",
+    cta: "Card Tier Registry",
+    href: "/personal/cards"
   },
   {
     icon: <Landmark className="w-8 h-8 text-accent-500" />,
     title: "Business Solutions",
     description: "Corporate accounts, payroll, and advanced treasury tools for modern Swiss enterprises.",
+    cta: "Corporate Onboarding",
+    href: "/business"
   },
 ];
 
@@ -331,17 +345,38 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-                  className="p-12 rounded-[3rem] bg-brand-50 border border-brand-100 hover:shadow-[0_40px_100px_rgba(0,0,0,0.04)] transition-all duration-700 group"
+                  className="relative p-12 rounded-[3rem] bg-brand-50 border border-brand-100 hover:border-accent-500/50 hover:bg-white hover:shadow-[0_40px_100px_rgba(255,91,97,0.1)] transition-all duration-700 group overflow-hidden"
                 >
-                  <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-12 group-hover:scale-110 group-hover:bg-brand-950 transition-all duration-700">
-                    <div className="group-hover:text-white transition-colors duration-700">
-                      {feature.icon}
-                    </div>
+                  {/* Mini-illustration ghost icon */}
+                  <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 group-hover:scale-125 group-hover:-rotate-12 transition-all duration-1000 pointer-events-none">
+                    {React.cloneElement(feature.icon as React.ReactElement, { className: "w-64 h-64" })}
                   </div>
-                  <h3 className="text-2xl font-black text-brand-900 mb-6 uppercase tracking-tight">{feature.title}</h3>
-                  <p className="text-lg text-slate-500 leading-relaxed font-medium">
-                    {feature.description}
-                  </p>
+
+                  <div className="relative z-10">
+                    <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-12 group-hover:scale-110 group-hover:bg-brand-950 group-hover:shadow-xl group-hover:shadow-brand-950/20 transition-all duration-700">
+                      <div className="group-hover:text-white group-hover:rotate-12 transition-all duration-700">
+                        {feature.icon}
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-2xl font-black text-brand-900 mb-6 uppercase tracking-tight group-hover:text-accent-600 transition-colors">
+                      {feature.title}
+                    </h3>
+                    
+                    <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12">
+                      {feature.description}
+                    </p>
+
+                    <Link 
+                      href={feature.href} 
+                      className="inline-flex items-center gap-2 text-[11px] font-black text-brand-950 uppercase tracking-[0.2em] group/cta"
+                    >
+                      <span className="border-b-2 border-accent-500/30 group-hover/cta:border-accent-500 transition-all pb-1">
+                        {feature.cta}
+                      </span>
+                      <ChevronRight className="w-4 h-4 text-accent-500 group-hover/cta:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
                 </motion.div>
               ))}
             </div>
