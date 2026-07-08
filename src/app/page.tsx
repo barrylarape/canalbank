@@ -120,10 +120,9 @@ function FloatingMarketPulse() {
                 src="https://ng.widgets.investing.com/live-currency-cross-rates?theme=darkTheme&roundedCorners=true&pairs=1,3,2,4,7,9,5,8,6,10,49,11" 
                 width="100%" 
                 height="100%" 
-                frameBorder="0" 
-                allowTransparency={true} 
-                marginWidth={0} 
-                marginHeight={0}
+                style={{ border: 0 }}
+                // Using lowercase attributes as requested by React/DOM error message
+                allowtransparency="true"
                 className="brightness-90 contrast-125"
               />
             </div>
@@ -146,7 +145,7 @@ function FloatingMarketPulse() {
 /**
  * ShowcaseGlassCard Component
  */
-function ShowcaseGlassCard({ tier, color, label, icon: Icon, perks }: { tier: string, color: string, label: string, icon: any, perks: string[] }) {
+function ShowcaseGlassCard({ tier, label, icon: Icon, perks }: { tier: string, label: string, icon: any, perks: string[] }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x);
