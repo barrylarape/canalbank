@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { 
   ArrowRight, 
   Globe, 
@@ -21,7 +21,8 @@ import {
   Watch,
   BarChart3,
   ArrowLeftRight,
-  ShieldAlert
+  ShieldAlert,
+  Clock as ClockIcon
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
@@ -30,20 +31,65 @@ import Image from "next/image";
 import placeholders from "@/app/lib/placeholder-images.json";
 import { cn } from "@/lib/utils";
 
+/**
+ * StatCounter Component
+ * Handles the animated counting effect when the element is scrolled into view.
+ */
+function StatCounter({ value, suffix = "", decimals = 0, prefix = "" }: { value: number, suffix?: string, decimals?: number, prefix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const end = value;
+      const duration = 2000; // 2 seconds
+      const frameRate = 1000 / 60;
+      const totalFrames = Math.round(duration / frameRate);
+      const increment = end / totalFrames;
+      
+      let currentFrame = 0;
+      const timer = setInterval(() => {
+        currentFrame++;
+        if (currentFrame === totalFrames) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(prev => prev + increment);
+        }
+      }, frameRate);
+      
+      return () => clearInterval(timer);
+    }
+  }, [inView, value]);
+
+  return (
+    <span ref={ref} className="font-mono">
+      {prefix}
+      {count.toLocaleString(undefined, { 
+        minimumFractionDigits: decimals, 
+        maximumFractionDigits: decimals 
+      })}
+      {suffix}
+    </span>
+  );
+}
+
 const features = [
-  {
-    icon: <Globe className="w-8 h-8 text-accent-500" />,
-    title: "International Banking",
-    description: "Multi-currency accounts, instant FX conversion, and zero-fee international transfers across 50+ countries.",
-    cta: "Explore FX Engine",
-    href: "/personal/international"
-  },
   {
     icon: <ShieldCheck className="w-8 h-8 text-accent-500" />,
     title: "Swiss Security",
     description: "Military-grade encryption and strict Swiss privacy laws protecting your assets for generations.",
     cta: "Security Protocol",
     href: "/support/security"
+  },
+  {
+    icon: <Globe className="w-8 h-8 text-accent-500" />,
+    title: "International Banking",
+    description: "Multi-currency accounts, instant FX conversion, and zero-fee international transfers across 150+ countries.",
+    cta: "Explore FX Engine",
+    href: "/personal/international"
   },
   {
     icon: <Smartphone className="w-8 h-8 text-accent-500" />,
@@ -76,10 +122,11 @@ const features = [
 ];
 
 const stats = [
-  { label: "Assets Under Management", value: "€14.2B", icon: Landmark },
-  { label: "Institutional Members", value: "12,500+", icon: Users },
-  { label: "Countries Served", value: "48", icon: Globe },
-  { label: "Uptime Reliability", value: "99.99%", icon: Activity },
+  { label: "Assets Managed", value: 120, prefix: "€", suffix: "B+", decimals: 0, icon: Landmark },
+  { label: "Countries Served", value: 150, suffix: "+", decimals: 0, icon: Globe },
+  { label: "Platform Availability", value: 99.99, suffix: "%", decimals: 2, icon: Activity },
+  { label: "Average Onboarding", value: 8, suffix: " min", decimals: 0, icon: ClockIcon },
+  { label: "Institutional Clients", value: 250, suffix: "K+", decimals: 0, icon: Users },
 ];
 
 const testimonials = [
@@ -253,7 +300,6 @@ export default function LandingPage() {
               priority
               data-ai-hint={placeholders.hero.hint}
             />
-            {/* Layered Overlays */}
             <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/40 to-transparent z-10" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(255,91,97,0.12)_0%,_transparent_60%)] z-10" />
           </motion.div>
@@ -347,7 +393,6 @@ export default function LandingPage() {
                   transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                   className="relative p-12 rounded-[3rem] bg-brand-50 border border-brand-100 hover:border-accent-500/50 hover:bg-white hover:shadow-[0_40px_100px_rgba(255,91,97,0.1)] transition-all duration-700 group overflow-hidden"
                 >
-                  {/* Mini-illustration ghost icon */}
                   <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 group-hover:scale-125 group-hover:-rotate-12 transition-all duration-1000 pointer-events-none">
                     {React.cloneElement(feature.icon as React.ReactElement, { className: "w-64 h-64" })}
                   </div>
@@ -399,7 +444,6 @@ export default function LandingPage() {
             </div>
 
             <div className="relative h-[600px] md:h-[900px] w-full max-w-7xl mx-auto">
-              {/* Desktop Showcase */}
               <motion.div 
                 initial={{ opacity: 0, y: 60, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -419,7 +463,6 @@ export default function LandingPage() {
                 </div>
               </motion.div>
 
-              {/* Mobile Showcase */}
               <motion.div 
                 initial={{ opacity: 0, x: 100, y: 100, rotate: 10 }}
                 whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
@@ -437,7 +480,6 @@ export default function LandingPage() {
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-7 bg-slate-900 rounded-b-2xl z-50" />
               </motion.div>
 
-              {/* Watch Showcase */}
               <motion.div 
                 initial={{ opacity: 0, x: -100, scale: 0.8 }}
                 whileInView={{ opacity: 1, x: 0, scale: 1 }}
@@ -451,7 +493,6 @@ export default function LandingPage() {
                 <p className="text-[14px] font-mono font-bold text-emerald-400 mt-2">€25,000</p>
               </motion.div>
 
-              {/* Feature Artifacts */}
               <ShowcaseArtifact 
                 icon={BarChart3} 
                 label="Portfolio Analytics" 
@@ -471,28 +512,38 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 4. STATISTICS (Gradient) */}
-        <section className="py-32 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white relative border-y border-white/5">
-          <div className="container mx-auto px-6 md:px-12">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
+        {/* 4. STATISTICS (Gradient with Live Counting) */}
+        <section className="py-32 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white relative border-y border-white/5 overflow-hidden">
+          <div className="container mx-auto px-6 md:px-12 relative z-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 lg:gap-8">
               {stats.map((stat, i) => (
                 <motion.div 
                   key={stat.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.15, duration: 0.8 }}
+                  transition={{ delay: i * 0.1, duration: 0.8 }}
                   className="text-center group"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 group-hover:bg-accent-500 transition-all duration-500 group-hover:scale-110">
-                    <stat.icon className="w-7 h-7 text-accent-400 group-hover:text-white" />
+                  <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 group-hover:bg-accent-500 transition-all duration-500 group-hover:scale-110 shadow-xl group-hover:shadow-accent-500/20">
+                    <stat.icon className="w-6 h-6 text-accent-400 group-hover:text-white" />
                   </div>
-                  <p className="text-5xl md:text-6xl font-bold font-mono tracking-tighter mb-4">{stat.value}</p>
-                  <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">{stat.label}</p>
+                  <div className="text-4xl md:text-5xl font-bold font-mono tracking-tighter mb-4 text-white group-hover:text-accent-300 transition-colors">
+                    <StatCounter 
+                      value={stat.value} 
+                      prefix={stat.prefix} 
+                      suffix={stat.suffix} 
+                      decimals={stat.decimals} 
+                    />
+                  </div>
+                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] leading-relaxed max-w-[120px] mx-auto group-hover:text-white/60 transition-colors">
+                    {stat.label}
+                  </p>
                 </motion.div>
               ))}
             </div>
           </div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(255,91,97,0.05)_0%,_transparent_70%)] pointer-events-none" />
         </section>
 
         {/* 5. TESTIMONIALS (White) */}
@@ -571,8 +622,6 @@ export default function LandingPage() {
                   </Link>
                 </div>
               </div>
-              
-              {/* Abstract decorative elements */}
               <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-500/10 blur-[120px] rounded-full -mr-64 -mt-64" />
               <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-400/5 blur-[100px] rounded-full -ml-32 -mb-32" />
             </motion.div>
