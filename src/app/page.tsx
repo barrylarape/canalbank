@@ -16,7 +16,10 @@ import {
   Zap,
   ArrowUpRight,
   ArrowDownLeft,
-  RefreshCw
+  RefreshCw,
+  Watch,
+  BarChart3,
+  ArrowLeftRight
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
@@ -199,6 +202,20 @@ function FloatingArtifacts() {
   );
 }
 
+function ShowcaseArtifact({ icon: Icon, label, className }: { icon: any, label: string, className?: string }) {
+  return (
+    <motion.div 
+      whileHover={{ y: -5, scale: 1.05 }}
+      className={cn("absolute z-30 py-3 px-6 rounded-2xl premium-glass backdrop-blur-3xl border border-white/10 shadow-2xl flex items-center gap-4 transition-all duration-500", className)}
+    >
+      <div className="w-8 h-8 rounded-lg bg-accent-500/20 flex items-center justify-center text-accent-400">
+        <Icon className="w-4 h-4" />
+      </div>
+      <span className="text-[11px] font-black text-white uppercase tracking-widest whitespace-nowrap">{label}</span>
+    </motion.div>
+  );
+}
+
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -331,47 +348,91 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 3. DASHBOARD PREVIEW (Dark) */}
+        {/* 3. DASHBOARD SHOWCASE (Dark) */}
         <section className="py-40 bg-brand-950 relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-accent-500)_0%,_transparent_70%)]" />
           </div>
           
           <div className="container mx-auto px-6 md:px-12 relative z-10">
-            <div className="text-center max-w-4xl mx-auto mb-24">
-              <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">The Control Layer</p>
-              <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 uppercase">A New Standard for Access.</h2>
+            <div className="text-center max-w-4xl mx-auto mb-32">
+              <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Omnichannel Control</p>
+              <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 uppercase">A Synchronized Vault.</h2>
               <p className="text-slate-400 text-xl font-medium leading-relaxed">
-                Your global portfolio, synchronized in real-time. Experience the most advanced institutional interface in the private banking sector.
+                Desktop power. Mobile agility. Wearable precision. Experience the most advanced institutional interface across every device you own.
               </p>
             </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto max-w-6xl rounded-[4rem] border border-white/5 shadow-[0_60px_150px_rgba(0,0,0,0.7)] overflow-hidden"
-            >
-              <div className="aspect-[16/9] bg-brand-900 relative">
-                <Image
-                  src={placeholders.dashboardPreview.url}
-                  fill
-                  alt={placeholders.dashboardPreview.alt}
-                  className="object-cover opacity-90 transition-transform duration-[20s] hover:scale-110"
-                  data-ai-hint={placeholders.dashboardPreview.hint}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-transparent to-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.div 
-                    whileHover={{ scale: 1.1 }}
-                    className="w-24 h-24 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 flex items-center justify-center cursor-pointer transition-colors hover:bg-white/10 group"
-                  >
-                    <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[22px] border-l-white border-b-[12px] border-b-transparent ml-2" />
-                  </motion.div>
+            <div className="relative h-[600px] md:h-[900px] w-full max-w-7xl mx-auto">
+              {/* Desktop Showcase */}
+              <motion.div 
+                initial={{ opacity: 0, y: 60, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="relative z-10 w-full max-w-5xl mx-auto rounded-[3rem] border border-white/5 shadow-[0_60px_150px_rgba(0,0,0,0.7)] overflow-hidden"
+              >
+                <div className="aspect-[16/10] bg-brand-900 relative">
+                  <Image
+                    src={placeholders.dashboardPreview.url}
+                    fill
+                    alt="Canal Bank Desktop Showcase"
+                    className="object-cover opacity-90 transition-transform duration-[20s] hover:scale-105"
+                    data-ai-hint="premium banking dashboard"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-transparent to-transparent" />
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+
+              {/* Mobile Showcase */}
+              <motion.div 
+                initial={{ opacity: 0, x: 100, y: 100, rotate: 10 }}
+                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute -right-4 -bottom-10 md:right-20 md:bottom-20 z-40 w-[240px] md:w-[320px] aspect-[9/19.5] rounded-[3rem] bg-brand-950 border-[10px] border-slate-900 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10"
+              >
+                <Image
+                  src={placeholders.mobileApp.url}
+                  fill
+                  alt="Canal Bank Phone Showcase"
+                  className="object-cover"
+                  data-ai-hint="luxury mobile banking app"
+                />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-7 bg-slate-900 rounded-b-2xl z-50" />
+              </motion.div>
+
+              {/* Watch Showcase */}
+              <motion.div 
+                initial={{ opacity: 0, x: -100, scale: 0.8 }}
+                whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
+                className="absolute -left-4 top-40 md:left-10 md:top-60 z-30 w-32 md:w-48 aspect-square rounded-[2rem] premium-glass border border-white/20 shadow-2xl flex flex-col items-center justify-center p-6 text-center"
+              >
+                <Watch className="w-8 h-8 text-accent-500 mb-4" />
+                <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Alert</p>
+                <p className="text-[12px] font-bold text-white uppercase tracking-tighter leading-tight">Transfer Verified</p>
+                <p className="text-[14px] font-mono font-bold text-emerald-400 mt-2">€25,000</p>
+              </motion.div>
+
+              {/* Feature Artifacts */}
+              <ShowcaseArtifact 
+                icon={BarChart3} 
+                label="Portfolio Analytics" 
+                className="top-10 right-20 hidden md:flex" 
+              />
+              <ShowcaseArtifact 
+                icon={ArrowLeftRight} 
+                label="Instant FX Engine" 
+                className="bottom-1/3 left-20 hidden md:flex" 
+              />
+              <ShowcaseArtifact 
+                icon={TrendingUp} 
+                label="High-Alpha Markets" 
+                className="top-1/4 right-[40%] hidden lg:flex" 
+              />
+            </div>
           </div>
         </section>
 
