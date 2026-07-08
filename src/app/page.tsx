@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useInView, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Globe, 
@@ -27,7 +27,13 @@ import {
   Gem,
   Hexagon,
   Mountain,
-  Lock
+  Lock,
+  X,
+  TrendingDown,
+  PieChart,
+  Target,
+  Wallet,
+  Award
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
@@ -77,6 +83,63 @@ function StatCounter({ value, suffix = "", decimals = 0, prefix = "" }: { value:
       })}
       {suffix}
     </span>
+  );
+}
+
+/**
+ * Floating Currency Widget
+ */
+function FloatingMarketPulse() {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0, x: -50, scale: 0.9 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -50, scale: 0.9 }}
+          className="fixed bottom-6 left-6 z-[60] w-[350px] h-[480px] hidden xl:block"
+        >
+          <div className="w-full h-full premium-glass rounded-[2.5rem] p-5 shadow-2xl overflow-hidden border border-white/10 backdrop-blur-3xl group">
+            <div className="flex items-center justify-between mb-4 px-2">
+                <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                    <span className="text-[10px] font-black text-white uppercase tracking-[0.3em]">Market Pulse</span>
+                </div>
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all active:scale-90"
+                >
+                    <X className="w-3.5 h-3.5" />
+                </button>
+            </div>
+            
+            <div className="w-full h-[calc(100%-80px)] rounded-2xl overflow-hidden bg-black/20 border border-white/5 relative">
+              <iframe 
+                src="https://ng.widgets.investing.com/live-currency-cross-rates?theme=darkTheme&roundedCorners=true&pairs=1,3,2,4,7,9,5,8,6,10,49,11" 
+                width="100%" 
+                height="100%" 
+                frameBorder="0" 
+                allowTransparency={true} 
+                marginWidth={0} 
+                marginHeight={0}
+                className="brightness-90 contrast-125"
+              />
+            </div>
+
+            <div className="mt-4 px-2 flex justify-between items-center">
+              <div className="text-[8px] font-bold text-white/20 uppercase tracking-widest">
+                Source: Canal Treasury Feed
+              </div>
+              <div className="poweredBy text-[9px] text-white/40 font-medium tracking-tight">
+                Powered by <a href="https://ng.investing.com" target="_blank" rel="nofollow" className="text-accent-400 hover:text-white transition-colors">Investing.com</a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -321,6 +384,9 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-white">
       <Navigation />
       
+      {/* Floating Market Hub */}
+      <FloatingMarketPulse />
+
       <main className="flex-1">
         {/* STORY 1: THE ENTRANCE (Dark Hero) */}
         <section className="relative min-h-screen flex items-center pt-32 pb-40 overflow-hidden bg-brand-950">
@@ -610,3 +676,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
