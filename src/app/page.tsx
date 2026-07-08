@@ -1,7 +1,8 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { 
   ArrowRight, 
   Globe, 
@@ -22,7 +23,10 @@ import {
   BarChart3,
   ArrowLeftRight,
   ShieldAlert,
-  Clock as ClockIcon
+  Clock as ClockIcon,
+  Crown,
+  Gem,
+  Hexagon
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
@@ -73,6 +77,138 @@ function StatCounter({ value, suffix = "", decimals = 0, prefix = "" }: { value:
       })}
       {suffix}
     </span>
+  );
+}
+
+/**
+ * GlassCard Component
+ * High-fidelity 3D card entity for the landing page showcase.
+ */
+function ShowcaseGlassCard({ tier, color, label, icon: Icon, perks }: { tier: string, color: string, label: string, icon: any, perks: string[] }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = (mouseX / width) - 0.5;
+    const yPct = (mouseY / height) - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  const themes: Record<string, any> = {
+    platinum: {
+      bg: "bg-gradient-to-br from-slate-100/90 to-slate-300/90",
+      accent: "text-slate-600",
+      border: "border-white/40",
+      glow: "bg-white/30",
+      text: "text-slate-800",
+      sub: "text-slate-500",
+      chip: "bg-slate-400/20"
+    },
+    infinite: {
+      bg: "bg-gradient-to-br from-brand-900/95 to-brand-950/95",
+      accent: "text-accent-500",
+      border: "border-white/10",
+      glow: "bg-accent-500/10",
+      text: "text-white",
+      sub: "text-slate-400",
+      chip: "bg-accent-500/20"
+    },
+    black: {
+      bg: "bg-gradient-to-br from-black to-slate-900",
+      accent: "text-emerald-500",
+      border: "border-white/5",
+      glow: "bg-emerald-500/5",
+      text: "text-white",
+      sub: "text-slate-500",
+      chip: "bg-slate-800/40"
+    }
+  };
+
+  const t = themes[tier.toLowerCase()] || themes.infinite;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      className="group perspective-1000"
+    >
+      <div className="flex flex-col gap-12">
+        <motion.div
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className={cn(
+            "relative w-full aspect-[1.58/1] rounded-[2rem] p-8 shadow-2xl transition-all duration-300 border backdrop-blur-md overflow-hidden cursor-pointer",
+            t.bg, t.border
+          )}
+        >
+          {/* Light Sweep Effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col h-full justify-between" style={{ transform: "translateZ(60px)" }}>
+            <div className="flex justify-between items-start">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <Icon className={cn("w-4 h-4", t.accent)} />
+                  <p className={cn("text-[10px] font-black uppercase tracking-[0.3em]", t.sub)}>{tier} Entity</p>
+                </div>
+                <h3 className={cn("font-black text-2xl tracking-tighter uppercase", t.text)}>Canal</h3>
+              </div>
+              <div className={cn("w-12 h-10 rounded-lg flex items-center justify-center", t.chip)}>
+                <div className="w-8 h-6 rounded bg-black/20 border border-white/10" />
+              </div>
+            </div>
+
+            <div>
+              <p className={cn("text-lg font-mono tracking-[0.25em] mb-1", t.text)}>**** **** **** 8080</p>
+              <div className="flex items-center justify-between">
+                <p className={cn("text-[9px] font-bold uppercase tracking-[0.2em]", t.sub)}>Institutional Identifier</p>
+                <div className="flex gap-1">
+                  <div className="w-6 h-6 rounded-full bg-white/10" />
+                  <div className="w-6 h-6 rounded-full bg-white/5 -ml-3" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Dynamic Glow */}
+          <div className={cn("absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full -mr-32 -mt-32 pointer-events-none", t.glow)} />
+        </motion.div>
+
+        <div className="px-4 space-y-6">
+          <div>
+            <h4 className="text-xl font-black text-brand-950 uppercase tracking-tight mb-2">{label}</h4>
+            <div className="flex flex-wrap gap-2">
+              {perks.map((perk, i) => (
+                <span key={i} className="px-3 py-1 rounded-full bg-brand-50 border border-brand-100 text-[9px] font-black text-slate-500 uppercase tracking-widest">
+                  {perk}
+                </span>
+              ))}
+            </div>
+          </div>
+          <button className="w-full py-4 bg-brand-950 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-accent-600 transition-all shadow-xl shadow-brand-950/20 active:scale-95">
+            Initialize Tier
+          </button>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -546,7 +682,41 @@ export default function LandingPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(255,91,97,0.05)_0%,_transparent_70%)] pointer-events-none" />
         </section>
 
-        {/* 5. TESTIMONIALS (White) */}
+        {/* 5. GLASS BANKING CARDS (Light) */}
+        <section className="py-40 bg-slate-50/50">
+          <div className="container mx-auto px-6 md:px-12">
+            <div className="text-center max-w-4xl mx-auto mb-32">
+              <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Physical Entities</p>
+              <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter mb-8 uppercase">The Standard of Identity.</h2>
+              <p className="text-slate-500 text-xl font-medium leading-relaxed">
+                Beyond digital. Our physical entities represent a commitment to craft, privacy, and institutional presence in your pocket.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
+              <ShowcaseGlassCard 
+                tier="Platinum" 
+                label="Elite Access" 
+                icon={Hexagon}
+                perks={["Lounge Key", "Travel Credit", "2.5% Yield"]}
+              />
+              <ShowcaseGlassCard 
+                tier="Infinite" 
+                label="Global Standard" 
+                icon={Crown}
+                perks={["Concierge", "FX Engine", "4.0% Yield"]}
+              />
+              <ShowcaseGlassCard 
+                tier="Black" 
+                label="Bespoke Private" 
+                icon={Gem}
+                perks={["Private Jet", "Vault Box", "5.5% Yield"]}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* 6. TESTIMONIALS (White) */}
         <section className="py-40 bg-white">
           <div className="container mx-auto px-6 md:px-12">
             <div className="text-center mb-32">
@@ -583,7 +753,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 6. PREMIUM MEMBERSHIP (Black Glass) */}
+        {/* 7. PREMIUM MEMBERSHIP (Black Glass) */}
         <section className="py-40 bg-white">
           <div className="container mx-auto px-6 md:px-12">
             <motion.div 
