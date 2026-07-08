@@ -438,6 +438,9 @@ export default function LandingPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/40 to-transparent z-10" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(255,91,97,0.12)_0%,_transparent_60%)] z-10" />
+            
+            {/* Background Grain Overlay */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=\'0 0 250 250\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')]" />
           </motion.div>
 
           <FloatingArtifacts />
@@ -505,8 +508,14 @@ export default function LandingPage() {
         </section>
 
         {/* 2. FEATURES (White) */}
-        <section className="py-40 bg-white relative z-10">
-          <div className="container mx-auto px-6 md:px-12">
+        <section className="py-40 bg-white relative z-10 overflow-hidden">
+          {/* Subtle Background Mesh for Features */}
+          <div className="absolute inset-0 pointer-events-none opacity-40">
+            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/5 blur-[120px] rounded-full -mr-96 -mt-96" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-500/5 blur-[100px] rounded-full -ml-48 -mb-48" />
+          </div>
+
+          <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-32">
               <div className="max-w-3xl">
                 <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Core Competencies</p>
@@ -527,7 +536,7 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-                  className="relative p-12 rounded-[3rem] bg-brand-50 border border-brand-100 hover:border-accent-500/50 hover:bg-white hover:shadow-[0_40px_100px_rgba(255,91,97,0.1)] transition-all duration-700 group overflow-hidden"
+                  className="relative p-12 rounded-[3rem] bg-brand-50/50 border border-brand-100 hover:border-accent-500/50 hover:bg-white hover:shadow-[0_40px_100px_rgba(255,91,97,0.1)] transition-all duration-700 group overflow-hidden"
                 >
                   <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 group-hover:scale-125 group-hover:-rotate-12 transition-all duration-1000 pointer-events-none">
                     {React.cloneElement(feature.icon as React.ReactElement, { className: "w-64 h-64" })}
@@ -566,10 +575,15 @@ export default function LandingPage() {
 
         {/* 3. DASHBOARD SHOWCASE (Dark) */}
         <section className="py-40 bg-brand-950 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-accent-500)_0%,_transparent_70%)]" />
+          {/* Intense Gradient Mesh for Showcase */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-accent-500)_0%,_transparent_70%)]" />
+            <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-brand-400/10 blur-[150px] rounded-full" />
           </div>
           
+          {/* Subtle Grain Overlay for Dark Section */}
+          <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=\'0 0 250 250\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')]" />
+
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-32">
               <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Omnichannel Control</p>
@@ -683,8 +697,14 @@ export default function LandingPage() {
         </section>
 
         {/* 5. GLASS BANKING CARDS (Light) */}
-        <section className="py-40 bg-slate-50/50">
-          <div className="container mx-auto px-6 md:px-12">
+        <section className="py-40 bg-slate-50/50 relative overflow-hidden">
+          {/* Glass Card Section Mesh */}
+          <div className="absolute inset-0 pointer-events-none opacity-30">
+            <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand-400/5 blur-[100px] rounded-full" />
+            <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-accent-400/5 blur-[100px] rounded-full" />
+          </div>
+
+          <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-32">
               <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Physical Entities</p>
               <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter mb-8 uppercase">The Standard of Identity.</h2>
@@ -717,8 +737,8 @@ export default function LandingPage() {
         </section>
 
         {/* 6. TESTIMONIALS (White) */}
-        <section className="py-40 bg-white">
-          <div className="container mx-auto px-6 md:px-12">
+        <section className="py-40 bg-white relative overflow-hidden">
+          <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="text-center mb-32">
               <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Institutional Sentiment</p>
               <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter uppercase leading-none">A Circle of Trust.</h2>
@@ -754,15 +774,22 @@ export default function LandingPage() {
         </section>
 
         {/* 7. PREMIUM MEMBERSHIP (Black Glass) */}
-        <section className="py-60 bg-white">
-          <div className="container mx-auto px-6 md:px-12">
+        <section className="py-60 bg-white relative overflow-hidden">
+          <div className="container mx-auto px-6 md:px-12 relative z-10">
             <motion.div 
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="black-glass rounded-[5rem] p-24 md:p-40 text-center relative"
+              className="black-glass rounded-[5rem] p-24 md:p-40 text-center relative overflow-hidden"
             >
+              {/* Intense Light Beams for CTA */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/10 blur-[160px] rounded-full -mr-96 -mt-96" />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-400/5 blur-[140px] rounded-full -ml-64 -mb-64" />
+                <div className="absolute top-1/2 left-1/4 w-[2px] h-[200px] bg-white/10 blur-[40px] rotate-45" />
+              </div>
+
               <div className="relative z-10 max-w-5xl mx-auto">
                 <motion.div 
                   animate={{ y: [0, -10, 0] }}
@@ -794,8 +821,6 @@ export default function LandingPage() {
                   </Link>
                 </div>
               </div>
-              <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/10 blur-[160px] rounded-full -mr-96 -mt-96 pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-400/5 blur-[140px] rounded-full -ml-64 -mb-64 pointer-events-none" />
             </motion.div>
           </div>
         </section>
