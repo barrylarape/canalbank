@@ -13,13 +13,17 @@ import {
   Star,
   Users,
   Activity,
-  Zap
+  Zap,
+  ArrowUpRight,
+  ArrowDownLeft,
+  RefreshCw
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import Image from "next/image";
 import placeholders from "@/app/lib/placeholder-images.json";
+import { cn } from "@/lib/utils";
 
 const features = [
   {
@@ -82,6 +86,81 @@ const testimonials = [
   }
 ];
 
+function FloatingArtifacts() {
+  return (
+    <div className="hidden xl:block absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Transaction Artifact */}
+      <motion.div 
+        initial={{ opacity: 0, x: 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute top-[20%] right-[10%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <ArrowDownLeft className="w-6 h-6" />
+          </div>
+          <span className="text-[10px] font-black text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full uppercase tracking-widest">Completed</span>
+        </div>
+        <p className="text-2xl font-bold text-white font-mono tracking-tighter">+€15,000.00</p>
+        <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.2em] mt-1">International Wire</p>
+        <div className="h-[1px] bg-white/10 w-full my-4" />
+        <div className="flex items-center gap-2">
+          <span className="text-lg">🇨🇭</span>
+          <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Zurich Institutional Hub</span>
+        </div>
+      </motion.div>
+
+      {/* Live FX Artifact */}
+      <motion.div 
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-[25%] right-[25%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">Live Currency Feed</p>
+          <RefreshCw className="w-3 h-3 text-accent-500 animate-spin" />
+        </div>
+        <div className="space-y-4">
+          {[
+            { pair: "EUR / USD", rate: "1.0842", trend: "+0.04%" },
+            { pair: "EUR / GBP", rate: "0.8541", trend: "-0.12%" },
+          ].map((fx) => (
+            <div key={fx.pair} className="flex items-center justify-between">
+              <span className="text-[11px] font-black text-white uppercase tracking-widest">{fx.pair}</span>
+              <div className="text-right">
+                <p className="text-sm font-bold text-white font-mono">{fx.rate}</p>
+                <p className={cn("text-[9px] font-bold", fx.trend.startsWith('+') ? "text-emerald-400" : "text-red-400")}>{fx.trend}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Portfolio Artifact */}
+      <motion.div 
+        initial={{ opacity: 0, x: -100 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.2, duration: 1 }}
+        className="absolute top-[45%] right-[35%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+      >
+        <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">Portfolio Yield</p>
+        <div className="flex items-baseline gap-2">
+          <span className="text-3xl font-black text-white tracking-tighter">+18.4%</span>
+          <ArrowUpRight className="w-5 h-5 text-emerald-400" />
+        </div>
+        <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mt-1">Institutional High-Alpha</p>
+        <div className="mt-4 flex gap-1 items-end h-8">
+          {[0.3, 0.5, 0.2, 0.8, 0.4, 0.9, 0.6, 0.7].map((h, i) => (
+            <div key={i} className="flex-1 bg-accent-500/40 rounded-full" style={{ height: `${h * 100}%` }} />
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -96,21 +175,25 @@ export default function LandingPage() {
               width={placeholders.hero.width}
               height={placeholders.hero.height}
               alt={placeholders.hero.alt}
-              className="object-cover w-full h-full brightness-50"
+              className="object-cover w-full h-full brightness-[0.4]"
               priority
               data-ai-hint={placeholders.hero.hint}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/70 to-transparent" />
+            {/* Layered Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/40 to-transparent z-10" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(229,57,53,0.15)_0%,_transparent_50%)] z-10" />
           </div>
 
-          <div className="container relative z-10 mx-auto px-6 md:px-12">
+          <FloatingArtifacts />
+
+          <div className="container relative z-20 mx-auto px-6 md:px-12">
             <div className="max-w-4xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8">
+                <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8 shadow-xl">
                   <Zap className="w-3 h-3 text-accent-400" /> Switzerland&apos;s Premier Digital Institution
                 </div>
                 <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-10 leading-[0.9]">
@@ -137,11 +220,23 @@ export default function LandingPage() {
                     Secure Login
                   </Link>
                 </div>
+
+                <div className="mt-16 flex items-center gap-12 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[8px] font-black text-white uppercase tracking-[0.3em]">Institutional Grade</span>
+                    <p className="text-xs font-bold text-white uppercase tracking-widest">FINMA Regulated</p>
+                  </div>
+                  <div className="w-[1px] h-8 bg-white/20" />
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[8px] font-black text-white uppercase tracking-[0.3em]">Protected By</span>
+                    <p className="text-xs font-bold text-white uppercase tracking-widest">Swiss Secrecy Laws</p>
+                  </div>
+                </div>
               </motion.div>
             </div>
           </div>
           
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/30 animate-bounce">
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/30 animate-bounce z-20">
             <span className="text-[10px] font-black uppercase tracking-[0.3em]">Explore Vault</span>
             <ChevronRight className="w-4 h-4 rotate-90" />
           </div>

@@ -1,44 +1,44 @@
 {
   "hero": {
-    "url": "https://picsum.photos/seed/canal1/1920/1080",
+    "url": "https://picsum.photos/seed/canal_luxury_skyline/1920/1080",
     "width": 1920,
     "height": 1080,
-    "alt": "Zurich financial district at dusk",
-    "hint": "zurich banking"
+    "alt": "Modern Zurich skyline with Alpine backdrop",
+    "hint": "luxury zurich skyline"
   },
   "mobileApp": {
-    "url": "https://picsum.photos/seed/canal2/600/1200",
+    "url": "https://picsum.photos/seed/canal_mobile_premium/600/1200",
     "width": 600,
     "height": 1200,
-    "alt": "Canal Bank mobile app interface",
-    "hint": "mobile banking"
+    "alt": "Canal Bank premium mobile interface",
+    "hint": "luxury phone banking"
   },
   "vault": {
-    "url": "https://picsum.photos/seed/canal3/800/600",
+    "url": "https://picsum.photos/seed/canal_private_vault/800/600",
     "width": 800,
     "height": 600,
-    "alt": "Secure Swiss vault door",
-    "hint": "secure vault"
+    "alt": "Exclusive private vault facility",
+    "hint": "private vault luxury"
   },
   "zurichCanal": {
-    "url": "https://picsum.photos/seed/canal4/1200/800",
+    "url": "https://picsum.photos/seed/canal_landscape/1200/800",
     "width": 1200,
     "height": 800,
-    "alt": "Scenic view of Zurich canal",
-    "hint": "zurich landscape"
+    "alt": "Scenic Alpine landscape in Switzerland",
+    "hint": "swiss alps luxury"
   },
   "businessBanking": {
-    "url": "https://picsum.photos/seed/canal5/800/600",
+    "url": "https://picsum.photos/seed/canal_private_jet/800/600",
     "width": 800,
     "height": 600,
-    "alt": "Modern business boardroom",
-    "hint": "business meeting"
+    "alt": "Private jet terminal lounge",
+    "hint": "private jet luxury"
   },
   "dashboardPreview": {
-    "url": "https://picsum.photos/seed/canal6/1200/800",
+    "url": "https://picsum.photos/seed/canal_interface_mockup/1200/800",
     "width": 1200,
     "height": 800,
-    "alt": "Canal Bank digital interface mockup",
-    "hint": "banking dashboard"
+    "alt": "Canal Bank institutional dashboard",
+    "hint": "premium banking interface"
   }
 }
