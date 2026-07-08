@@ -16,13 +16,11 @@ import {
   Users,
   Activity,
   Zap,
-  ArrowUpRight,
   ArrowDownLeft,
   RefreshCw,
   Watch,
   BarChart3,
   ArrowLeftRight,
-  ShieldAlert,
   Clock as ClockIcon,
   Crown,
   Gem,
@@ -37,7 +35,6 @@ import { cn } from "@/lib/utils";
 
 /**
  * StatCounter Component
- * Handles the animated counting effect when the element is scrolled into view.
  */
 function StatCounter({ value, suffix = "", decimals = 0, prefix = "" }: { value: number, suffix?: string, decimals?: number, prefix?: string }) {
   const [count, setCount] = useState(0);
@@ -48,7 +45,7 @@ function StatCounter({ value, suffix = "", decimals = 0, prefix = "" }: { value:
     if (inView) {
       let start = 0;
       const end = value;
-      const duration = 2000; // 2 seconds
+      const duration = 2000;
       const frameRate = 1000 / 60;
       const totalFrames = Math.round(duration / frameRate);
       const increment = end / totalFrames;
@@ -81,8 +78,7 @@ function StatCounter({ value, suffix = "", decimals = 0, prefix = "" }: { value:
 }
 
 /**
- * GlassCard Component
- * High-fidelity 3D card entity for the landing page showcase.
+ * ShowcaseGlassCard Component
  */
 function ShowcaseGlassCard({ tier, color, label, icon: Icon, perks }: { tier: string, color: string, label: string, icon: any, perks: string[] }) {
   const x = useMotionValue(0);
@@ -159,9 +155,7 @@ function ShowcaseGlassCard({ tier, color, label, icon: Icon, perks }: { tier: st
             t.bg, t.border
           )}
         >
-          {/* Light Sweep Effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 pointer-events-none" />
-          
           <div className="relative z-10 flex flex-col h-full justify-between" style={{ transform: "translateZ(60px)" }}>
             <div className="flex justify-between items-start">
               <div>
@@ -175,7 +169,6 @@ function ShowcaseGlassCard({ tier, color, label, icon: Icon, perks }: { tier: st
                 <div className="w-8 h-6 rounded bg-black/20 border border-white/10" />
               </div>
             </div>
-
             <div>
               <p className={cn("text-lg font-mono tracking-[0.25em] mb-1", t.text)}>**** **** **** 8080</p>
               <div className="flex items-center justify-between">
@@ -187,11 +180,8 @@ function ShowcaseGlassCard({ tier, color, label, icon: Icon, perks }: { tier: st
               </div>
             </div>
           </div>
-
-          {/* Dynamic Glow */}
           <div className={cn("absolute top-0 right-0 w-64 h-64 blur-[80px] rounded-full -mr-32 -mt-32 pointer-events-none", t.glow)} />
         </motion.div>
-
         <div className="px-4 space-y-6">
           <div>
             <h4 className="text-xl font-black text-brand-950 uppercase tracking-tight mb-2">{label}</h4>
@@ -305,19 +295,10 @@ const itemVariants = {
 function FloatingArtifacts() {
   return (
     <div className="hidden xl:block absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Transaction Artifact */}
       <motion.div 
         initial={{ opacity: 0, x: 100 }}
-        animate={{ 
-          opacity: 1, 
-          x: 0,
-          y: [0, -8, 0]
-        }}
-        transition={{ 
-          opacity: { delay: 1, duration: 1 },
-          x: { delay: 1, duration: 1 },
-          y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-        }}
+        animate={{ opacity: 1, x: 0, y: [0, -8, 0] }}
+        transition={{ opacity: { delay: 1, duration: 1 }, x: { delay: 1, duration: 1 }, y: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
         className="absolute top-[20%] right-[5%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <div className="flex items-center justify-between mb-4">
@@ -334,18 +315,10 @@ function FloatingArtifacts() {
           <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Zurich Institutional Hub</span>
         </div>
       </motion.div>
-
-      {/* Live FX Artifact */}
       <motion.div 
         initial={{ opacity: 0, y: 100 }}
-        animate={{ 
-          opacity: 1, 
-          y: [0, -6, 0]
-        }}
-        transition={{ 
-          opacity: { delay: 1.5, duration: 1 },
-          y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-        }}
+        animate={{ opacity: 1, y: [0, -6, 0] }}
+        transition={{ opacity: { delay: 1.5, duration: 1 }, y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}
         className="absolute bottom-[20%] right-[15%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <div className="flex items-center justify-between mb-6">
@@ -364,34 +337,6 @@ function FloatingArtifacts() {
                 <p className={cn("text-[9px] font-bold", fx.trend.startsWith('+') ? "text-emerald-400" : "text-accent-500")}>{fx.trend}</p>
               </div>
             </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Portfolio Artifact */}
-      <motion.div 
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ 
-          opacity: 1, 
-          x: 0, 
-          y: [0, -10, 0]
-        }}
-        transition={{ 
-          opacity: { delay: 1.2, duration: 1 },
-          x: { delay: 1.2, duration: 1 },
-          y: { duration: 7, repeat: Infinity, ease: "easeInOut" }
-        }}
-        className="absolute top-[45%] right-[25%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
-      >
-        <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">Portfolio Yield</p>
-        <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-black text-white tracking-tighter">+18.4%</span>
-          <ArrowUpRight className="w-5 h-5 text-emerald-400" />
-        </div>
-        <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mt-1">Institutional High-Alpha</p>
-        <div className="mt-4 flex gap-1 items-end h-8">
-          {[0.3, 0.5, 0.2, 0.8, 0.4, 0.9, 0.6, 0.7].map((h, i) => (
-            <div key={i} className="flex-1 bg-accent-500/30 rounded-full" style={{ height: `${h * 100}%` }} />
           ))}
         </div>
       </motion.div>
@@ -438,8 +383,6 @@ export default function LandingPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/40 to-transparent z-10" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(255,91,97,0.12)_0%,_transparent_60%)] z-10" />
-            
-            {/* Background Grain Overlay */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=\'0 0 250 250\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')]" />
           </motion.div>
 
@@ -447,69 +390,44 @@ export default function LandingPage() {
 
           <div className="container relative z-20 mx-auto px-6 md:px-12">
             <div className="max-w-7xl">
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="show"
-              >
+              <motion.div variants={containerVariants} initial="hidden" animate="show">
                 <motion.div variants={itemVariants} className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.3em] mb-12 shadow-2xl">
                   <Zap className="w-3.5 h-3.5 text-accent-400" /> Switzerland&apos;s Premier Digital Institution
                 </motion.div>
-                
                 <motion.h1 variants={itemVariants} className="text-7xl md:text-[140px] xl:text-[180px] font-black text-white tracking-tighter mb-20 leading-[0.78] uppercase select-none">
                   Banking <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 via-accent-500 to-accent-400">
-                    Without <br />
-                  </span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 via-accent-500 to-accent-400">Without <br /></span>
                   Borders.
                 </motion.h1>
-
                 <motion.div variants={itemVariants} className="max-w-2xl mb-16">
                   <p className="text-2xl md:text-3xl text-slate-300 leading-relaxed font-medium tracking-tight">
-                    Institutional private banking reimagined for global citizens. 
-                    Manage liquidity, deploy capital, and protect your legacy.
+                    Institutional private banking reimagined for global citizens. Manage liquidity, deploy capital, and protect your legacy.
                   </p>
                 </motion.div>
-                
                 <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-8">
-                  <Link
-                    href="/open-account"
-                    className="inline-flex justify-center items-center gap-4 bg-accent-500 hover:bg-accent-600 text-white px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all shadow-2xl shadow-accent-500/20 hover:-translate-y-2 active:scale-95"
-                  >
+                  <Link href="/open-account" className="inline-flex justify-center items-center gap-4 bg-accent-500 hover:bg-accent-600 text-white px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all shadow-2xl shadow-accent-500/20 hover:-translate-y-2 active:scale-95">
                     Establish Vault <ArrowRight className="w-5 h-5" />
                   </Link>
-                  <Link
-                    href="/login"
-                    className="inline-flex justify-center items-center gap-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white border border-white/10 px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all hover:-translate-y-2 active:scale-95"
-                  >
+                  <Link href="/login" className="inline-flex justify-center items-center gap-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white border border-white/10 px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all hover:-translate-y-2 active:scale-95">
                     Secure Login
                   </Link>
-                </motion.div>
-
-                <motion.div variants={itemVariants} className="mt-24 flex items-center gap-16 opacity-30">
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-black text-white uppercase tracking-[0.4em]">Tier-1 Registry</span>
-                    <p className="text-sm font-bold text-white uppercase tracking-widest">FINMA Authorized</p>
-                  </div>
-                  <div className="w-[1px] h-12 bg-white/20" />
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[9px] font-black text-white uppercase tracking-[0.4em]">Global Custody</span>
-                    <p className="text-sm font-bold text-white uppercase tracking-widest">Swiss Jurisdiction</p>
-                  </div>
                 </motion.div>
               </motion.div>
             </div>
           </div>
           
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-white/20 animate-bounce z-20">
-            <span className="text-[10px] font-black uppercase tracking-[0.4em]">Explore Institutional Depth</span>
-            <ChevronRight className="w-5 h-5 rotate-90" />
+          {/* Curved Transition: Dark to White */}
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[100px] fill-white">
+              <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5,73.84-4.36,147.54,16.88,218.2,35.26,69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113,2,1200,34.74V0Z" opacity=".25"></path>
+              <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5V0Z" opacity=".5"></path>
+              <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
+            </svg>
           </div>
         </section>
 
         {/* 2. FEATURES (White) */}
         <section className="py-40 bg-white relative z-10 overflow-hidden">
-          {/* Subtle Background Mesh for Features */}
           <div className="absolute inset-0 pointer-events-none opacity-40">
             <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/5 blur-[120px] rounded-full -mr-96 -mt-96" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-500/5 blur-[100px] rounded-full -ml-48 -mb-48" />
@@ -519,51 +437,26 @@ export default function LandingPage() {
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-32">
               <div className="max-w-3xl">
                 <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Core Competencies</p>
-                <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter leading-none uppercase">
-                  Digital Sophistication. <br />Swiss Integrity.
-                </h2>
+                <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter leading-none uppercase">Digital Sophistication. <br />Swiss Integrity.</h2>
               </div>
               <p className="text-xl text-slate-500 max-w-md leading-relaxed font-medium">
                 We synthesize three centuries of Swiss financial stability with a digital architecture designed for the speed of modern life.
               </p>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {features.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-                  className="relative p-12 rounded-[3rem] bg-brand-50/50 border border-brand-100 hover:border-accent-500/50 hover:bg-white hover:shadow-[0_40px_100px_rgba(255,91,97,0.1)] transition-all duration-700 group overflow-hidden"
-                >
+                <motion.div key={feature.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }} className="relative p-12 rounded-[3rem] bg-brand-50/50 border border-brand-100 hover:border-accent-500/50 hover:bg-white hover:shadow-[0_40px_100px_rgba(255,91,97,0.1)] transition-all duration-700 group overflow-hidden">
                   <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:opacity-10 group-hover:scale-125 group-hover:-rotate-12 transition-all duration-1000 pointer-events-none">
                     {React.cloneElement(feature.icon as React.ReactElement, { className: "w-64 h-64" })}
                   </div>
-
                   <div className="relative z-10">
                     <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-12 group-hover:scale-110 group-hover:bg-brand-950 group-hover:shadow-xl group-hover:shadow-brand-950/20 transition-all duration-700">
-                      <div className="group-hover:text-white group-hover:rotate-12 transition-all duration-700">
-                        {feature.icon}
-                      </div>
+                      <div className="group-hover:text-white group-hover:rotate-12 transition-all duration-700">{feature.icon}</div>
                     </div>
-                    
-                    <h3 className="text-2xl font-black text-brand-900 mb-6 uppercase tracking-tight group-hover:text-accent-600 transition-colors">
-                      {feature.title}
-                    </h3>
-                    
-                    <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12">
-                      {feature.description}
-                    </p>
-
-                    <Link 
-                      href={feature.href} 
-                      className="inline-flex items-center gap-2 text-[11px] font-black text-brand-950 uppercase tracking-[0.2em] group/cta"
-                    >
-                      <span className="border-b-2 border-accent-500/30 group-hover/cta:border-accent-500 transition-all pb-1">
-                        {feature.cta}
-                      </span>
+                    <h3 className="text-2xl font-black text-brand-900 mb-6 uppercase tracking-tight group-hover:text-accent-600 transition-colors">{feature.title}</h3>
+                    <p className="text-lg text-slate-500 leading-relaxed font-medium mb-12">{feature.description}</p>
+                    <Link href={feature.href} className="inline-flex items-center gap-2 text-[11px] font-black text-brand-950 uppercase tracking-[0.2em] group/cta">
+                      <span className="border-b-2 border-accent-500/30 group-hover/cta:border-accent-500 transition-all pb-1">{feature.cta}</span>
                       <ChevronRight className="w-4 h-4 text-accent-500 group-hover/cta:translate-x-1 transition-transform" />
                     </Link>
                   </div>
@@ -573,18 +466,18 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 3. DASHBOARD SHOWCASE (Dark) */}
-        <section className="py-40 bg-brand-950 relative overflow-hidden">
-          {/* Intense Gradient Mesh for Showcase */}
+        {/* 3. DASHBOARD SHOWCASE (Dark) with Glass Divider */}
+        <section className="relative py-40 bg-brand-950 overflow-hidden border-t border-white/5">
+          {/* Glass Top Gradient Divider */}
+          <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white to-transparent opacity-100 z-10" />
+          
           <div className="absolute inset-0 opacity-20">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-accent-500)_0%,_transparent_70%)]" />
             <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-brand-400/10 blur-[150px] rounded-full" />
           </div>
-          
-          {/* Subtle Grain Overlay for Dark Section */}
           <div className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg viewBox=\'0 0 250 250\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')]" />
 
-          <div className="container mx-auto px-6 md:px-12 relative z-10">
+          <div className="container mx-auto px-6 md:px-12 relative z-20">
             <div className="text-center max-w-4xl mx-auto mb-32">
               <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Omnichannel Control</p>
               <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 uppercase">A Synchronized Vault.</h2>
@@ -592,118 +485,66 @@ export default function LandingPage() {
                 Desktop power. Mobile agility. Wearable precision. Experience the most advanced institutional interface across every device you own.
               </p>
             </div>
-
             <div className="relative h-[600px] md:h-[900px] w-full max-w-7xl mx-auto">
-              <motion.div 
-                initial={{ opacity: 0, y: 60, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="relative z-10 w-full max-w-5xl mx-auto rounded-[3rem] border border-white/5 shadow-[0_60px_150px_rgba(0,0,0,0.7)] overflow-hidden"
-              >
+              <motion.div initial={{ opacity: 0, y: 60, scale: 0.95 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }} className="relative z-10 w-full max-w-5xl mx-auto rounded-[3rem] border border-white/5 shadow-[0_60px_150px_rgba(0,0,0,0.7)] overflow-hidden">
                 <div className="aspect-[16/10] bg-brand-900 relative">
-                  <Image
-                    src={placeholders.dashboardPreview.url}
-                    fill
-                    alt="Canal Bank Desktop Showcase"
-                    className="object-cover opacity-90 transition-transform duration-[20s] hover:scale-105"
-                    data-ai-hint="premium banking dashboard"
-                  />
+                  <Image src={placeholders.dashboardPreview.url} fill alt="Canal Bank Desktop Showcase" className="object-cover opacity-90 transition-transform duration-[20s] hover:scale-105" data-ai-hint="premium banking dashboard" />
                   <div className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-transparent to-transparent" />
                 </div>
               </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, x: 100, y: 100, rotate: 10 }}
-                whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -right-4 -bottom-10 md:right-20 md:bottom-20 z-40 w-[240px] md:w-[320px] aspect-[9/19.5] rounded-[3rem] bg-brand-950 border-[10px] border-slate-900 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10"
-              >
-                <Image
-                  src={placeholders.mobileApp.url}
-                  fill
-                  alt="Canal Bank Phone Showcase"
-                  className="object-cover"
-                  data-ai-hint="luxury mobile banking app"
-                />
+              <motion.div initial={{ opacity: 0, x: 100, y: 100, rotate: 10 }} whileInView={{ opacity: 1, x: 0, y: 0, rotate: 0 }} viewport={{ once: true }} transition={{ duration: 1.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }} className="absolute -right-4 -bottom-10 md:right-20 md:bottom-20 z-40 w-[240px] md:w-[320px] aspect-[9/19.5] rounded-[3rem] bg-brand-950 border-[10px] border-slate-900 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10">
+                <Image src={placeholders.mobileApp.url} fill alt="Canal Bank Phone Showcase" className="object-cover" data-ai-hint="luxury mobile banking app" />
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-7 bg-slate-900 rounded-b-2xl z-50" />
               </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0, x: -100, scale: 0.8 }}
-                whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
-                className="absolute -left-4 top-40 md:left-10 md:top-60 z-30 w-32 md:w-48 aspect-square rounded-[2rem] premium-glass border border-white/20 shadow-2xl flex flex-col items-center justify-center p-6 text-center"
-              >
+              <motion.div initial={{ opacity: 0, x: -100, scale: 0.8 }} whileInView={{ opacity: 1, x: 0, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }} className="absolute -left-4 top-40 md:left-10 md:top-60 z-30 w-32 md:w-48 aspect-square rounded-[2rem] premium-glass border border-white/20 shadow-2xl flex flex-col items-center justify-center p-6 text-center">
                 <Watch className="w-8 h-8 text-accent-500 mb-4" />
                 <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Alert</p>
                 <p className="text-[12px] font-bold text-white uppercase tracking-tighter leading-tight">Transfer Verified</p>
                 <p className="text-[14px] font-mono font-bold text-emerald-400 mt-2">€25,000</p>
               </motion.div>
-
-              <ShowcaseArtifact 
-                icon={BarChart3} 
-                label="Portfolio Analytics" 
-                className="top-10 right-20 hidden md:flex" 
-              />
-              <ShowcaseArtifact 
-                icon={ArrowLeftRight} 
-                label="Instant FX Engine" 
-                className="bottom-1/3 left-20 hidden md:flex" 
-              />
-              <ShowcaseArtifact 
-                icon={TrendingUp} 
-                label="High-Alpha Markets" 
-                className="top-1/4 right-[40%] hidden lg:flex" 
-              />
+              <ShowcaseArtifact icon={BarChart3} label="Portfolio Analytics" className="top-10 right-20 hidden md:flex" />
+              <ShowcaseArtifact icon={ArrowLeftRight} label="Instant FX Engine" className="bottom-1/3 left-20 hidden md:flex" />
+              <ShowcaseArtifact icon={TrendingUp} label="High-Alpha Markets" className="top-1/4 right-[40%] hidden lg:flex" />
             </div>
           </div>
         </section>
 
-        {/* 4. STATISTICS (Gradient with Live Counting) */}
-        <section className="py-32 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white relative border-y border-white/5 overflow-hidden">
+        {/* 4. STATISTICS (Gradient Sweep Divider) */}
+        <section className="relative py-32 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white overflow-hidden border-t border-white/5">
+          {/* Subtle Glow Divider */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[1px] bg-gradient-to-r from-transparent via-accent-500/50 to-transparent" />
+          
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 lg:gap-8">
               {stats.map((stat, i) => (
-                <motion.div 
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.8 }}
-                  className="text-center group"
-                >
+                <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.8 }} className="text-center group">
                   <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 group-hover:bg-accent-500 transition-all duration-500 group-hover:scale-110 shadow-xl group-hover:shadow-accent-500/20">
                     <stat.icon className="w-6 h-6 text-accent-400 group-hover:text-white" />
                   </div>
                   <div className="text-4xl md:text-5xl font-bold font-mono tracking-tighter mb-4 text-white group-hover:text-accent-300 transition-colors">
-                    <StatCounter 
-                      value={stat.value} 
-                      prefix={stat.prefix} 
-                      suffix={stat.suffix} 
-                      decimals={stat.decimals} 
-                    />
+                    <StatCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} decimals={stat.decimals} />
                   </div>
-                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] leading-relaxed max-w-[120px] mx-auto group-hover:text-white/60 transition-colors">
-                    {stat.label}
-                  </p>
+                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] leading-relaxed max-w-[120px] mx-auto group-hover:text-white/60 transition-colors">{stat.label}</p>
                 </motion.div>
               ))}
             </div>
           </div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_rgba(255,91,97,0.05)_0%,_transparent_70%)] pointer-events-none" />
+          
+          {/* Curved Bottom Transition: Dark to Light Slate */}
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-10">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-[calc(100%+1.3px)] h-[80px] fill-slate-50 opacity-100">
+              <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+            </svg>
+          </div>
         </section>
 
-        {/* 5. GLASS BANKING CARDS (Light) */}
+        {/* 5. GLASS BANKING CARDS (Slate 50) */}
         <section className="py-40 bg-slate-50/50 relative overflow-hidden">
-          {/* Glass Card Section Mesh */}
           <div className="absolute inset-0 pointer-events-none opacity-30">
             <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand-400/5 blur-[100px] rounded-full" />
             <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-accent-400/5 blur-[100px] rounded-full" />
           </div>
-
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="text-center max-w-4xl mx-auto mb-32">
               <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Physical Entities</p>
@@ -712,28 +553,15 @@ export default function LandingPage() {
                 Beyond digital. Our physical entities represent a commitment to craft, privacy, and institutional presence in your pocket.
               </p>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
-              <ShowcaseGlassCard 
-                tier="Platinum" 
-                label="Elite Access" 
-                icon={Hexagon}
-                perks={["Lounge Key", "Travel Credit", "2.5% Yield"]}
-              />
-              <ShowcaseGlassCard 
-                tier="Infinite" 
-                label="Global Standard" 
-                icon={Crown}
-                perks={["Concierge", "FX Engine", "4.0% Yield"]}
-              />
-              <ShowcaseGlassCard 
-                tier="Black" 
-                label="Bespoke Private" 
-                icon={Gem}
-                perks={["Private Jet", "Vault Box", "5.5% Yield"]}
-              />
+              <ShowcaseGlassCard tier="Platinum" label="Elite Access" icon={Hexagon} perks={["Lounge Key", "Travel Credit", "2.5% Yield"]} />
+              <ShowcaseGlassCard tier="Infinite" label="Global Standard" icon={Crown} perks={["Concierge", "FX Engine", "4.0% Yield"]} />
+              <ShowcaseGlassCard tier="Black" label="Bespoke Private" icon={Gem} perks={["Private Jet", "Vault Box", "5.5% Yield"]} />
             </div>
           </div>
+          
+          {/* Subtle Transition to White */}
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white to-transparent" />
         </section>
 
         {/* 6. TESTIMONIALS (White) */}
@@ -743,25 +571,13 @@ export default function LandingPage() {
               <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Institutional Sentiment</p>
               <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter uppercase leading-none">A Circle of Trust.</h2>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {testimonials.map((t, i) => (
-                <motion.div 
-                  key={t.author}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.2, duration: 0.8, ease: "easeOut" }}
-                  className="relative p-12 bg-brand-50 rounded-[3.5rem] border border-brand-100 hover:bg-white hover:shadow-[0_40px_100px_rgba(0,0,0,0.06)] transition-all duration-700"
-                >
-                  <Star className="w-6 h-6 text-accent-500 fill-accent-500 mb-10" />
-                  <p className="text-xl text-brand-900 font-medium leading-relaxed mb-12 italic">
-                    &quot;{t.quote}&quot;
-                  </p>
+                <motion.div key={t.author} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.2, duration: 0.8, ease: "easeOut" }} className="relative p-12 bg-brand-50 rounded-[3.5rem] border border-brand-100 hover:bg-white hover:shadow-[0_40px_100px_rgba(0,0,0,0.06)] transition-all duration-700">
+                  < Star className="w-6 h-6 text-accent-500 fill-accent-500 mb-10" />
+                  <p className="text-xl text-brand-900 font-medium leading-relaxed mb-12 italic">&quot;{t.quote}&quot;</p>
                   <div className="flex items-center gap-5">
-                    <div className="w-14 h-14 rounded-2xl bg-brand-950 flex items-center justify-center text-white font-black text-sm">
-                      {t.avatar}
-                    </div>
+                    <div className="w-14 h-14 rounded-2xl bg-brand-950 flex items-center justify-center text-white font-black text-sm">{t.avatar}</div>
                     <div>
                       <p className="text-base font-black text-brand-950 uppercase tracking-tight">{t.author}</p>
                       <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">{t.role}</p>
@@ -773,29 +589,20 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 7. PREMIUM MEMBERSHIP (Black Glass) */}
+        {/* 7. PREMIUM MEMBERSHIP (Black Glass CTA) */}
         <section className="py-60 bg-white relative overflow-hidden">
-          <div className="container mx-auto px-6 md:px-12 relative z-10">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-              className="black-glass rounded-[5rem] p-24 md:p-40 text-center relative overflow-hidden"
-            >
-              {/* Intense Light Beams for CTA */}
+          {/* Glass Entrance Divider */}
+          <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-white to-transparent z-10" />
+          
+          <div className="container mx-auto px-6 md:px-12 relative z-20">
+            <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease: "easeOut" }} className="black-glass rounded-[5rem] p-24 md:p-40 text-center relative overflow-hidden">
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/10 blur-[160px] rounded-full -mr-96 -mt-96" />
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-400/5 blur-[140px] rounded-full -ml-64 -mb-64" />
                 <div className="absolute top-1/2 left-1/4 w-[2px] h-[200px] bg-white/10 blur-[40px] rotate-45" />
               </div>
-
               <div className="relative z-10 max-w-5xl mx-auto">
-                <motion.div 
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-20 shadow-[0_20px_50px_rgba(255,255,255,0.05)]"
-                >
+                <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-20 shadow-[0_20px_50px_rgba(255,255,255,0.05)]">
                   <ShieldCheck className="w-12 h-12 text-brand-950" />
                 </motion.div>
                 <h2 className="text-5xl md:text-[110px] font-black text-white tracking-tighter mb-16 uppercase leading-[0.82] select-none">
@@ -807,18 +614,10 @@ export default function LandingPage() {
                   Access the premier digital institution for global professionals. Your private vault is ready for initialization.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-12">
-                  <Link
-                    href="/open-account"
-                    className="inline-flex justify-center items-center gap-4 bg-white text-brand-950 px-20 py-8 rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] hover:bg-brand-50 transition-all hover:scale-105 active:scale-95 shadow-2xl"
-                  >
+                  <Link href="/open-account" className="inline-flex justify-center items-center gap-4 bg-white text-brand-950 px-20 py-8 rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] hover:bg-brand-50 transition-all hover:scale-105 active:scale-95 shadow-2xl">
                     Apply for Membership <ChevronRight className="w-5 h-5" />
                   </Link>
-                  <Link
-                    href="/support/contact"
-                    className="text-[11px] font-black text-white/40 hover:text-white uppercase tracking-[0.4em] transition-all border-b border-transparent hover:border-white/20 pb-1"
-                  >
-                    Consult an Advisor
-                  </Link>
+                  <Link href="/support/contact" className="text-[11px] font-black text-white/40 hover:text-white uppercase tracking-[0.4em] transition-all border-b border-transparent hover:border-white/20 pb-1">Consult an Advisor</Link>
                 </div>
               </div>
             </motion.div>
