@@ -94,7 +94,7 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1, duration: 1 }}
-        className="absolute top-[20%] right-[10%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+        className="absolute top-[20%] right-[5%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
       >
         <div className="flex items-center justify-between mb-4">
           <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
@@ -116,7 +116,7 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-[25%] right-[25%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+        className="absolute bottom-[20%] right-[15%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
       >
         <div className="flex items-center justify-between mb-6">
           <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">Live Currency Feed</p>
@@ -143,7 +143,7 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.2, duration: 1 }}
-        className="absolute top-[45%] right-[35%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+        className="absolute top-[45%] right-[25%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
       >
         <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">Portfolio Yield</p>
         <div className="flex items-baseline gap-2">
@@ -168,112 +168,118 @@ export default function LandingPage() {
       
       <main className="flex-1">
         {/* 1. HERO (Dark Glass) */}
-        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-brand-950">
+        <section className="relative min-h-screen flex items-center pt-32 pb-40 overflow-hidden bg-brand-950">
           <div className="absolute inset-0 z-0">
             <Image
               src={placeholders.hero.url}
               width={placeholders.hero.width}
               height={placeholders.hero.height}
               alt={placeholders.hero.alt}
-              className="object-cover w-full h-full brightness-[0.4]"
+              className="object-cover w-full h-full brightness-[0.35]"
               priority
               data-ai-hint={placeholders.hero.hint}
             />
             {/* Layered Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/40 to-transparent z-10" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(229,57,53,0.15)_0%,_transparent_50%)] z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/50 to-transparent z-10" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(229,57,53,0.15)_0%,_transparent_60%)] z-10" />
           </div>
 
           <FloatingArtifacts />
 
           <div className="container relative z-20 mx-auto px-6 md:px-12">
-            <div className="max-w-4xl">
+            <div className="max-w-7xl">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8 shadow-xl">
-                  <Zap className="w-3 h-3 text-accent-400" /> Switzerland&apos;s Premier Digital Institution
+                <div className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.3em] mb-12 shadow-2xl">
+                  <Zap className="w-3.5 h-3.5 text-accent-400" /> Switzerland&apos;s Premier Digital Institution
                 </div>
-                <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-10 leading-[0.9]">
-                  Banking Built <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-accent-400">
-                    Around Your Life.
-                  </span>
-                </h1>
-                <p className="text-xl text-slate-300 mb-12 max-w-2xl leading-relaxed font-medium">
-                  Experience a new era of finance. Private Banking, International Transfers, and Wealth Management—all in one secure Swiss platform.
-                </p>
                 
-                <div className="flex flex-col sm:flex-row gap-6">
+                <h1 className="text-7xl md:text-[140px] xl:text-[180px] font-black text-white tracking-tighter mb-20 leading-[0.78] uppercase select-none">
+                  Banking <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-accent-400 to-blue-300">
+                    Without <br />
+                  </span>
+                  Borders.
+                </h1>
+
+                <div className="max-w-2xl mb-16">
+                  <p className="text-2xl md:text-3xl text-slate-300 leading-relaxed font-medium tracking-tight">
+                    Institutional private banking reimagined for global citizens. 
+                    Manage liquidity, deploy capital, and protect your legacy.
+                  </p>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-8">
                   <Link
                     href="/open-account"
-                    className="inline-flex justify-center items-center gap-3 bg-accent-600 hover:bg-accent-700 text-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all shadow-2xl shadow-accent-600/30 hover:-translate-y-1 active:scale-95"
+                    className="inline-flex justify-center items-center gap-4 bg-accent-600 hover:bg-accent-700 text-white px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all shadow-2xl shadow-accent-600/40 hover:-translate-y-2 active:scale-95"
                   >
-                    Open Account <ArrowRight className="w-5 h-5" />
+                    Establish Vault <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link
                     href="/login"
-                    className="inline-flex justify-center items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/10 px-10 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:-translate-y-1 active:scale-95"
+                    className="inline-flex justify-center items-center gap-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white border border-white/20 px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all hover:-translate-y-2 active:scale-95"
                   >
                     Secure Login
                   </Link>
                 </div>
 
-                <div className="mt-16 flex items-center gap-12 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[8px] font-black text-white uppercase tracking-[0.3em]">Institutional Grade</span>
-                    <p className="text-xs font-bold text-white uppercase tracking-widest">FINMA Regulated</p>
+                <div className="mt-24 flex items-center gap-16 opacity-30">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] font-black text-white uppercase tracking-[0.4em]">Tier-1 Registry</span>
+                    <p className="text-sm font-bold text-white uppercase tracking-widest">FINMA Authorized</p>
                   </div>
-                  <div className="w-[1px] h-8 bg-white/20" />
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[8px] font-black text-white uppercase tracking-[0.3em]">Protected By</span>
-                    <p className="text-xs font-bold text-white uppercase tracking-widest">Swiss Secrecy Laws</p>
+                  <div className="w-[1px] h-12 bg-white/20" />
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[9px] font-black text-white uppercase tracking-[0.4em]">Global Custody</span>
+                    <p className="text-sm font-bold text-white uppercase tracking-widest">Swiss Jurisdiction</p>
                   </div>
                 </div>
               </motion.div>
             </div>
           </div>
           
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/30 animate-bounce z-20">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em]">Explore Vault</span>
-            <ChevronRight className="w-4 h-4 rotate-90" />
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-white/20 animate-bounce z-20">
+            <span className="text-[10px] font-black uppercase tracking-[0.4em]">Explore Institutional Depth</span>
+            <ChevronRight className="w-5 h-5 rotate-90" />
           </div>
         </section>
 
         {/* 2. FEATURES (White) */}
-        <section className="py-32 bg-white relative z-10">
+        <section className="py-40 bg-white relative z-10">
           <div className="container mx-auto px-6 md:px-12">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-24">
-              <div className="max-w-2xl">
-                <p className="text-accent-600 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Core Competencies</p>
-                <h2 className="text-4xl md:text-6xl font-black text-brand-950 tracking-tighter leading-none">
-                  A Financial Platform <br />for the Modern Era
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-32">
+              <div className="max-w-3xl">
+                <p className="text-accent-600 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Core Competencies</p>
+                <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter leading-none uppercase">
+                  Digital Sophistication. <br />Swiss Integrity.
                 </h2>
               </div>
-              <p className="text-lg text-slate-500 max-w-sm leading-relaxed font-medium">
-                We combine traditional Swiss reliability with cutting-edge technology to give you the most powerful banking experience.
+              <p className="text-xl text-slate-500 max-w-md leading-relaxed font-medium">
+                We synthesize three centuries of Swiss financial stability with a digital architecture designed for the speed of modern life.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="p-10 rounded-[2.5rem] bg-brand-50 border border-brand-100 hover:shadow-2xl hover:shadow-brand-900/5 transition-all group"
+                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  className="p-12 rounded-[3rem] bg-brand-50 border border-brand-100 hover:shadow-[0_40px_100px_rgba(0,0,0,0.04)] transition-all duration-700 group"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-10 group-hover:scale-110 group-hover:bg-brand-950 transition-all duration-500">
-                    <div className="group-hover:text-white transition-colors">
+                  <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-12 group-hover:scale-110 group-hover:bg-brand-950 transition-all duration-700">
+                    <div className="group-hover:text-white transition-colors duration-700">
                       {feature.icon}
                     </div>
                   </div>
-                  <h3 className="text-xl font-black text-brand-900 mb-4 uppercase tracking-tight">{feature.title}</h3>
-                  <p className="text-slate-500 leading-relaxed font-medium">
+                  <h3 className="text-2xl font-black text-brand-900 mb-6 uppercase tracking-tight">{feature.title}</h3>
+                  <p className="text-lg text-slate-500 leading-relaxed font-medium">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -283,40 +289,43 @@ export default function LandingPage() {
         </section>
 
         {/* 3. DASHBOARD PREVIEW (Dark) */}
-        <section className="py-32 bg-brand-950 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
+        <section className="py-40 bg-brand-950 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-20">
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-brand-800)_0%,_transparent_70%)]" />
           </div>
           
           <div className="container mx-auto px-6 md:px-12 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-20">
-              <p className="text-accent-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Command Center</p>
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-6 uppercase">Total Control, Reimagined.</h2>
-              <p className="text-slate-400 text-lg font-medium leading-relaxed">
-                Manage your global liquidity through our award-winning digital interface. Real-time updates, military-grade security, and intuitive controls.
+            <div className="text-center max-w-4xl mx-auto mb-24">
+              <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">The Control Layer</p>
+              <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter mb-8 uppercase">A New Standard for Access.</h2>
+              <p className="text-slate-400 text-xl font-medium leading-relaxed">
+                Your global portfolio, synchronized in real-time. Experience the most advanced institutional interface in the private banking sector.
               </p>
             </div>
 
             <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 60 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="relative mx-auto max-w-5xl rounded-[3rem] border border-white/10 shadow-2xl shadow-black/50 overflow-hidden"
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="relative mx-auto max-w-6xl rounded-[4rem] border border-white/10 shadow-[0_60px_150px_rgba(0,0,0,0.6)] overflow-hidden"
             >
-              <div className="aspect-[16/10] bg-brand-900">
+              <div className="aspect-[16/9] bg-brand-900 relative">
                 <Image
                   src={placeholders.dashboardPreview.url}
                   fill
                   alt={placeholders.dashboardPreview.alt}
-                  className="object-cover opacity-80"
+                  className="object-cover opacity-90 transition-transform duration-[20s] hover:scale-110"
                   data-ai-hint={placeholders.dashboardPreview.hint}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-950/80 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-950/90 via-transparent to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform group">
-                    <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1" />
-                  </div>
+                  <motion.div 
+                    whileHover={{ scale: 1.1 }}
+                    className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-2xl border border-white/20 flex items-center justify-center cursor-pointer transition-colors hover:bg-white/20 group"
+                  >
+                    <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[22px] border-l-white border-b-[12px] border-b-transparent ml-2" />
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
@@ -324,23 +333,23 @@ export default function LandingPage() {
         </section>
 
         {/* 4. STATISTICS (Gradient) */}
-        <section className="py-24 bg-gradient-to-br from-brand-900 to-brand-950 text-white relative">
+        <section className="py-32 bg-gradient-to-br from-brand-900 via-brand-950 to-brand-900 text-white relative border-y border-white/5">
           <div className="container mx-auto px-6 md:px-12">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
               {stats.map((stat, i) => (
                 <motion.div 
                   key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
+                  transition={{ delay: i * 0.15, duration: 0.8 }}
                   className="text-center group"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-accent-600 transition-colors">
-                    <stat.icon className="w-5 h-5 text-accent-400 group-hover:text-white" />
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 group-hover:bg-accent-600 transition-all duration-500 group-hover:scale-110">
+                    <stat.icon className="w-7 h-7 text-accent-400 group-hover:text-white" />
                   </div>
-                  <p className="text-4xl md:text-5xl font-bold font-mono tracking-tighter mb-2">{stat.value}</p>
-                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">{stat.label}</p>
+                  <p className="text-5xl md:text-6xl font-bold font-mono tracking-tighter mb-4">{stat.value}</p>
+                  <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.3em]">{stat.label}</p>
                 </motion.div>
               ))}
             </div>
@@ -348,11 +357,11 @@ export default function LandingPage() {
         </section>
 
         {/* 5. TESTIMONIALS (White) */}
-        <section className="py-32 bg-white">
+        <section className="py-40 bg-white">
           <div className="container mx-auto px-6 md:px-12">
-            <div className="text-center mb-24">
-              <p className="text-accent-600 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Member Insights</p>
-              <h2 className="text-4xl md:text-5xl font-black text-brand-950 tracking-tighter uppercase">The Institutional Standard</h2>
+            <div className="text-center mb-32">
+              <p className="text-accent-600 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Institutional Sentiment</p>
+              <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter uppercase leading-none">A Circle of Trust.</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -362,20 +371,20 @@ export default function LandingPage() {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.2 }}
-                  className="relative p-10 bg-slate-50 rounded-[3rem] border border-slate-100"
+                  transition={{ delay: i * 0.2, duration: 0.8 }}
+                  className="relative p-12 bg-slate-50 rounded-[3.5rem] border border-slate-100 hover:bg-white hover:shadow-[0_40px_100px_rgba(0,0,0,0.06)] transition-all duration-700"
                 >
-                  <Star className="w-5 h-5 text-accent-500 fill-accent-500 mb-8" />
-                  <p className="text-lg text-brand-900 font-medium leading-relaxed mb-10 italic">
+                  <Star className="w-6 h-6 text-accent-500 fill-accent-500 mb-10" />
+                  <p className="text-xl text-brand-900 font-medium leading-relaxed mb-12 italic">
                     &quot;{t.quote}&quot;
                   </p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-brand-950 flex items-center justify-center text-white font-black text-xs">
+                  <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 rounded-2xl bg-brand-950 flex items-center justify-center text-white font-black text-sm">
                       {t.avatar}
                     </div>
                     <div>
-                      <p className="text-sm font-black text-brand-950 uppercase tracking-tight">{t.author}</p>
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t.role}</p>
+                      <p className="text-base font-black text-brand-950 uppercase tracking-tight">{t.author}</p>
+                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-1">{t.role}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -385,34 +394,35 @@ export default function LandingPage() {
         </section>
 
         {/* 6. PREMIUM MEMBERSHIP (Black Glass) */}
-        <section className="py-32 bg-white">
+        <section className="py-40 bg-white">
           <div className="container mx-auto px-6 md:px-12">
             <motion.div 
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="black-glass rounded-[4rem] p-16 md:p-24 text-center relative"
+              transition={{ duration: 1.2 }}
+              className="black-glass rounded-[5rem] p-20 md:p-32 text-center relative"
             >
-              <div className="relative z-10 max-w-3xl mx-auto">
-                <div className="w-20 h-20 rounded-[2rem] bg-white flex items-center justify-center mx-auto mb-12 shadow-2xl">
-                  <ShieldCheck className="w-10 h-10 text-brand-950" />
+              <div className="relative z-10 max-w-4xl mx-auto">
+                <div className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-16 shadow-[0_20px_50px_rgba(255,255,255,0.1)]">
+                  <ShieldCheck className="w-12 h-12 text-brand-950" />
                 </div>
-                <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter mb-8 uppercase leading-none">
-                  Establish Your <br />Vault Today
+                <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-10 uppercase leading-[0.85]">
+                  Secure Your <br />Legacy.
                 </h2>
-                <p className="text-xl text-slate-400 mb-12 font-medium leading-relaxed">
-                  Join an exclusive circle of global members. Opening your digital institution takes less than 8 minutes.
+                <p className="text-2xl text-slate-400 mb-16 font-medium leading-relaxed max-w-2xl mx-auto">
+                  Access the premier digital institution for global professionals. Your private vault is ready for initialization.
                 </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
                   <Link
                     href="/open-account"
-                    className="inline-flex justify-center items-center gap-3 bg-white text-brand-950 px-12 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-brand-50 transition-all hover:scale-105 active:scale-95"
+                    className="inline-flex justify-center items-center gap-4 bg-white text-brand-950 px-16 py-7 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:bg-brand-50 transition-all hover:scale-105 active:scale-95 shadow-2xl"
                   >
-                    Apply for Membership <ChevronRight className="w-4 h-4" />
+                    Apply for Membership <ChevronRight className="w-5 h-5" />
                   </Link>
                   <Link
                     href="/support/contact"
-                    className="text-[10px] font-black text-white/40 hover:text-white uppercase tracking-[0.3em] transition-colors"
+                    className="text-[11px] font-black text-white/40 hover:text-white uppercase tracking-[0.4em] transition-all border-b border-transparent hover:border-white/20 pb-1"
                   >
                     Consult an Advisor
                   </Link>
@@ -420,8 +430,8 @@ export default function LandingPage() {
               </div>
               
               {/* Abstract decorative elements */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-accent-600/10 blur-[100px] rounded-full -mr-48 -mt-48" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full -ml-32 -mb-32" />
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-600/10 blur-[120px] rounded-full -mr-64 -mt-64" />
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full -ml-32 -mb-32" />
             </motion.div>
           </div>
         </section>
