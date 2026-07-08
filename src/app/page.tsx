@@ -373,7 +373,7 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, x: -100 }}
         animate={{ 
           opacity: 1, 
-          x: 0,
+          x: 0, 
           y: [0, -10, 0]
         }}
         transition={{ 
@@ -754,33 +754,35 @@ export default function LandingPage() {
         </section>
 
         {/* 7. PREMIUM MEMBERSHIP (Black Glass) */}
-        <section className="py-40 bg-white">
+        <section className="py-60 bg-white">
           <div className="container mx-auto px-6 md:px-12">
             <motion.div 
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: "easeOut" }}
-              className="black-glass rounded-[5rem] p-20 md:p-32 text-center relative"
+              className="black-glass rounded-[5rem] p-24 md:p-40 text-center relative"
             >
-              <div className="relative z-10 max-w-4xl mx-auto">
+              <div className="relative z-10 max-w-5xl mx-auto">
                 <motion.div 
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-16 shadow-[0_20px_50px_rgba(255,255,255,0.05)]"
+                  className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-20 shadow-[0_20px_50px_rgba(255,255,255,0.05)]"
                 >
                   <ShieldCheck className="w-12 h-12 text-brand-950" />
                 </motion.div>
-                <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-10 uppercase leading-[0.85]">
-                  Secure Your <br />Legacy.
+                <h2 className="text-5xl md:text-[110px] font-black text-white tracking-tighter mb-16 uppercase leading-[0.82] select-none">
+                  Experience <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 via-accent-500 to-accent-400">Swiss Banking</span> <br />
+                  Without Compromise.
                 </h2>
-                <p className="text-2xl text-slate-400 mb-16 font-medium leading-relaxed max-w-2xl mx-auto">
+                <p className="text-2xl text-slate-400 mb-24 font-medium leading-relaxed max-w-2xl mx-auto">
                   Access the premier digital institution for global professionals. Your private vault is ready for initialization.
                 </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-12">
                   <Link
                     href="/open-account"
-                    className="inline-flex justify-center items-center gap-4 bg-white text-brand-950 px-16 py-7 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:bg-brand-50 transition-all hover:scale-105 active:scale-95 shadow-2xl"
+                    className="inline-flex justify-center items-center gap-4 bg-white text-brand-950 px-20 py-8 rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] hover:bg-brand-50 transition-all hover:scale-105 active:scale-95 shadow-2xl"
                   >
                     Apply for Membership <ChevronRight className="w-5 h-5" />
                   </Link>
@@ -792,8 +794,8 @@ export default function LandingPage() {
                   </Link>
                 </div>
               </div>
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-500/10 blur-[120px] rounded-full -mr-64 -mt-64" />
-              <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-400/5 blur-[100px] rounded-full -ml-32 -mb-32" />
+              <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent-500/10 blur-[160px] rounded-full -mr-96 -mt-96 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-accent-400/5 blur-[140px] rounded-full -ml-64 -mb-64 pointer-events-none" />
             </motion.div>
           </div>
         </section>
