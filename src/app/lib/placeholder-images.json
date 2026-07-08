@@ -1,4 +1,3 @@
-
 {
   "hero": {
     "url": "https://picsum.photos/seed/canal1/1920/1080",
@@ -34,5 +33,12 @@
     "height": 600,
     "alt": "Modern business boardroom",
     "hint": "business meeting"
+  },
+  "dashboardPreview": {
+    "url": "https://picsum.photos/seed/canal6/1200/800",
+    "width": 1200,
+    "height": 800,
+    "alt": "Canal Bank digital interface mockup",
+    "hint": "banking dashboard"
   }
 }

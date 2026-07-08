@@ -68,7 +68,15 @@
     overflow: hidden;
   }
 
-  .premium-glass::before {
+  .black-glass {
+    background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .premium-glass::before, .black-glass::before {
     content: '';
     position: absolute;
     top: 0;
@@ -85,7 +93,7 @@
     pointer-events: none;
   }
 
-  .premium-glass::after {
+  .premium-glass::after, .black-glass::after {
     content: '';
     position: absolute;
     inset: 0;
