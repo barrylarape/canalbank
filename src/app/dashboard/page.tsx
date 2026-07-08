@@ -178,9 +178,11 @@ export default function DashboardPage() {
   const rewards = Math.floor(monthlySpending * 0.1);
 
   const copyIban = () => {
-    navigator.clipboard.writeText(primaryIban);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(primaryIban);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -263,8 +265,8 @@ export default function DashboardPage() {
           </div>
         </div>
         
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 blur-[120px] rounded-full -mr-64 -mt-64 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-500/10 blur-[100px] rounded-full -ml-40 -mb-40 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-500/5 blur-[120px] rounded-full -mr-64 -mt-64 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-400/10 blur-[100px] rounded-full -ml-40 -mb-40 pointer-events-none" />
       </motion.section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">

@@ -27,32 +27,32 @@ import { cn } from "@/lib/utils";
 
 const features = [
   {
-    icon: <Globe className="w-8 h-8 text-accent-600" />,
+    icon: <Globe className="w-8 h-8 text-accent-500" />,
     title: "International Banking",
     description: "Multi-currency accounts, instant FX conversion, and zero-fee international transfers across 50+ countries.",
   },
   {
-    icon: <ShieldCheck className="w-8 h-8 text-accent-600" />,
+    icon: <ShieldCheck className="w-8 h-8 text-accent-500" />,
     title: "Swiss Security",
     description: "Military-grade encryption and strict Swiss privacy laws protecting your assets for generations.",
   },
   {
-    icon: <Smartphone className="w-8 h-8 text-accent-600" />,
+    icon: <Smartphone className="w-8 h-8 text-accent-500" />,
     title: "Digital First",
     description: "Manage your complete financial life from anywhere with our award-winning mobile platform.",
   },
   {
-    icon: <TrendingUp className="w-8 h-8 text-accent-600" />,
+    icon: <TrendingUp className="w-8 h-8 text-accent-500" />,
     title: "Wealth Management",
     description: "Access global markets, ETFs, and automated portfolio management tailored to your goals.",
   },
   {
-    icon: <CreditCard className="w-8 h-8 text-accent-600" />,
+    icon: <CreditCard className="w-8 h-8 text-accent-500" />,
     title: "Premium Cards",
     description: "Exclusive metal cards with luxury travel benefits, concierge service, and high limits.",
   },
   {
-    icon: <Landmark className="w-8 h-8 text-accent-600" />,
+    icon: <Landmark className="w-8 h-8 text-accent-500" />,
     title: "Business Solutions",
     description: "Corporate accounts, payroll, and advanced treasury tools for modern Swiss enterprises.",
   },
@@ -94,17 +94,17 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1, duration: 1 }}
-        className="absolute top-[20%] right-[5%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+        className="absolute top-[20%] right-[5%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <div className="flex items-center justify-between mb-4">
-          <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+          <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400">
             <ArrowDownLeft className="w-6 h-6" />
           </div>
           <span className="text-[10px] font-black text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full uppercase tracking-widest">Completed</span>
         </div>
         <p className="text-2xl font-bold text-white font-mono tracking-tighter">+€15,000.00</p>
         <p className="text-[11px] font-black text-white/40 uppercase tracking-[0.2em] mt-1">International Wire</p>
-        <div className="h-[1px] bg-white/10 w-full my-4" />
+        <div className="h-[1px] bg-white/5 w-full my-4" />
         <div className="flex items-center gap-2">
           <span className="text-lg">🇨🇭</span>
           <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Zurich Institutional Hub</span>
@@ -116,7 +116,7 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-[20%] right-[15%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+        className="absolute bottom-[20%] right-[15%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <div className="flex items-center justify-between mb-6">
           <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">Live Currency Feed</p>
@@ -131,7 +131,7 @@ function FloatingArtifacts() {
               <span className="text-[11px] font-black text-white uppercase tracking-widest">{fx.pair}</span>
               <div className="text-right">
                 <p className="text-sm font-bold text-white font-mono">{fx.rate}</p>
-                <p className={cn("text-[9px] font-bold", fx.trend.startsWith('+') ? "text-emerald-400" : "text-red-400")}>{fx.trend}</p>
+                <p className={cn("text-[9px] font-bold", fx.trend.startsWith('+') ? "text-emerald-400" : "text-accent-500")}>{fx.trend}</p>
               </div>
             </div>
           ))}
@@ -143,7 +143,7 @@ function FloatingArtifacts() {
         initial={{ opacity: 0, x: -100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1.2, duration: 1 }}
-        className="absolute top-[45%] right-[25%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/20 shadow-2xl shadow-black/40 z-20"
+        className="absolute top-[45%] right-[25%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">Portfolio Yield</p>
         <div className="flex items-baseline gap-2">
@@ -153,7 +153,7 @@ function FloatingArtifacts() {
         <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest mt-1">Institutional High-Alpha</p>
         <div className="mt-4 flex gap-1 items-end h-8">
           {[0.3, 0.5, 0.2, 0.8, 0.4, 0.9, 0.6, 0.7].map((h, i) => (
-            <div key={i} className="flex-1 bg-accent-500/40 rounded-full" style={{ height: `${h * 100}%` }} />
+            <div key={i} className="flex-1 bg-accent-500/30 rounded-full" style={{ height: `${h * 100}%` }} />
           ))}
         </div>
       </motion.div>
@@ -175,13 +175,13 @@ export default function LandingPage() {
               width={placeholders.hero.width}
               height={placeholders.hero.height}
               alt={placeholders.hero.alt}
-              className="object-cover w-full h-full brightness-[0.35]"
+              className="object-cover w-full h-full brightness-[0.25]"
               priority
               data-ai-hint={placeholders.hero.hint}
             />
             {/* Layered Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/50 to-transparent z-10" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(229,57,53,0.15)_0%,_transparent_60%)] z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/40 to-transparent z-10" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(255,91,97,0.12)_0%,_transparent_60%)] z-10" />
           </div>
 
           <FloatingArtifacts />
@@ -199,7 +199,7 @@ export default function LandingPage() {
                 
                 <h1 className="text-7xl md:text-[140px] xl:text-[180px] font-black text-white tracking-tighter mb-20 leading-[0.78] uppercase select-none">
                   Banking <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-accent-400 to-blue-300">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 via-accent-500 to-accent-400">
                     Without <br />
                   </span>
                   Borders.
@@ -215,13 +215,13 @@ export default function LandingPage() {
                 <div className="flex flex-col sm:flex-row gap-8">
                   <Link
                     href="/open-account"
-                    className="inline-flex justify-center items-center gap-4 bg-accent-600 hover:bg-accent-700 text-white px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all shadow-2xl shadow-accent-600/40 hover:-translate-y-2 active:scale-95"
+                    className="inline-flex justify-center items-center gap-4 bg-accent-500 hover:bg-accent-600 text-white px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all shadow-2xl shadow-accent-500/20 hover:-translate-y-2 active:scale-95"
                   >
                     Establish Vault <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link
                     href="/login"
-                    className="inline-flex justify-center items-center gap-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white border border-white/20 px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all hover:-translate-y-2 active:scale-95"
+                    className="inline-flex justify-center items-center gap-4 bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white border border-white/10 px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all hover:-translate-y-2 active:scale-95"
                   >
                     Secure Login
                   </Link>
@@ -253,7 +253,7 @@ export default function LandingPage() {
           <div className="container mx-auto px-6 md:px-12">
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-32">
               <div className="max-w-3xl">
-                <p className="text-accent-600 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Core Competencies</p>
+                <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Core Competencies</p>
                 <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter leading-none uppercase">
                   Digital Sophistication. <br />Swiss Integrity.
                 </h2>
@@ -290,8 +290,8 @@ export default function LandingPage() {
 
         {/* 3. DASHBOARD PREVIEW (Dark) */}
         <section className="py-40 bg-brand-950 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-brand-800)_0%,_transparent_70%)]" />
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--color-accent-500)_0%,_transparent_70%)]" />
           </div>
           
           <div className="container mx-auto px-6 md:px-12 relative z-10">
@@ -308,7 +308,7 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative mx-auto max-w-6xl rounded-[4rem] border border-white/10 shadow-[0_60px_150px_rgba(0,0,0,0.6)] overflow-hidden"
+              className="relative mx-auto max-w-6xl rounded-[4rem] border border-white/5 shadow-[0_60px_150px_rgba(0,0,0,0.7)] overflow-hidden"
             >
               <div className="aspect-[16/9] bg-brand-900 relative">
                 <Image
@@ -322,7 +322,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <motion.div 
                     whileHover={{ scale: 1.1 }}
-                    className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-2xl border border-white/20 flex items-center justify-center cursor-pointer transition-colors hover:bg-white/20 group"
+                    className="w-24 h-24 rounded-full bg-white/5 backdrop-blur-2xl border border-white/10 flex items-center justify-center cursor-pointer transition-colors hover:bg-white/10 group"
                   >
                     <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[22px] border-l-white border-b-[12px] border-b-transparent ml-2" />
                   </motion.div>
@@ -333,7 +333,7 @@ export default function LandingPage() {
         </section>
 
         {/* 4. STATISTICS (Gradient) */}
-        <section className="py-32 bg-gradient-to-br from-brand-900 via-brand-950 to-brand-900 text-white relative border-y border-white/5">
+        <section className="py-32 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-950 text-white relative border-y border-white/5">
           <div className="container mx-auto px-6 md:px-12">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
               {stats.map((stat, i) => (
@@ -345,7 +345,7 @@ export default function LandingPage() {
                   transition={{ delay: i * 0.15, duration: 0.8 }}
                   className="text-center group"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 group-hover:bg-accent-600 transition-all duration-500 group-hover:scale-110">
+                  <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-8 group-hover:bg-accent-500 transition-all duration-500 group-hover:scale-110">
                     <stat.icon className="w-7 h-7 text-accent-400 group-hover:text-white" />
                   </div>
                   <p className="text-5xl md:text-6xl font-bold font-mono tracking-tighter mb-4">{stat.value}</p>
@@ -360,7 +360,7 @@ export default function LandingPage() {
         <section className="py-40 bg-white">
           <div className="container mx-auto px-6 md:px-12">
             <div className="text-center mb-32">
-              <p className="text-accent-600 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Institutional Sentiment</p>
+              <p className="text-accent-500 text-[11px] font-black uppercase tracking-[0.4em] mb-6">Institutional Sentiment</p>
               <h2 className="text-5xl md:text-7xl font-black text-brand-950 tracking-tighter uppercase leading-none">A Circle of Trust.</h2>
             </div>
 
@@ -372,7 +372,7 @@ export default function LandingPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.2, duration: 0.8 }}
-                  className="relative p-12 bg-slate-50 rounded-[3.5rem] border border-slate-100 hover:bg-white hover:shadow-[0_40px_100px_rgba(0,0,0,0.06)] transition-all duration-700"
+                  className="relative p-12 bg-brand-50 rounded-[3.5rem] border border-brand-100 hover:bg-white hover:shadow-[0_40px_100px_rgba(0,0,0,0.06)] transition-all duration-700"
                 >
                   <Star className="w-6 h-6 text-accent-500 fill-accent-500 mb-10" />
                   <p className="text-xl text-brand-900 font-medium leading-relaxed mb-12 italic">
@@ -404,7 +404,7 @@ export default function LandingPage() {
               className="black-glass rounded-[5rem] p-20 md:p-32 text-center relative"
             >
               <div className="relative z-10 max-w-4xl mx-auto">
-                <div className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-16 shadow-[0_20px_50px_rgba(255,255,255,0.1)]">
+                <div className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-16 shadow-[0_20px_50px_rgba(255,255,255,0.05)]">
                   <ShieldCheck className="w-12 h-12 text-brand-950" />
                 </div>
                 <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-10 uppercase leading-[0.85]">
@@ -430,8 +430,8 @@ export default function LandingPage() {
               </div>
               
               {/* Abstract decorative elements */}
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-600/10 blur-[120px] rounded-full -mr-64 -mt-64" />
-              <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 blur-[100px] rounded-full -ml-32 -mb-32" />
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent-500/10 blur-[120px] rounded-full -mr-64 -mt-64" />
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-400/5 blur-[100px] rounded-full -ml-32 -mb-32" />
             </motion.div>
           </div>
         </section>

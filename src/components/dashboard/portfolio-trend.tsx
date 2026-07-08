@@ -19,15 +19,15 @@ export function PortfolioTrend({ data }: PortfolioTrendProps) {
         <AreaChart data={chartData}>
           <defs>
             <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#e53935" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#e53935" stopOpacity={0} />
+              <stop offset="5%" stopColor="#ff5b61" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#ff5b61" stopOpacity={0} />
             </linearGradient>
           </defs>
           <Tooltip 
             content={({ active, payload }) => {
               if (active && payload && payload.length) {
                 return (
-                  <div className="bg-slate-900 border border-white/10 px-3 py-1.5 rounded-lg shadow-2xl">
+                  <div className="bg-slate-950 border border-white/10 px-3 py-1.5 rounded-lg shadow-2xl">
                     <p className="text-[10px] font-mono font-bold text-white">
                       €{payload[0].value?.toLocaleString()}
                     </p>
@@ -40,7 +40,7 @@ export function PortfolioTrend({ data }: PortfolioTrendProps) {
           <Area
             type="monotone"
             dataKey="value"
-            stroke="#e53935"
+            stroke="#ff5b61"
             strokeWidth={2}
             fillOpacity={1}
             fill="url(#trendGradient)"
