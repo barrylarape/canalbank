@@ -32,6 +32,11 @@
     50% { transform: translateX(200%) skewX(-30deg); opacity: 0; }
     100% { transform: translateX(200%) skewX(-30deg); opacity: 0; }
   }
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(0.98); }
+  }
 }
 
 @layer base {

@@ -10,7 +10,6 @@ import {
   Wallet,
   ShieldCheck
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const iconMap = {
   cards: CreditCard,

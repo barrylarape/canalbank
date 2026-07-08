@@ -86,14 +86,38 @@ const testimonials = [
   }
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.22, 1, 0.36, 1] } }
+};
+
 function FloatingArtifacts() {
   return (
     <div className="hidden xl:block absolute inset-0 pointer-events-none overflow-hidden">
       {/* Transaction Artifact */}
       <motion.div 
         initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1, duration: 1 }}
+        animate={{ 
+          opacity: 1, 
+          x: 0,
+          y: [0, -8, 0]
+        }}
+        transition={{ 
+          opacity: { delay: 1, duration: 1 },
+          x: { delay: 1, duration: 1 },
+          y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+        }}
         className="absolute top-[20%] right-[5%] w-72 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <div className="flex items-center justify-between mb-4">
@@ -114,8 +138,14 @@ function FloatingArtifacts() {
       {/* Live FX Artifact */}
       <motion.div 
         initial={{ opacity: 0, y: 100 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 1 }}
+        animate={{ 
+          opacity: 1, 
+          y: [0, -6, 0]
+        }}
+        transition={{ 
+          opacity: { delay: 1.5, duration: 1 },
+          y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+        }}
         className="absolute bottom-[20%] right-[15%] w-64 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <div className="flex items-center justify-between mb-6">
@@ -141,8 +171,16 @@ function FloatingArtifacts() {
       {/* Portfolio Artifact */}
       <motion.div 
         initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.2, duration: 1 }}
+        animate={{ 
+          opacity: 1, 
+          x: 0,
+          y: [0, -10, 0]
+        }}
+        transition={{ 
+          opacity: { delay: 1.2, duration: 1 },
+          x: { delay: 1.2, duration: 1 },
+          y: { duration: 7, repeat: Infinity, ease: "easeInOut" }
+        }}
         className="absolute top-[45%] right-[25%] w-56 p-6 rounded-3xl premium-glass backdrop-blur-2xl border border-white/10 shadow-2xl z-20"
       >
         <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2">Portfolio Yield</p>
@@ -169,7 +207,12 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* 1. HERO (Dark Glass) */}
         <section className="relative min-h-screen flex items-center pt-32 pb-40 overflow-hidden bg-brand-950">
-          <div className="absolute inset-0 z-0">
+          <motion.div 
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+            className="absolute inset-0 z-0"
+          >
             <Image
               src={placeholders.hero.url}
               width={placeholders.hero.width}
@@ -182,37 +225,37 @@ export default function LandingPage() {
             {/* Layered Overlays */}
             <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/40 to-transparent z-10" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,_rgba(255,91,97,0.12)_0%,_transparent_60%)] z-10" />
-          </div>
+          </motion.div>
 
           <FloatingArtifacts />
 
           <div className="container relative z-20 mx-auto px-6 md:px-12">
             <div className="max-w-7xl">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
               >
-                <div className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.3em] mb-12 shadow-2xl">
+                <motion.div variants={itemVariants} className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white text-[11px] font-black uppercase tracking-[0.3em] mb-12 shadow-2xl">
                   <Zap className="w-3.5 h-3.5 text-accent-400" /> Switzerland&apos;s Premier Digital Institution
-                </div>
+                </motion.div>
                 
-                <h1 className="text-7xl md:text-[140px] xl:text-[180px] font-black text-white tracking-tighter mb-20 leading-[0.78] uppercase select-none">
+                <motion.h1 variants={itemVariants} className="text-7xl md:text-[140px] xl:text-[180px] font-black text-white tracking-tighter mb-20 leading-[0.78] uppercase select-none">
                   Banking <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 via-accent-500 to-accent-400">
                     Without <br />
                   </span>
                   Borders.
-                </h1>
+                </motion.h1>
 
-                <div className="max-w-2xl mb-16">
+                <motion.div variants={itemVariants} className="max-w-2xl mb-16">
                   <p className="text-2xl md:text-3xl text-slate-300 leading-relaxed font-medium tracking-tight">
                     Institutional private banking reimagined for global citizens. 
                     Manage liquidity, deploy capital, and protect your legacy.
                   </p>
-                </div>
+                </motion.div>
                 
-                <div className="flex flex-col sm:flex-row gap-8">
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-8">
                   <Link
                     href="/open-account"
                     className="inline-flex justify-center items-center gap-4 bg-accent-500 hover:bg-accent-600 text-white px-12 py-6 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] transition-all shadow-2xl shadow-accent-500/20 hover:-translate-y-2 active:scale-95"
@@ -225,9 +268,9 @@ export default function LandingPage() {
                   >
                     Secure Login
                   </Link>
-                </div>
+                </motion.div>
 
-                <div className="mt-24 flex items-center gap-16 opacity-30">
+                <motion.div variants={itemVariants} className="mt-24 flex items-center gap-16 opacity-30">
                   <div className="flex flex-col gap-2">
                     <span className="text-[9px] font-black text-white uppercase tracking-[0.4em]">Tier-1 Registry</span>
                     <p className="text-sm font-bold text-white uppercase tracking-widest">FINMA Authorized</p>
@@ -237,7 +280,7 @@ export default function LandingPage() {
                     <span className="text-[9px] font-black text-white uppercase tracking-[0.4em]">Global Custody</span>
                     <p className="text-sm font-bold text-white uppercase tracking-widest">Swiss Jurisdiction</p>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             </div>
           </div>
@@ -269,8 +312,8 @@ export default function LandingPage() {
                   key={feature.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                   className="p-12 rounded-[3rem] bg-brand-50 border border-brand-100 hover:shadow-[0_40px_100px_rgba(0,0,0,0.04)] transition-all duration-700 group"
                 >
                   <div className="w-20 h-20 rounded-3xl bg-white shadow-sm flex items-center justify-center mb-12 group-hover:scale-110 group-hover:bg-brand-950 transition-all duration-700">
@@ -371,7 +414,7 @@ export default function LandingPage() {
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.2, duration: 0.8 }}
+                  transition={{ delay: i * 0.2, duration: 0.8, ease: "easeOut" }}
                   className="relative p-12 bg-brand-50 rounded-[3.5rem] border border-brand-100 hover:bg-white hover:shadow-[0_40px_100px_rgba(0,0,0,0.06)] transition-all duration-700"
                 >
                   <Star className="w-6 h-6 text-accent-500 fill-accent-500 mb-10" />
@@ -400,13 +443,17 @@ export default function LandingPage() {
               initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
               className="black-glass rounded-[5rem] p-20 md:p-32 text-center relative"
             >
               <div className="relative z-10 max-w-4xl mx-auto">
-                <div className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-16 shadow-[0_20px_50px_rgba(255,255,255,0.05)]">
+                <motion.div 
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-24 h-24 rounded-[2.5rem] bg-white flex items-center justify-center mx-auto mb-16 shadow-[0_20px_50px_rgba(255,255,255,0.05)]"
+                >
                   <ShieldCheck className="w-12 h-12 text-brand-950" />
-                </div>
+                </motion.div>
                 <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-10 uppercase leading-[0.85]">
                   Secure Your <br />Legacy.
                 </h2>
