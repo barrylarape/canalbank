@@ -17,6 +17,7 @@ import {
   Activity,
   Zap,
   ArrowDownLeft,
+  ArrowUpRight,
   RefreshCw,
   Watch,
   BarChart3,
@@ -609,4 +610,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
