@@ -58,7 +58,7 @@ export default function OpenAccountPage() {
               <div className="text-left">
                 <p className="text-xs text-slate-400">Email us</p>
                 <p className="text-sm font-medium text-white group-hover:text-accent-300 transition-colors">
-                  banking@canalbank.ch
+                  support@canalbank.capital
                 </p>
               </div>
             </a>
