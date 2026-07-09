@@ -453,7 +453,13 @@ export default function LandingPage() {
                 </div>
               </motion.div>
               <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2 }} className="relative aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
-                <Image src={getAsset("zurichCanal", placeholders.zurichCanal.url)} fill alt="Zurich Heritage" className="object-cover" data-ai-hint="luxury zurich landscape" />
+                <Image 
+                  src={getAsset("zurichCanal", placeholders.zurichCanal.url)} 
+                  fill 
+                  alt="Zurich Heritage" 
+                  className="object-cover" 
+                  data-ai-hint="luxury zurich landscape" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-950/40 to-transparent" />
                 <div className="absolute bottom-10 left-10 p-6 premium-glass backdrop-blur-xl rounded-2xl border border-white/20 max-w-[240px]">
                   <Mountain className="w-6 h-6 text-accent-400 mb-3" />
@@ -525,7 +531,13 @@ export default function LandingPage() {
           <div className="container mx-auto px-6 md:px-12 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
               <motion.div initial={{ opacity: 0, order: 1 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="relative aspect-[4/3] rounded-[3rem] overflow-hidden shadow-2xl lg:order-2">
-                <Image src={getAsset("businessBanking", placeholders.businessBanking.url)} fill alt="Wealth Management" className="object-cover" data-ai-hint="private banking office" />
+                <Image 
+                  src={getAsset("businessBanking", placeholders.businessBanking.url)} 
+                  fill 
+                  alt="Wealth Management" 
+                  className="object-cover" 
+                  data-ai-hint="private banking office" 
+                />
                 <div className="absolute inset-0 bg-brand-950/20" />
               </motion.div>
               <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 1 }} className="lg:order-1">
@@ -593,11 +605,23 @@ export default function LandingPage() {
             <div className="relative h-[600px] md:h-[900px] w-full max-w-7xl mx-auto">
               <motion.div initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1.2 }} className="relative z-10 w-full max-w-5xl mx-auto rounded-[3rem] border border-white/5 shadow-[0_60px_150px_rgba(0,0,0,0.7)] overflow-hidden">
                 <div className="aspect-[16/10] bg-brand-900 relative">
-                  <Image src={getAsset("dashboardPreview", placeholders.dashboardPreview.url)} fill alt="Canal Bank Desktop" className="object-cover opacity-90" data-ai-hint="premium banking dashboard" />
+                  <Image 
+                    src={getAsset("dashboardPreview", placeholders.dashboardPreview.url)} 
+                    fill 
+                    alt="Canal Bank Desktop" 
+                    className="object-cover opacity-90" 
+                    data-ai-hint="premium banking dashboard" 
+                  />
                 </div>
               </motion.div>
               <motion.div initial={{ opacity: 0, x: 100, y: 100 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true }} transition={{ duration: 1.5, delay: 0.4 }} className="absolute -right-4 -bottom-10 md:right-20 md:bottom-20 z-40 w-[240px] md:w-[320px] aspect-[9/19.5] rounded-[3rem] bg-brand-950 border-[10px] border-slate-900 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10">
-                <Image src={getAsset("mobileApp", placeholders.mobileApp.url)} fill alt="Canal Bank Phone" className="object-cover" data-ai-hint="luxury mobile banking app" />
+                <Image 
+                  src={getAsset("mobileApp", placeholders.mobileApp.url)} 
+                  fill 
+                  alt="Canal Bank Phone" 
+                  className="object-cover" 
+                  data-ai-hint="luxury mobile banking app" 
+                />
               </motion.div>
               <ShowcaseArtifact icon={BarChart3} label="Portfolio Analytics" className="top-10 right-20 hidden md:flex" />
               <ShowcaseArtifact icon={ArrowLeftRight} label="Instant FX Engine" className="bottom-1/3 left-20 hidden md:flex" />

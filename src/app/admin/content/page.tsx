@@ -14,7 +14,8 @@ import {
   ShieldCheck,
   Landmark,
   Image as LucideImage,
-  Globe
+  Globe,
+  Eye
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -85,12 +86,12 @@ export default function ContentManagementPage() {
 
   const getAssetUrl = (id: string) => {
     if (settings[id]) return settings[id];
-    if (id === "logo") return null; // Default logo is programmatic
+    if (id === "logo") return null; 
     return (placeholders as any)[id]?.url;
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8 pb-24">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-3">
@@ -103,7 +104,8 @@ export default function ContentManagementPage() {
         </div>
         <button 
           onClick={fetchSettings}
-          className="p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-all"
+          disabled={loading}
+          className="p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-white transition-all disabled:opacity-50"
         >
           <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} />
         </button>
@@ -119,13 +121,14 @@ export default function ContentManagementPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {ASSET_CONFIG.map((asset) => {
           const url = getAssetUrl(asset.id);
           const isUploading = uploading === asset.id;
+          const isCustom = !!settings[asset.id];
 
           return (
-            <div key={asset.id} className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden group hover:border-slate-700 transition-all flex flex-col">
+            <div key={asset.id} className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden group hover:border-slate-700 transition-all flex flex-col shadow-xl">
               <div className="aspect-video relative bg-slate-950 flex items-center justify-center overflow-hidden">
                 {url ? (
                   <Image 
@@ -133,6 +136,7 @@ export default function ContentManagementPage() {
                     fill 
                     alt={asset.label} 
                     className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700" 
+                    unoptimized={isCustom}
                   />
                 ) : (
                   <div className="text-center p-8">
@@ -148,24 +152,29 @@ export default function ContentManagementPage() {
                   </div>
                 )}
 
-                <div className="absolute top-4 right-4">
+                <div className="absolute top-4 right-4 flex gap-2">
+                  {url && (
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-slate-900/80 border border-white/10 text-white/40 hover:text-white transition-all backdrop-blur-md">
+                      <Eye className="w-3 h-3" />
+                    </a>
+                  )}
                   <span className={cn(
-                    "px-2.5 py-1 rounded-full text-[9px] font-black uppercase border tracking-widest",
-                    settings[asset.id] ? "bg-accent-500 text-white border-accent-400" : "bg-slate-800 text-slate-500 border-slate-700"
+                    "px-2.5 py-1 rounded-full text-[9px] font-black uppercase border tracking-widest backdrop-blur-md",
+                    isCustom ? "bg-accent-500/20 text-accent-400 border-accent-500/30" : "bg-slate-800/80 text-slate-500 border-slate-700"
                   )}>
-                    {settings[asset.id] ? "Live" : "Default"}
+                    {isCustom ? "Custom" : "Default"}
                   </span>
                 </div>
               </div>
 
               <div className="p-6 flex-1 flex flex-col">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-accent-500 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-accent-500 transition-colors shadow-inner">
                     <asset.icon className="w-4 h-4" />
                   </div>
-                  <h3 className="font-bold text-white tracking-tight">{asset.label}</h3>
+                  <h3 className="font-bold text-white tracking-tight uppercase text-xs">{asset.label}</h3>
                 </div>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6 flex-1">{asset.desc}</p>
+                <p className="text-[11px] text-slate-500 leading-relaxed mb-6 flex-1">{asset.desc}</p>
                 
                 <label className="relative cursor-pointer">
                   <input 
@@ -178,7 +187,7 @@ export default function ContentManagementPage() {
                       if (file) handleUpload(asset.id, file);
                     }}
                   />
-                  <div className="w-full py-3 bg-slate-950 border border-slate-700 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-white hover:border-accent-500/50 transition-all">
+                  <div className="w-full py-3.5 bg-slate-950 border border-slate-700 rounded-xl flex items-center justify-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-white hover:border-accent-500/50 transition-all active:scale-[0.98]">
                     <Upload className="w-3.5 h-3.5" /> Replace Asset
                   </div>
                 </label>
@@ -186,6 +195,18 @@ export default function ContentManagementPage() {
             </div>
           );
         })}
+      </div>
+
+      <div className="p-6 bg-slate-900/50 border border-slate-800 rounded-3xl flex items-start gap-4">
+        <div className="w-10 h-10 rounded-xl bg-slate-950 flex items-center justify-center flex-shrink-0 text-accent-500 border border-slate-800 shadow-xl">
+          <ShieldCheck className="w-5 h-5" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[11px] font-black text-white uppercase tracking-widest">Storage Policy Notice</p>
+          <p className="text-xs text-slate-500 leading-relaxed font-medium">
+            All brand assets are stored in the institutional <span className="text-accent-400">site-assets</span> vault. Replacing an asset will immediately broadcast the change via the global realtime stream. Ensure images are high-resolution and optimized for web delivery.
+          </p>
+        </div>
       </div>
     </div>
   );
