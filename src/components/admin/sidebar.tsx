@@ -28,6 +28,8 @@ import {
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import Image from "next/image";
 
 const navGroups = [
   {
@@ -71,6 +73,7 @@ export function AdminSidebar({ adminName }: AdminSidebarProps) {
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { assets } = useSiteSettings();
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -87,8 +90,15 @@ export function AdminSidebar({ adminName }: AdminSidebarProps) {
   const SidebarContent = () => (
     <div className="flex flex-col h-full bg-slate-950">
       <div className={cn("p-8 border-b border-slate-800 flex items-center", collapsed ? "justify-center px-4" : "gap-4")}>
-        <div className="w-10 h-10 rounded-xl bg-accent-600 flex-shrink-0 flex items-center justify-center text-white font-bold text-xl shadow-[0_0_20px_rgba(229,57,53,0.2)]">
-          C
+        <div className={cn(
+          "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-white font-bold text-xl shadow-[0_0_20px_rgba(229,57,53,0.2)] overflow-hidden",
+          !assets.logo && "bg-accent-600"
+        )}>
+          {assets.logo ? (
+            <Image src={assets.logo} width={40} height={40} alt="Canal Bank Logo" className="object-contain" />
+          ) : (
+            "C"
+          )}
         </div>
         {!collapsed && (
           <div>

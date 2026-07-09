@@ -2,8 +2,13 @@
 
 import Link from "next/link";
 import { Lock, Mail, Phone } from "lucide-react";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export default function OpenAccountPage() {
+  const { assets } = useSiteSettings();
+
   return (
     <div className="min-h-screen bg-brand-950 flex items-center justify-center px-4 relative overflow-hidden">
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-brand-700/20 rounded-full blur-3xl pointer-events-none" />
@@ -12,8 +17,15 @@ export default function OpenAccountPage() {
       <div className="w-full max-w-md relative z-10 text-center">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-10">
-          <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-brand-950 font-bold text-2xl shadow-lg">
-            C
+          <div className={cn(
+            "w-12 h-12 rounded-xl flex items-center justify-center text-brand-950 font-bold text-2xl shadow-lg overflow-hidden",
+            !assets.logo && "bg-white"
+          )}>
+            {assets.logo ? (
+              <Image src={assets.logo} width={48} height={48} alt="Canal Bank Logo" className="object-contain" />
+            ) : (
+              "C"
+            )}
           </div>
           <div className="text-left">
             <p className="text-xl font-bold text-white">Canal Bank</p>

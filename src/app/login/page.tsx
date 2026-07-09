@@ -5,11 +5,14 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Lock, Eye, EyeOff, Loader2, User as UserIcon } from "lucide-react";
 import { loginAction } from "@/app/auth/actions";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import Image from "next/image";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const wasRedirected = searchParams.get("redirected");
+  const { assets } = useSiteSettings();
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +32,6 @@ function LoginForm() {
       setError(result.error);
       setLoading(false);
     } else {
-      // loginAction performs redirect() on success, but if for some reason it didn't:
       router.push("/dashboard");
       router.refresh();
     }
@@ -50,8 +52,15 @@ function LoginForm() {
         </div>
 
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-brand-950 font-bold text-xl shadow-lg">
-            C
+          <div className={cn(
+            "w-10 h-10 rounded-xl flex items-center justify-center text-brand-950 font-bold text-xl shadow-lg overflow-hidden",
+            !assets.logo && "bg-white"
+          )}>
+            {assets.logo ? (
+              <Image src={assets.logo} width={40} height={40} alt="Canal Bank Logo" className="object-contain" />
+            ) : (
+              "C"
+            )}
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">Canal Bank</h1>

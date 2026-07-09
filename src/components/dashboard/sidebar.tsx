@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import Image from "next/image";
 
 const navGroups = [
   {
@@ -50,6 +52,7 @@ export function DashboardSidebar() {
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { assets } = useSiteSettings();
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -64,9 +67,16 @@ export function DashboardSidebar() {
       <div className={cn("p-8 border-b border-white/5 flex items-center", collapsed ? "justify-center px-4" : "gap-4")}>
         <motion.div 
           layout
-          className="w-10 h-10 rounded-xl bg-white flex-shrink-0 flex items-center justify-center text-brand-950 font-black text-xl shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          className={cn(
+            "w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-brand-950 font-black text-xl shadow-[0_0_20px_rgba(255,255,255,0.1)] overflow-hidden",
+            !assets.logo && "bg-white"
+          )}
         >
-          C
+          {assets.logo ? (
+            <Image src={assets.logo} width={40} height={40} alt="Canal Bank Logo" className="object-contain" />
+          ) : (
+            "C"
+          )}
         </motion.div>
         {!collapsed && (
           <motion.div 
