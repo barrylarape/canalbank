@@ -19,6 +19,7 @@ import {
   Target
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import placeholders from "@/app/lib/placeholder-images.json";
 import { useSiteSettings } from "@/hooks/use-site-settings";
 
