@@ -20,7 +20,8 @@ import {
   CreditCard,
   X,
   RotateCcw,
-  Search
+  Search,
+  ArrowDownLeft
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -215,7 +216,7 @@ export default async function AdminDashboardPage() {
                     "w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-500 group-hover:scale-110 border",
                     tx.transaction_type === "credit" 
                       ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
-                      : "bg-slate-800 text-slate-500 border-slate-700"
+                      : "bg-red-500/10 text-red-400 border-red-500/20"
                   )}>
                     {getCategoryIcon(tx.category)}
                   </div>
@@ -231,7 +232,7 @@ export default async function AdminDashboardPage() {
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0 space-y-3">
-                    <div className={cn("text-[20px] font-bold font-mono tracking-tighter", tx.transaction_type === "credit" ? "text-emerald-400" : "text-slate-300")}>
+                    <div className={cn("text-[20px] font-bold font-mono tracking-tighter", tx.transaction_type === "credit" ? "text-emerald-400" : "text-red-400")}>
                       {tx.transaction_type === "credit" ? "+" : "-"}{formatCurrency(tx.amount)}
                     </div>
                     <StatusBadge status={tx.status} />

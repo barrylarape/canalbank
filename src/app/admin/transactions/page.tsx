@@ -11,7 +11,9 @@ import {
   ChevronLeft,
   ChevronRight,
   ShieldAlert,
-  Clock
+  Clock,
+  ArrowUpRight,
+  ArrowDownLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/lib/supabase/types";
@@ -33,11 +35,11 @@ function StatusBadge({ status }: { status: string }) {
       icon: Clock 
     },
     failed: { 
-      style: "bg-red-500/10 text-red-400 border border-red-500/20 shadow-[0_2px_8px_rgba(239,68,68,0.08)]", 
+      style: "bg-red-500/10 text-red-400 border-red-500/20 shadow-[0_2px_8px_rgba(239,68,68,0.08)]", 
       icon: X 
     },
     reversed: { 
-      style: "bg-slate-500/10 text-slate-400 border border-slate-500/20 shadow-[0_2px_8px_rgba(100,116,139,0.08)]", 
+      style: "bg-slate-500/10 text-slate-400 border-slate-500/20 shadow-[0_2px_8px_rgba(100,116,139,0.08)]", 
       icon: RotateCcw 
     },
   };
@@ -195,6 +197,7 @@ export default function AdminTransactionsPage() {
                 <tr className="bg-slate-950/30 border-b border-slate-700/50">
                   <th className="text-left px-5 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Value Date</th>
                   <th className="text-left px-5 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Trace ID</th>
+                  <th className="text-left px-5 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Direction</th>
                   <th className="text-left px-5 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Beneficiary</th>
                   <th className="text-left px-5 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Narration</th>
                   <th className="text-left px-5 py-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Amount</th>
@@ -208,13 +211,25 @@ export default function AdminTransactionsPage() {
                     <td className="px-5 py-4 text-[10px] text-slate-400 font-mono">
                       {new Date(tx.created_at).toLocaleDateString("en-CH")}
                     </td>
-                    <td className="px-5 py-4 text-[10px] font-mono text-accent-500 font-bold uppercase">{tx.reference}</td>
+                    <td className="px-5 py-4 text-[10px] font-mono text-accent-500 font-bold uppercase">{tx.reference.slice(0, 12)}...</td>
+                    <td className="px-5 py-4">
+                      <div className={cn(
+                        "flex items-center gap-1.5 text-[9px] font-black uppercase tracking-tighter px-2 py-0.5 rounded border w-fit",
+                        tx.transaction_type === "credit" ? "text-emerald-400 border-emerald-500/20 bg-emerald-500/5" : "text-red-400 border-red-500/20 bg-red-500/5"
+                      )}>
+                        {tx.transaction_type === "credit" ? <ArrowDownLeft className="w-3 h-3" /> : <ArrowUpRight className="w-3 h-3" />}
+                        {tx.transaction_type}
+                      </div>
+                    </td>
                     <td className="px-5 py-4">
                       <p className="text-xs font-bold text-slate-200">{tx.profiles?.full_name ?? "—"}</p>
                       <p className="text-[9px] text-slate-500">{tx.profiles?.email}</p>
                     </td>
                     <td className="px-5 py-4 text-xs text-slate-300 truncate max-w-[200px]">{tx.description}</td>
-                    <td className="px-5 py-4 text-xs font-bold font-mono text-slate-200">
+                    <td className={cn(
+                      "px-5 py-4 text-xs font-bold font-mono",
+                      tx.transaction_type === "credit" ? "text-emerald-400" : "text-red-400"
+                    )}>
                       {tx.transaction_type === "credit" ? "+" : "-"}{formatCurrency(tx.amount)}
                     </td>
                     <td className="px-5 py-4">
@@ -223,7 +238,7 @@ export default function AdminTransactionsPage() {
                     <td className="px-5 py-4 text-right">
                       <button 
                         onClick={() => handleEdit(tx)}
-                        className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-500 hover:text-accent-400 hover:border-accent-500/50 transition-all opacity-0 group-hover:opacity-100"
+                        className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-500 hover:text-white hover:border-slate-500 transition-all opacity-0 group-hover:opacity-100"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                       </button>
