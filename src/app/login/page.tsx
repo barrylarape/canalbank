@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Lock, Eye, EyeOff, Loader2, User as UserIcon } from "lucide-react";
 import { loginAction } from "@/app/auth/actions";
 import { useSiteSettings } from "@/hooks/use-site-settings";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 function LoginForm() {
