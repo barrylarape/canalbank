@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
 import { 
   ShieldCheck, 
   ArrowRight, 
@@ -11,8 +14,12 @@ import {
   Shield,
   Zap
 } from "lucide-react";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import { cn } from "@/lib/utils";
 
 export function Footer() {
+  const { assets } = useSiteSettings();
+
   return (
     <footer className="bg-brand-950 text-slate-400 pt-24 pb-12 border-t border-white/5 relative overflow-hidden">
       {/* Background Texture Overlay */}
@@ -29,7 +36,7 @@ export function Footer() {
                 Receive weekly high-alpha market insights and institutional updates directly to your vault.
               </p>
             </div>
-            <form className="flex max-w-md gap-2">
+            <form className="flex max-w-md gap-2" onSubmit={(e) => e.preventDefault()}>
               <input 
                 type="email" 
                 placeholder="member@vault.ch" 
@@ -69,8 +76,15 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 mb-24">
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-8">
-              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-brand-950 font-black text-xl shadow-lg shadow-white/10">
-                C
+              <div className={cn(
+                "w-10 h-10 rounded-xl flex items-center justify-center font-black text-xl transition-all duration-500 overflow-hidden",
+                !assets.logo ? "bg-white text-brand-950 shadow-lg shadow-white/10" : ""
+              )}>
+                {assets.logo ? (
+                  <Image src={assets.logo} width={40} height={40} alt="Canal Bank Logo" className="object-contain" />
+                ) : (
+                  "C"
+                )}
               </div>
               <span className="font-black text-2xl tracking-tighter text-white uppercase">
                 Canal
@@ -91,40 +105,40 @@ export function Footer() {
           <div>
             <h4 className="text-white font-black text-[11px] uppercase tracking-[0.3em] mb-8">Personal</h4>
             <ul className="space-y-4 text-xs font-bold uppercase tracking-widest">
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Checking Vaults</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Savings Tiers</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Metal Entities</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Digital Wallet</Link></li>
+              <li><Link href="/personal" className="hover:text-accent-400 transition-colors">Checking Vaults</Link></li>
+              <li><Link href="/personal" className="hover:text-accent-400 transition-colors">Savings Tiers</Link></li>
+              <li><Link href="/personal" className="hover:text-accent-400 transition-colors">Metal Entities</Link></li>
+              <li><Link href="/dashboard" className="hover:text-accent-400 transition-colors">Digital Wallet</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-black text-[11px] uppercase tracking-[0.3em] mb-8">Institutional</h4>
             <ul className="space-y-4 text-xs font-bold uppercase tracking-widest">
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Wealth Management</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Asset Allocation</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Treasury Tools</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Market Pulse</Link></li>
+              <li><Link href="/business" className="hover:text-accent-400 transition-colors">Wealth Management</Link></li>
+              <li><Link href="/investments" className="hover:text-accent-400 transition-colors">Asset Allocation</Link></li>
+              <li><Link href="/business" className="hover:text-accent-400 transition-colors">Treasury Tools</Link></li>
+              <li><Link href="/investments" className="hover:text-accent-400 transition-colors">Market Pulse</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-black text-[11px] uppercase tracking-[0.3em] mb-8">Governance</h4>
             <ul className="space-y-4 text-xs font-bold uppercase tracking-widest">
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Privacy Charter</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Regulatory Portal</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Security Center</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Compliance</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">Privacy Charter</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">Regulatory Portal</Link></li>
+              <li><Link href="/dashboard/security" className="hover:text-accent-400 transition-colors">Security Center</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">Compliance</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-black text-[11px] uppercase tracking-[0.3em] mb-8">Support</h4>
             <ul className="space-y-4 text-xs font-bold uppercase tracking-widest">
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">24/7 Concierge</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Institutional FAQ</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Branch Locator</Link></li>
-              <li><Link href="#" className="hover:text-accent-400 transition-colors">Direct Contact</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">24/7 Concierge</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">Institutional FAQ</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">Branch Locator</Link></li>
+              <li><Link href="/support" className="hover:text-accent-400 transition-colors">Direct Contact</Link></li>
             </ul>
           </div>
         </div>

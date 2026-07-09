@@ -105,8 +105,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function SupportPage() {
-  const { assets } = useSiteSettings();
+  const { assets, config } = useSiteSettings();
   const [search, setSearch] = useState("");
+
+  const supportPhone = config.supportPhone || "+41 800 000 001";
+  const supportEmail = config.supportEmail || "support@canalbank.ch";
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -190,7 +193,7 @@ export default function SupportPage() {
                   desc: "Schedule a private consultation with a relationship manager for bespoke wealth needs.",
                   action: "Initiate Request",
                   color: "bg-accent-500",
-                  link: "mailto:concierge@canalbank.ch"
+                  link: `mailto:${supportEmail}`
                 }
               ].map((item, i) => (
                 <motion.div 
@@ -232,7 +235,7 @@ export default function SupportPage() {
                     </div>
                     <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Global Hotline</p>
-                      <p className="text-lg font-bold text-brand-950 tracking-tight">+41 800 000 001</p>
+                      <p className="text-lg font-bold text-brand-950 tracking-tight">{supportPhone}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6 p-6 bg-white rounded-3xl border border-slate-200/50 shadow-sm hover:shadow-md transition-shadow">
@@ -241,7 +244,7 @@ export default function SupportPage() {
                     </div>
                     <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Electronic Dispatch</p>
-                      <p className="text-lg font-bold text-brand-950 tracking-tight">support@canalbank.capital</p>
+                      <p className="text-lg font-bold text-brand-950 tracking-tight">{supportEmail}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6 p-6 bg-white rounded-3xl border border-slate-200/50 shadow-sm hover:shadow-md transition-shadow">
@@ -319,10 +322,10 @@ export default function SupportPage() {
                 Our support team is ready to assist you with any technical or institutional query.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a href="mailto:support@canalbank.ch" className="w-full sm:w-auto px-12 py-6 bg-brand-950 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] hover:bg-accent-600 transition-all shadow-2xl active:scale-95 text-center">
+                <a href={`mailto:${supportEmail}`} className="w-full sm:w-auto px-12 py-6 bg-brand-950 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] hover:bg-accent-600 transition-all shadow-2xl active:scale-95 text-center">
                   Email Support Desk
                 </a>
-                <a href="tel:+41800000001" className="w-full sm:w-auto px-12 py-6 bg-white border border-slate-200 text-brand-950 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] hover:bg-slate-50 transition-all active:scale-95 text-center">
+                <a href={`tel:${supportPhone.replace(/\s/g, '')}`} className="w-full sm:w-auto px-12 py-6 bg-white border border-slate-200 text-brand-950 rounded-2xl font-black text-[11px] uppercase tracking-[0.25em] hover:bg-slate-50 transition-all active:scale-95 text-center">
                   Call Concierge
                 </a>
               </div>
