@@ -14,7 +14,7 @@ export default async function CardsPage() {
       <h1 className="text-2xl font-bold text-brand-950">Card Management</h1>
       {(!cards || cards.length === 0) ? (
         <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
-          No cards found. Make sure demo data is seeded.
+          No cards found. Contact Support to request.
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

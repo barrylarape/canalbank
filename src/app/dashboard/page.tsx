@@ -67,7 +67,7 @@ function StatusBadge({ status }: { status: string }) {
   const { style, icon: Icon } = config[status] ?? config.pending;
   
   return (
-    <span className={cn("inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase border tracking-widest transition-all", style)}>
+    <span className={cn("inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-black uppercase border tracking-widest transition-all", style)}>
       <Icon className="w-3 h-3" />
       {status}
     </span>
@@ -405,7 +405,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-2 gap-5">
               <QuickActionTile label="Cards" iconType="cards" href="/dashboard/cards" isFrequent />
               <QuickActionTile label="Loans" iconType="loans" href="/dashboard/loans" />
-              <QuickActionTile label="Markets" iconType="markets" href="/dashboard/investments" isFrequent />
+              <QuickActionTile label="Payments" iconType="payments" href="/dashboard/bills" isFrequent />
               <QuickActionTile label="Security" iconType="security" href="/dashboard/security" />
             </div>
           </motion.div>
