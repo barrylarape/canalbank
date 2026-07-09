@@ -1,9 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeftRight, Send, Globe, Repeat, Loader2, CheckCircle, AlertCircle } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { 
+  ArrowLeftRight, 
+  Send, 
+  Globe, 
+  Repeat, 
+  Loader2, 
+  CheckCircle, 
+  AlertCircle,
+  X,
+  ChevronRight,
+  ShieldCheck,
+  FileText
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 const TRANSFER_TYPES = [
   { id: "internal", label: "Between My Accounts", icon: Repeat, desc: "Free & Instant" },
@@ -35,6 +47,7 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
   const [transferType, setTransferType] = useState("internal");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [lastTraceId, setLastTraceId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     from: "",
@@ -59,133 +72,27 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
     setLoading(true);
     setError(null);
 
-    const amount = parseFloat(form.amount);
-
     try {
-      if (transferType === "internal") {
-        if (!form.from || !form.to) {
-          setError("Please select both accounts.");
-          setLoading(false);
-          return;
-        }
-        if (form.from === form.to) {
-          setError("Cannot transfer to the same account.");
-          setLoading(false);
-          return;
-        }
+      const res = await fetch("/api/transfers/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: transferType,
+          fromAccountId: form.from,
+          toAccountId: form.to,
+          amount: form.amount,
+          recipientName: form.recipientName,
+          iban: form.iban,
+          note: form.note,
+          swift: form.swift,
+          currency: form.currency
+        }),
+      });
 
-        const fromAccount = accounts.find((a) => a.id === form.from);
-        const toAccount = accounts.find((a) => a.id === form.to);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Transfer failed.");
 
-        if (!fromAccount || !toAccount) {
-          setError("Account not found.");
-          setLoading(false);
-          return;
-        }
-        if (fromAccount.available_balance < amount) {
-          setError(
-            `Insufficient funds. Available balance: ${formatCurrency(fromAccount.available_balance, fromAccount.currency)}`
-          );
-          setLoading(false);
-          return;
-        }
-
-        const supabase = createClient();
-        const ref = crypto.randomUUID();
-        const newFromBalance = fromAccount.balance - amount;
-        const newToBalance = toAccount.balance + amount;
-
-        const { error: debitErr } = await supabase.from("transactions").insert({
-          account_id: fromAccount.id,
-          user_id: userId,
-          transaction_type: "debit",
-          category: "transfer",
-          description: `Transfer to ${toAccount.account_name}`,
-          amount,
-          balance_after: newFromBalance,
-          reference: ref,
-          status: "completed",
-          counterparty_name: toAccount.account_name,
-        });
-        if (debitErr) throw new Error(debitErr.message);
-
-        const { error: creditErr } = await supabase.from("transactions").insert({
-          account_id: toAccount.id,
-          user_id: userId,
-          transaction_type: "credit",
-          category: "transfer",
-          description: `Transfer from ${fromAccount.account_name}`,
-          amount,
-          balance_after: newToBalance,
-          reference: ref,
-          status: "completed",
-          counterparty_name: fromAccount.account_name,
-        });
-        if (creditErr) throw new Error(creditErr.message);
-
-        await supabase
-          .from("accounts")
-          .update({
-            balance: newFromBalance,
-            available_balance: fromAccount.available_balance - amount,
-          })
-          .eq("id", fromAccount.id);
-
-        await supabase
-          .from("accounts")
-          .update({
-            balance: newToBalance,
-            available_balance: toAccount.available_balance + amount,
-          })
-          .eq("id", toAccount.id);
-      } else {
-        if (!form.from || !form.recipientName || !form.iban) {
-          setError("Please fill in all required fields.");
-          setLoading(false);
-          return;
-        }
-
-        const fromAccount = accounts.find((a) => a.id === form.from);
-        if (!fromAccount) {
-          setError("Account not found.");
-          setLoading(false);
-          return;
-        }
-        if (fromAccount.available_balance < amount) {
-          setError(
-            `Insufficient funds. Available balance: ${formatCurrency(fromAccount.available_balance, fromAccount.currency)}`
-          );
-          setLoading(false);
-          return;
-        }
-
-        const supabase = createClient();
-        const newBalance = fromAccount.balance - amount;
-        const description =
-          transferType === "international"
-            ? `International wire to ${form.recipientName}`
-            : `Domestic wire to ${form.recipientName}`;
-
-        const { error: txErr } = await supabase.from("transactions").insert({
-          account_id: fromAccount.id,
-          user_id: userId,
-          transaction_type: "debit",
-          category: "transfer",
-          description,
-          amount,
-          balance_after: newBalance,
-          reference: form.iban.replace(/\s/g, "").toUpperCase(),
-          status: "pending",
-          counterparty_name: form.recipientName,
-        });
-        if (txErr) throw new Error(txErr.message);
-
-        await supabase
-          .from("accounts")
-          .update({ available_balance: fromAccount.available_balance - amount })
-          .eq("id", fromAccount.id);
-      }
-
+      setLastTraceId(data.traceId);
       setSuccess(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Transfer failed. Please try again.");
@@ -200,120 +107,103 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
     setForm({ from: "", to: "", amount: "", note: "", recipientName: "", iban: "", swift: "", currency: "EUR" });
   };
 
-  if (success) {
-    return (
-      <div className="max-w-lg mx-auto pt-12 text-center">
-        <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle className="w-10 h-10 text-emerald-600" />
-        </div>
-        <h2 className="text-2xl font-bold text-brand-950 mb-2">Transfer Submitted!</h2>
-        <p className="text-slate-500 mb-8">
-          Your transfer of <strong>
-            {form.currency} {isMounted ? parseFloat(form.amount).toLocaleString("en-IE", { minimumFractionDigits: 2 }) : form.amount}
-          </strong>{" "}
-          has been submitted and is being processed.
-        </p>
-        <button
-          onClick={resetForm}
-          className="bg-brand-900 hover:bg-brand-800 text-white px-8 py-3 rounded-xl font-medium transition-colors"
-        >
-          Make Another Transfer
-        </button>
-      </div>
-    );
-  }
-
   const fromAccount = accounts.find((a) => a.id === form.from);
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-brand-950">Transfer Money</h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-black text-brand-950 uppercase tracking-tight">Funds Transfer</h1>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Move capital across the global ledger</p>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {TRANSFER_TYPES.map((type) => {
           const Icon = type.icon;
+          const active = transferType === type.id;
           return (
             <button
               key={type.id}
               onClick={() => setTransferType(type.id)}
               className={cn(
-                "p-4 rounded-2xl border-2 text-left transition-all",
-                transferType === type.id
-                  ? "border-brand-800 bg-brand-50"
-                  : "border-slate-200 bg-white hover:border-brand-300"
+                "p-6 rounded-[2rem] border-2 text-left transition-all duration-500 group relative overflow-hidden",
+                active
+                  ? "border-brand-900 bg-brand-50"
+                  : "border-slate-100 bg-white hover:border-brand-200"
               )}
             >
               <div
                 className={cn(
-                  "w-10 h-10 rounded-xl flex items-center justify-center mb-3",
-                  transferType === type.id
-                    ? "bg-brand-900 text-white"
-                    : "bg-slate-100 text-slate-500"
+                  "w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-all duration-500",
+                  active
+                    ? "bg-brand-900 text-white shadow-lg shadow-brand-900/20"
+                    : "bg-slate-50 text-slate-400 group-hover:bg-slate-100"
                 )}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-6 h-6" />
               </div>
-              <p
-                className={cn(
-                  "font-semibold text-sm",
-                  transferType === type.id ? "text-brand-950" : "text-slate-700"
-                )}
-              >
+              <p className={cn("font-black text-xs uppercase tracking-widest", active ? "text-brand-950" : "text-slate-400")}>
                 {type.label}
               </p>
-              <p className="text-xs text-slate-400 mt-0.5">{type.desc}</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                {type.desc}
+              </p>
             </button>
           );
         })}
       </div>
 
-      {error && (
-        <div className="flex items-start gap-2 p-3.5 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
-          <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-          {error}
-        </div>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="flex items-start gap-4 p-5 bg-red-50 border border-red-100 rounded-[1.5rem] text-red-600 text-xs font-bold uppercase tracking-widest"
+          >
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <p className="mt-0.5 leading-relaxed">{error}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5"
+        className="bg-white rounded-[2.5rem] border border-slate-200/50 shadow-[0_20px_50px_rgba(0,0,0,0.02)] p-8 space-y-8"
       >
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              From Account
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
+              Source Account
             </label>
             <select
               value={form.from}
               onChange={(e) => update("from", e.target.value)}
               required
-              className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 bg-white"
+              className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 transition-all appearance-none"
             >
-              <option value="">Select account</option>
+              <option value="">Select funding entity</option>
               {accounts.map((acc) => (
                 <option key={acc.id} value={acc.id}>
                   {acc.account_name} ({isMounted ? formatCurrency(acc.available_balance, acc.currency) : acc.available_balance})
                 </option>
               ))}
             </select>
-            {fromAccount && (
-              <p className="text-xs text-slate-400 mt-1">
-                Available: {isMounted ? formatCurrency(fromAccount.available_balance, fromAccount.currency) : fromAccount.available_balance}
-              </p>
-            )}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              {transferType === "internal" ? "To Account" : "Currency"}
+          
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
+              {transferType === "internal" ? "Destination Account" : "Target Currency"}
             </label>
             {transferType === "internal" ? (
               <select
                 value={form.to}
                 onChange={(e) => update("to", e.target.value)}
                 required
-                className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 bg-white"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 transition-all appearance-none"
               >
-                <option value="">Select account</option>
+                <option value="">Select recipient entity</option>
                 {accounts
                   .filter((acc) => acc.id !== form.from)
                   .map((acc) => (
@@ -326,68 +216,73 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
               <select
                 value={form.currency}
                 onChange={(e) => update("currency", e.target.value)}
-                className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 bg-white"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 transition-all appearance-none"
               >
                 <option value="EUR">🇪🇺 EUR — Euro</option>
                 <option value="USD">🇺🇸 USD — US Dollar</option>
                 <option value="GBP">🇬🇧 GBP — British Pound</option>
+                <option value="CHF">🇨🇭 CHF — Swiss Franc</option>
               </select>
             )}
           </div>
         </div>
 
         {(transferType === "domestic" || transferType === "international") && (
-          <>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                Recipient Name
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="space-y-6 overflow-hidden"
+          >
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
+                Beneficiary Name
               </label>
               <input
                 type="text"
                 value={form.recipientName}
                 onChange={(e) => update("recipientName", e.target.value)}
-                placeholder="John Doe"
+                placeholder="Institutional or Personal Name"
                 required
-                className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 placeholder:text-slate-300 transition-all"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                IBAN / Account Number
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
+                IBAN / Account Identifier
               </label>
               <input
                 type="text"
                 value={form.iban}
                 onChange={(e) => update("iban", e.target.value)}
-                placeholder="CH93 0076 2011 6238 5295 7"
+                placeholder="CH93 0000 0000 0000 0000 0"
                 required
-                className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-mono font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 placeholder:text-slate-300 transition-all"
               />
             </div>
             {transferType === "international" && (
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
                   SWIFT / BIC Code
                 </label>
                 <input
                   type="text"
                   value={form.swift}
                   onChange={(e) => update("swift", e.target.value)}
-                  placeholder="UBSWCHZH80A"
+                  placeholder="CANACHZH..."
                   required
-                  className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-mono font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 placeholder:text-slate-300 transition-all"
                 />
               </div>
             )}
-          </>
+          </motion.div>
         )}
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">
-            Amount ({transferType === "internal" ? (fromAccount?.currency ?? "EUR") : form.currency})
+        <div className="space-y-2">
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
+            Transaction Amount
           </label>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">
+            <span className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 font-bold text-lg">
               {transferType === "internal" ? (fromAccount?.currency ?? "EUR") : form.currency}
             </span>
             <input
@@ -398,46 +293,125 @@ export function TransfersClient({ accounts, userId }: TransfersClientProps) {
               required
               min="0.01"
               step="0.01"
-              className="w-full pl-14 pr-4 py-3 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+              className="w-full pl-20 pr-6 py-5 bg-slate-50 border border-slate-100 rounded-[1.5rem] text-2xl font-mono font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 placeholder:text-slate-200 transition-all"
             />
           </div>
+          {fromAccount && (
+            <p className="text-[9px] font-black text-emerald-600 uppercase tracking-widest mt-2 ml-1">
+              Available to move: {isMounted ? formatCurrency(fromAccount.available_balance, fromAccount.currency) : fromAccount.available_balance}
+            </p>
+          )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">
-            Note / Reference (optional)
+        <div className="space-y-2">
+          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest block ml-1">
+            Narration / Reference (Optional)
           </label>
           <input
             type="text"
             value={form.note}
             onChange={(e) => update("note", e.target.value)}
-            placeholder="Rent payment, Invoice #123..."
-            className="w-full px-3 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+            placeholder="Institutional Reference"
+            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold text-brand-950 focus:outline-none focus:ring-2 focus:ring-brand-900/5 placeholder:text-slate-300 transition-all"
           />
         </div>
-
-        {accounts.length === 0 && (
-          <p className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
-            No active accounts found. Please contact your relationship manager.
-          </p>
-        )}
 
         <button
           type="submit"
           disabled={loading || accounts.length === 0}
-          className="w-full flex items-center justify-center gap-2 py-3.5 bg-brand-900 hover:bg-brand-800 disabled:opacity-50 text-white rounded-xl font-medium text-sm transition-colors shadow-lg shadow-brand-900/20"
+          className="w-full py-5 bg-brand-900 hover:bg-brand-800 disabled:opacity-50 text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] transition-all shadow-2xl shadow-brand-900/30 flex items-center justify-center gap-3 active:scale-[0.98]"
         >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Processing...
+              <Loader2 className="w-5 h-5 animate-spin" /> Authorizing...
             </>
           ) : (
             <>
-              <ArrowLeftRight className="w-4 h-4" /> Transfer Funds
+              Initialize Transfer <ChevronRight className="w-4 h-4" />
             </>
           )}
         </button>
       </form>
+
+      {/* SUCCESS MODAL */}
+      <AnimatePresence>
+        {success && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-brand-950/80 backdrop-blur-md"
+              onClick={resetForm}
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-lg bg-white rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.4)] overflow-hidden"
+            >
+              <div className="bg-brand-900 p-12 text-center relative overflow-hidden">
+                <div className="relative z-10">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", damping: 12, stiffness: 200, delay: 0.2 }}
+                    className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-8"
+                  >
+                    <CheckCircle className="w-10 h-10 text-emerald-400" />
+                  </motion.div>
+                  <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">Authorized</h2>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em]">Institutional Execution Success</p>
+                </div>
+                {/* Visual texture */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-3xl rounded-full -mr-32 -mt-32" />
+              </div>
+
+              <div className="p-10 space-y-8">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center py-3 border-b border-slate-50">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Amount Disbursed</span>
+                    <span className="text-xl font-mono font-bold text-brand-950">
+                      {form.currency} {parseFloat(form.amount).toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-slate-50">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Recipient</span>
+                    <span className="text-xs font-bold text-brand-950 uppercase">{transferType === 'internal' ? 'Primary Account' : form.recipientName}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3 border-b border-slate-50">
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Protocol Trace ID</span>
+                    <span className="text-[10px] font-mono font-bold text-brand-900">{lastTraceId.slice(0, 18)}...</span>
+                  </div>
+                </div>
+
+                <div className="p-5 bg-slate-50 rounded-2xl flex items-start gap-4">
+                  <ShieldCheck className="w-5 h-5 text-emerald-600 mt-0.5" />
+                  <div>
+                    <p className="text-[10px] font-black text-brand-950 uppercase tracking-widest">Ledger Integrity Verified</p>
+                    <p className="text-[10px] text-slate-400 font-bold leading-relaxed mt-1">
+                      This transaction has been successfully committed to the Canal Bank global ledger and signed with institutional encryption.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button 
+                    onClick={resetForm}
+                    className="flex-1 py-4 bg-brand-950 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-brand-950/20 active:scale-95 transition-all"
+                  >
+                    Done
+                  </button>
+                  <button className="p-4 bg-slate-50 text-brand-900 rounded-2xl hover:bg-slate-100 transition-colors">
+                    <FileText className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
