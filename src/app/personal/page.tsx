@@ -19,6 +19,7 @@ import {
 import Image from "next/image";
 import placeholders from "@/app/lib/placeholder-images.json";
 import { useSiteSettings } from "@/hooks/use-site-settings";
+import { cn } from "@/lib/utils";
 
 export default function PersonalBankingPage() {
   const { getAsset } = useSiteSettings();
