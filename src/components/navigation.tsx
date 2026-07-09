@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronRight, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSiteSettings } from "@/hooks/use-site-settings";
+import Image from "next/image";
 
 const navLinks = [
   { name: "Personal", href: "/personal" },
@@ -16,6 +18,7 @@ const navLinks = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { assets } = useSiteSettings();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,10 +46,14 @@ export function Navigation() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <div className={cn(
-            "w-10 h-10 rounded-xl flex items-center justify-center font-black text-xl transition-all duration-500",
+            "w-10 h-10 rounded-xl flex items-center justify-center font-black text-xl transition-all duration-500 overflow-hidden",
             isScrolled ? "bg-brand-950 text-white" : "bg-white text-brand-950 shadow-xl shadow-brand-950/20"
           )}>
-            C
+            {assets.logo ? (
+              <Image src={assets.logo} width={40} height={40} alt="Canal Bank Logo" className="object-contain" />
+            ) : (
+              "C"
+            )}
           </div>
           <span className={cn(
             "font-black text-xl tracking-tighter uppercase transition-colors", 

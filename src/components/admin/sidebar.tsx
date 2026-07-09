@@ -22,7 +22,8 @@ import {
   History,
   RotateCcw,
   Landmark,
-  Terminal
+  Terminal,
+  Image as ImageIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -52,6 +53,7 @@ const navGroups = [
   {
     label: "GOVERNANCE",
     items: [
+      { label: "Content Management", href: "/admin/content", icon: ImageIcon },
       { label: "Risk & Compliance", href: "/admin/risk", icon: AlertTriangle },
       { label: "Query Inspector", href: "/admin/debug/database", icon: Terminal },
       { label: "Audit Logs", href: "/admin/audit", icon: Lock },
