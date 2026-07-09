@@ -40,6 +40,13 @@ export function DashboardHeader({ profile }: DashboardHeaderProps) {
     });
   }, []);
 
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  };
+
   return (
     <header className="bg-white/70 backdrop-blur-md px-8 lg:px-12 py-8 flex items-center justify-between gap-6 sticky top-0 z-30 border-b border-slate-200/50">
       {/* Premium Institutional Greeting */}
