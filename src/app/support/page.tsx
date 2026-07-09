@@ -241,7 +241,7 @@ export default function SupportPage() {
                     </div>
                     <div>
                       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Electronic Dispatch</p>
-                      <p className="text-lg font-bold text-brand-950 tracking-tight">concierge@canalbank.ch</p>
+                      <p className="text-lg font-bold text-brand-950 tracking-tight">support@canalbank.capital</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6 p-6 bg-white rounded-3xl border border-slate-200/50 shadow-sm hover:shadow-md transition-shadow">
